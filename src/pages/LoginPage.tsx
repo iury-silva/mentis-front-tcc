@@ -10,9 +10,8 @@ export default function LoginPage() {
           <a href="#" className="flex items-center gap-2 font-medium">
             <div className="flex h-32 w-32 items-center justify-center">
               {/* <GalleryVerticalEnd className="size-4" /> */}
-              <img src="/images/logo.png" alt="Img" />
+              <img src="/images/lo-removebg-preview.png" alt="Img" />
             </div>
-            Mentis.
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">
@@ -21,13 +20,13 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      {/* <div className="relative hidden bg-muted lg:block">
+      <div className="relative hidden bg-muted lg:block">
         <img
-          src="/placeholder.svg"
+          src="/images/Mentis Abstract Background Pattern - Coral to Beige.png"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
         />
-      </div> */}
+      </div>
     </div>
   )
 }

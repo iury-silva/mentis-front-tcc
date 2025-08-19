@@ -19,7 +19,7 @@ const AppRoutes: React.FC = () => {
       {/* Protected routes for the main application */}
       <Route element={<ProtectedRoute />}>
         <Route element={<AppLayout />}>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/dashboard" element={<HomePage />} />
           {/* Add other protected app routes here, e.g., /dashboard, /profile */}
         </Route>
       </Route>
