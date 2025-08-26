@@ -1,6 +1,6 @@
 // src/auth/AuthProvider.tsx
-import React, { useState, useEffect, ReactNode } from 'react';
-import { AuthContext, AuthContextType, User } from './AuthContext';
+import React, { useState, useEffect, type ReactNode } from 'react';
+import { AuthContext, type AuthContextType, type User, type AuthResponse } from './AuthContext';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -30,11 +30,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(false); // Signal that initial auth check is complete
   }, []);
 
-  const login = (userData: User) => {
+  const login = (userData: AuthResponse) => {
+    console.log("Logging in user:", userData);
     setIsAuthenticated(true);
-    setUser(userData);
-    localStorage.setItem('authToken', 'dummyToken'); // Store a dummy token
-    localStorage.setItem('authUser', JSON.stringify(userData)); // Store user data
+    setUser(userData.user);
+    localStorage.setItem('authToken', userData.access_token);
+    localStorage.setItem('authUser', JSON.stringify(userData.user));
   };
 
   const logout = () => {

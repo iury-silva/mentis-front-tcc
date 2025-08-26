@@ -2,14 +2,22 @@
 import { createContext } from 'react';
 
 export interface User {
+  id: string;
+  email: string;
   name: string;
+  role: string;
   // Add other user properties here if needed in the future
+}
+
+export interface AuthResponse {
+  access_token: string;
+  user: User;
 }
 
 export interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
-  login: (userData: User) => void;
+  login: (userData: AuthResponse) => void;
   logout: () => void;
   loading: boolean; // New property
 }

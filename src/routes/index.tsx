@@ -1,18 +1,22 @@
 // src/routes/index.tsx
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import LoginPage from '@/pages/LoginPage';
-import HomePage from '@/pages/HomePage';
-import ProtectedRoute from '@/routes/ProtectedRoute'; // Corrected path: ProtectedRoute is in routes
-import AuthLayout from '@/layouts/AuthLayout';
-import AppLayout from '@/layouts/AppLayout';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import LoginPage from "@/pages/Auth/LoginPage";
+import HomePage from "@/pages/Dashboard/HomePage";
+import { RegisterPage } from "@/pages/Auth/RegisterPage";
+import ProtectedRoute from "@/routes/ProtectedRoute";
+import AuthLayout from "@/layouts/AuthLayout";
+import AppLayout from "@/layouts/AppLayout";
 
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
       {/* Routes for authentication (e.g., login, signup) */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
+
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         {/* Add other auth routes like /register here */}
       </Route>
 
