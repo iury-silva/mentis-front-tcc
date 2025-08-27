@@ -7,9 +7,9 @@ export default function LoginPage() {
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="relative hidden lg:block">
         <img
-          src="/images/Mentis Abstract Background Pattern - Coral to Beige.png"
+          src="/images/mentis-abstract.png"
           alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
       <div className="flex flex-col gap-2 p-6 md:p-10">
