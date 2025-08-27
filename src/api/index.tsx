@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const API_URL = import.meta.env.VITE_API_URL;
 
 async function apiFetch(path: string, options: RequestInit = {}) {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("authToken");
 
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -16,7 +17,7 @@ async function apiFetch(path: string, options: RequestInit = {}) {
 
   if (res.status === 401) {
     // Token expirado ou inválido
-    localStorage.removeItem("access_token");
+    localStorage.removeItem("authToken");
     localStorage.removeItem("user");
     window.location.href = "/login";
     return;

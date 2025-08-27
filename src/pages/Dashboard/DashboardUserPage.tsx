@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../../auth/useAuth';
 
-const HomePage: React.FC = () => {
+const DashboardUserPage: React.FC = () => {
   const { user } = useAuth();
 
   return (
@@ -20,4 +20,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default DashboardUserPage;

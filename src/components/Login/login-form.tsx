@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/components/LoginForm.tsx
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/auth/useAuth";
@@ -56,7 +57,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
     onSuccess: (data) => {
       toast.success("Login realizado com sucesso!");
       login(data); // salva token e usuário no contexto
-      navigate("/dashboard");
+      navigate(data.user.role.includes("admin") ? "/dashboard" : "/dashboard-user");
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Falha no login, verifique suas credenciais.");
