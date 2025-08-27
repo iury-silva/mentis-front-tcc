@@ -9,7 +9,7 @@ import GoogleLoggedPage from "@/pages/Auth/GoogleLoggedPage";
 import NotFoundPage from "@/pages/NotFound/NotFoundPage";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import AuthLayout from "@/layouts/AuthLayout";
-import AppLayout from "@/layouts/AppLayout";
+import { AppLayout } from "@/layouts/AppLayout";
 
 const AppRoutes: React.FC = () => {
   return (
