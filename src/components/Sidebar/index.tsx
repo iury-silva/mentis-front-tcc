@@ -15,7 +15,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/24/outline";
 
-// import { 
+// import {
 //   HomeIcon,
 //   UserIcon,
 //   CogIcon,
@@ -57,7 +57,11 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-row items-center justify-start px-2 py-4">
         <div className="flex items-center gap-2 group-data-[collapsible=icon]:justify-center">
-          <img src="/fav.ico" alt="Logo" className="h-8 w-8 shrink-0" />
+          <img
+            src="/icone-mentisV2.png"
+            alt="Logo"
+            className="w-8 shrink-0"
+          />
           <span className="font-bold text-lg group-data-[collapsible=icon]:hidden">
             Mentis
           </span>
