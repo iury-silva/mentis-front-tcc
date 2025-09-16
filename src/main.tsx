@@ -11,7 +11,7 @@ import { Toaster } from "react-hot-toast";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <>
     <Toaster position="top-right" reverseOrder={false} />
     <ThemeProvider storageKey="mentis-ui-theme">
       <QueryClientProvider client={queryClient}>
@@ -22,5 +22,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </BrowserRouter>
       </QueryClientProvider>
     </ThemeProvider>
-  </React.StrictMode>
+  </>
 );

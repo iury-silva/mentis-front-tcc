@@ -13,6 +13,7 @@ import {
   UserIcon,
   Cog6ToothIcon,
   UsersIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
 
 // import {
@@ -28,9 +29,21 @@ export function AppSidebar() {
   // Defina seus itens da sidebar, com ícones e roles
   const items = [
     {
-      title: "Dashboard",
+      title: "Dashboard Admin",
       url: "/dashboard",
       icon: HomeIcon,
+      role: "admin", // só admin vê
+    },
+    {
+      title: "Dashboard User",
+      url: "/dashboard-user",
+      icon: HomeIcon,
+      role: "user", // só user vê
+    },
+    {
+      title: "Questionário",
+      url: "/questionnaire",
+      icon: QuestionMarkCircleIcon,
     },
     {
       title: "Perfil",

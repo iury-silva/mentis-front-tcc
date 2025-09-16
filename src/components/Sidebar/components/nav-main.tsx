@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ChevronRight, type LucideIcon } from "lucide-react"
 import {
   Collapsible,
@@ -32,6 +32,12 @@ export function NavMain({
   userRole?: string;
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Marca item ativo baseado na URL
+  // const isActive = (url?: string) => url === location.pathname;
+  const isActive = (url?: string) =>
+    url ? location.pathname.startsWith(url) : false;
 
   return (
     <SidebarGroup>
@@ -52,7 +58,7 @@ export function NavMain({
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
+                    <SidebarMenuButton tooltip={item.title} isActive={isActive(item.url)}>
                       {item.icon && <item.icon />}
                       <span>{item.title}</span>
                       <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -80,6 +86,7 @@ export function NavMain({
               <SidebarMenuButton
                 onClick={() => item.url && navigate(item.url)}
                 tooltip={item.title}
+                isActive={isActive(item.url)}
               >
                 {item.icon && <item.icon />}
                 {item.title}

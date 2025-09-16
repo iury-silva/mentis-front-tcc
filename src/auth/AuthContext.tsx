@@ -6,6 +6,7 @@ export interface User {
   email: string;
   name: string;
   role: string;
+  avatar: string;
   // Add other user properties here if needed in the future
 }
 

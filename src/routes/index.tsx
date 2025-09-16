@@ -1,6 +1,8 @@
 // src/routes/index.tsx
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+
+//routes
 import LoginPage from "@/pages/Auth/LoginPage";
 import DashboardAdminPage from "@/pages/Dashboard/DashboardAdminPage";
 import DashboardUserPage from "@/pages/Dashboard/DashboardUserPage";
@@ -8,6 +10,10 @@ import { RegisterPage } from "@/pages/Auth/RegisterPage";
 import GoogleLoggedPage from "@/pages/Auth/GoogleLoggedPage";
 import NotFoundPage from "@/pages/NotFound/NotFoundPage";
 import ProtectedRoute from "@/routes/ProtectedRoute";
+import QuestionnairePage from "@/pages/Questionnaire/QuestionnairePage";
+import BlockDetailPage from "@/pages/Questionnaire/BlockDetailPage";
+
+//Layouts
 import AuthLayout from "@/layouts/AuthLayout";
 import { AppLayout } from "@/layouts/AppLayout";
 
@@ -37,6 +43,11 @@ const AppRoutes: React.FC = () => {
         <Route element={<AppLayout />}>
           {/* Add other protected app routes here, e.g., /dashboard, /profile */}
           <Route path="/dashboard-user" element={<DashboardUserPage />} />
+          <Route path="/questionnaire" element={<QuestionnairePage />} />
+          <Route
+            path="/questionnaire/blocks/:blockId"
+            element={<BlockDetailPage />}
+          />
         </Route>
       </Route>
 
