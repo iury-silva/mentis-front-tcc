@@ -13,7 +13,7 @@ export const AppLayout: React.FC = () => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-12 shrink-0 items-center gap-2 px-4">
+        <header className="flex h-12 shrink-0 items-center gap-2 px-4 bg-transparent border-b border-slate-200/50 backdrop-blur-sm sticky top-0 z-10">
           <SidebarTrigger className="-ml-1" />
           <Separator
             orientation="vertical"

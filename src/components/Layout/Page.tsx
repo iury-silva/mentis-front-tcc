@@ -1,5 +1,11 @@
 import type { ReactNode } from "react";
-import { Separator } from "@/components/ui/separator";
+import { 
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 
 type PageProps = {
   title?: string;
@@ -11,30 +17,43 @@ type PageProps = {
 export function Page({ title, description, actions, children }: PageProps) {
   const hasHeader = title || description || actions;
   return (
-    <section className="space-y-3 p-4 sm:p-6 lg:p-8">
+    <section className="min-h-full bg-gradient-to-br from-slate-300/50 to-white">
+      <div className="max-w-7xl mx-auto space-y-6 p-4 sm:p-6 lg:p-8">
       {hasHeader && (
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div className="min-w-0">
+        <Card className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-slate-200/50">
+        <CardHeader className="">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0 space-y-2">
             {title && (
-              <h1 className="text-xl sm:text-3xl font-semibold tracking-tight truncate">
-                {title}
-              </h1>
+            <div className="flex items-center gap-3">
+              <div className="w-1 h-8 bg-primary rounded-full"></div>
+              <CardTitle className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-800">
+              {title}
+              </CardTitle>
+            </div>
             )}
             {description && (
-              <p className="text-sm text-muted-foreground truncate">
-                {description}
-              </p>
+            <CardDescription className="text-slate-600 text-base leading-relaxed ml-4">
+              {description}
+            </CardDescription>
             )}
           </div>
           {actions && (
-            <div className="flex items-center gap-2 sm:justify-end shrink-0">
-              {actions}
+            <div className="flex items-center gap-3 sm:justify-end shrink-0">
+            {actions}
             </div>
           )}
-        </div>
+          </div>
+        </CardHeader>
+        </Card>
       )}
-      {hasHeader && <Separator />}
-      {children}
+
+      <Card className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-sm border border-slate-200/30">
+        <CardContent className="p-6 sm:p-8">
+        {children}
+        </CardContent>
+      </Card>
+      </div>
     </section>
   );
 }
