@@ -139,12 +139,6 @@ export default function QuestionnairePage() {
                       <span className="flex items-center gap-1">
                         📊 {questionnaire.blocks.length} blocos
                       </span>
-                      {questionnaire.terms &&
-                        questionnaire.terms.trim() !== "" && (
-                          <span className="flex items-center gap-1 text-blue-600">
-                            📄 Com termo de consentimento
-                          </span>
-                        )}
                     </div>
                   </div>
                 </div>
