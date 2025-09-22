@@ -9,7 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Page } from "@/components/Layout/Page";
 import { useAuth } from "@/auth/useAuth";
 import toast from "react-hot-toast";
-import { ArrowLeft, CheckCircle, Clock } from "lucide-react";
+import { ArrowLeft, CheckCircle, Clock, Eye } from "lucide-react";
+import { ReviewModal } from "@/components/Questionnaire/ReviewModal";
 
 interface Question {
   id: string;
@@ -154,6 +155,7 @@ export default function BlockDetailPage() {
   const [answers, setAnswers] = useState<Record<string, { answer: string }>>(
     {}
   );
+  const [showReviewModal, setShowReviewModal] = useState(false);
 
   const query = useQuery<QuestionsResponse>({
     queryKey: ["block", blockId],
@@ -168,13 +170,14 @@ export default function BlockDetailPage() {
     mutationFn: async (responses: {
       userId: string;
       blockId: string;
-      responses: Array<{ questionId: string; selectedOptionId: string }>;
+      responses: Array<{ questionId: string; value: string }>;
     }) => {
       return await api.post("/questionnaire/responses", responses);
     },
     onSuccess: () => {
       toast.success("Respostas salvas com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["questionnaire"] });
+      setShowReviewModal(false);
       navigate("/questionnaire");
     },
     onError: (error) => {
@@ -202,7 +205,7 @@ export default function BlockDetailPage() {
       .filter(([, answerData]) => answerData.answer.trim() !== "")
       .map(([questionId, answerData]) => ({
         questionId,
-        selectedOptionId: answerData.answer,
+        value: answerData.answer,
       }));
 
     if (responses.length === 0) {
@@ -214,6 +217,20 @@ export default function BlockDetailPage() {
       toast.error("Por favor, responda todas as perguntas antes de enviar");
       return;
     }
+
+    // Mostrar modal de revisão em vez de enviar diretamente
+    setShowReviewModal(true);
+  };
+
+  const handleConfirmSubmit = () => {
+    if (!user?.id || !blockId) return;
+
+    const responses = Object.entries(answers)
+      .filter(([, answerData]) => answerData.answer.trim() !== "")
+      .map(([questionId, answerData]) => ({
+        questionId,
+        value: answerData.answer,
+      }));
 
     saveResponsesMutation.mutate({
       userId: user.id,
@@ -274,93 +291,93 @@ export default function BlockDetailPage() {
   }
 
   return (
-    <Page
-      title="Questionário"
-      description="Responda às perguntas abaixo com atenção"
-      actions={
-        <Button
-          onClick={() => navigate("/questionnaire")}
-          variant="outline"
-          className="gap-2"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Voltar
-        </Button>
-      }
-    >
-      <div className="max-w-4xl mx-auto space-y-8">
-        {/* Barra de progresso global */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-slate-800">
-              Progresso do Bloco
-            </h2>
-            <span className="text-sm text-slate-600">
-              {answeredCount} de {questions.length} respondidas
-            </span>
-          </div>
-          <div className="w-full bg-slate-200 rounded-full h-3">
-            <div
-              className="bg-gradient-to-r from-primary/50 to-red-400 h-3 rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${progressPercentage}%` }}
-            ></div>
-          </div>
-          <div className="text-center mt-2">
-            <span className="text-sm font-medium text-slate-600">
-              {Math.round(progressPercentage)}% concluído
-            </span>
-          </div>
-        </div>
-
-        {/* Perguntas */}
-        <div className="space-y-6">
-          {questions.map((q, index) => (
-            <QuestionItem
-              key={q.id}
-              question={q}
-              answer={answers[q.id]?.answer}
-              onAnswer={(value) => handleAnswer(q.id, value)}
-              questionNumber={index + 1}
-              totalQuestions={questions.length}
-            />
-          ))}
-        </div>
-
-        {/* Botão de envio */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="text-center sm:text-left">
-              <h3 className="font-semibold text-slate-800">
-                Finalizou as respostas?
-              </h3>
-              <p className="text-sm text-slate-600">
-                Revise suas respostas antes de enviar. Você poderá editá-las
-                posteriormente.
-              </p>
+    <>
+      <Page
+        title="Questionário"
+        description="Responda às perguntas abaixo com atenção"
+        actions={
+          <Button
+            onClick={() => navigate("/questionnaire")}
+            variant="outline"
+            className="gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Voltar
+          </Button>
+        }
+      >
+        <div className="max-w-4xl mx-auto space-y-8">
+          {/* Barra de progresso global */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-slate-800">
+                Progresso do Bloco
+              </h2>
+              <span className="text-sm text-slate-600">
+                {answeredCount} de {questions.length} respondidas
+              </span>
             </div>
-            <Button
-              onClick={handleSubmit}
-              disabled={
-                answeredCount < questions.length ||
-                saveResponsesMutation.isPending
-              }
-              className="bg-gradient-to-r from-primary/50 to-red-400 hover:from-primary/100 hover:to-red-500 text-white px-8 py-3 rounded-xl font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {saveResponsesMutation.isPending ? (
-                <>
-                  <Clock className="w-4 h-4 mr-2 animate-spin" />
-                  Salvando...
-                </>
-              ) : (
-                <>
-                  <CheckCircle className="w-4 h-4 mr-2" />
-                  Enviar Respostas
-                </>
-              )}
-            </Button>
+            <div className="w-full bg-slate-200 rounded-full h-3">
+              <div
+                className="bg-gradient-to-r from-primary/50 to-red-400 h-3 rounded-full transition-all duration-500 ease-out"
+                style={{ width: `${progressPercentage}%` }}
+              ></div>
+            </div>
+            <div className="text-center mt-2">
+              <span className="text-sm font-medium text-slate-600">
+                {Math.round(progressPercentage)}% concluído
+              </span>
+            </div>
+          </div>
+
+          {/* Perguntas */}
+          <div className="space-y-6">
+            {questions.map((q, index) => (
+              <QuestionItem
+                key={q.id}
+                question={q}
+                answer={answers[q.id]?.answer}
+                onAnswer={(value) => handleAnswer(q.id, value)}
+                questionNumber={index + 1}
+                totalQuestions={questions.length}
+              />
+            ))}
+          </div>
+
+          {/* Botão de envio */}
+          <div className="bg-white rounded-2xl border border-slate-200 p-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-center sm:text-left">
+                <h3 className="font-semibold text-slate-800">
+                  Finalizou as respostas?
+                </h3>
+                <p className="text-sm text-slate-600">
+                  Revise suas respostas antes de enviar. Você poderá editá-las
+                  posteriormente.
+                </p>
+              </div>
+              <Button
+                onClick={handleSubmit}
+                disabled={answeredCount < questions.length}
+                className="bg-gradient-to-r from-primary/50 to-red-400 hover:from-primary/100 hover:to-red-500 text-white px-8 py-3 rounded-xl font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed gap-2"
+              >
+                <Eye className="w-4 h-4" />
+                Revisar e Finalizar
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-    </Page>
+      </Page>
+
+      {/* Modal de Revisão */}
+      <ReviewModal
+        isOpen={showReviewModal}
+        onClose={() => setShowReviewModal(false)}
+        questions={questions}
+        answers={answers}
+        onConfirm={handleConfirmSubmit}
+        isLoading={saveResponsesMutation.isPending}
+      />
+    </>
   );
 }

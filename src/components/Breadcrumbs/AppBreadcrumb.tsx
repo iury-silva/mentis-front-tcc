@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Home } from "lucide-react";
 import { useAuth } from "@/auth/useAuth";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const LABELS: Record<string, string> = {
   dashboard: "Dashboard",
@@ -20,11 +21,19 @@ const LABELS: Record<string, string> = {
   profile: "Perfil",
   users: "Usuários",
   admin: "Admin",
+  blocks: "Bloco",
+  responses: "Respostas",
 };
 
 function prettyLabel(segment: string) {
   const key = segment.toLowerCase();
   if (LABELS[key]) return LABELS[key];
+
+  // Se for um UUID/ID (string longa com hífens), substituir por label genérico
+  if (segment.includes("-") && segment.length > 10) {
+    return "Item";
+  }
+
   const s = decodeURIComponent(segment).replace(/[-_]/g, " ");
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -32,6 +41,7 @@ function prettyLabel(segment: string) {
 export function AppBreadcrumb() {
   const location = useLocation();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
 
   type Crumb = {
     href: string;
@@ -41,24 +51,33 @@ export function AppBreadcrumb() {
 
   const items: Crumb[] = useMemo(() => {
     const parts = location.pathname.split("/").filter(Boolean);
-    // const base =
-    //   parts[0] === "dashboard-user" ? "/dashboard-user" : "/dashboard";
-
     const base = user?.role === "user" ? "/dashboard-user" : "/dashboard";
 
-    const crumbs: Crumb[] = parts.map((seg, idx) => ({
-      href: "/" + parts.slice(0, idx + 1).join("/"),
-      label: prettyLabel(seg),
-    }));
-    console.log("Breadcrumb items:", crumbs);
-    console.log("Current path:", location.pathname);
-    console.log("Base path:", base);
+    const crumbs: Crumb[] = parts.map((seg, idx) => {
+      const href = "/" + parts.slice(0, idx + 1).join("/");
+      let label = prettyLabel(seg);
+
+      // Tratamento especial para rotas de questionário
+      if (parts[idx - 1] === "blocks" && seg.includes("-")) {
+        label = "Responder";
+      } else if (parts[idx - 1] === "responses" && seg.includes("-")) {
+        label = "Revisar";
+      }
+
+      return { href, label };
+    });
+
     return [{ href: base, label: "Início", icon: Home }, ...crumbs];
   }, [location.pathname, user?.role]);
 
+  // No mobile, não mostrar breadcrumb
+  if (isMobile) {
+    return null;
+  }
+
   if (!items?.length) return null;
 
-  const maxVisible = 4; // compact when deep
+  const maxVisible = 4;
   const shouldCollapse = items.length > maxVisible;
 
   const head = shouldCollapse ? [items[0], items[1]] : items.slice(0, -1);

@@ -12,6 +12,7 @@ import NotFoundPage from "@/pages/NotFound/NotFoundPage";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import QuestionnairePage from "@/pages/Questionnaire/QuestionnairePage";
 import BlockDetailPage from "@/pages/Questionnaire/BlockDetailPage";
+import BlockReviewPage from "@/pages/Questionnaire/BlockReviewPage";
 
 //Layouts
 import AuthLayout from "@/layouts/AuthLayout";
@@ -47,6 +48,10 @@ const AppRoutes: React.FC = () => {
           <Route
             path="/questionnaire/blocks/:blockId"
             element={<BlockDetailPage />}
+          />
+          <Route
+            path="/questionnaire/responses/:blockId"
+            element={<BlockReviewPage />}
           />
         </Route>
       </Route>
