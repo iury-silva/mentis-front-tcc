@@ -101,7 +101,7 @@ export function TermsModal({
             <Checkbox
               id="agree-terms"
               checked={agreed}
-              onCheckedChange={setAgreed}
+              onCheckedChange={(checked) => setAgreed(checked === true)}
               className="mt-1"
             />
             <label
