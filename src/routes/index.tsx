@@ -1,6 +1,6 @@
 // src/routes/index.tsx
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 //components
 import ScrollToTop from "@/components/ScrollToTop";
@@ -17,6 +17,8 @@ import QuestionnairePage from "@/pages/Questionnaire/QuestionnairePage";
 import BlockDetailPage from "@/pages/Questionnaire/BlockDetailPage";
 import BlockReviewPage from "@/pages/Questionnaire/BlockReviewPage";
 import MoodTracker from "@/pages/MoodTracker/MoodTracker";
+import SettingsPage from "@/pages/Settings/SettingsPage";
+import HomeRedirect from "@/components/HomeRedirect";
 
 //Layouts
 import AuthLayout from "@/layouts/AuthLayout";
@@ -28,7 +30,7 @@ const AppRoutes: React.FC = () => {
       <ScrollToTop />
       <Routes>
         {/* Routes for authentication (e.g., login, signup) */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<HomeRedirect />} />
 
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
@@ -60,6 +62,7 @@ const AppRoutes: React.FC = () => {
               element={<BlockReviewPage />}
             />
             <Route path="/mood-tracker" element={<MoodTracker />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>
 

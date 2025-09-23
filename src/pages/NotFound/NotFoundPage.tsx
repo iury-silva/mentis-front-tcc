@@ -21,7 +21,7 @@ export default function NotFoundPage() {
     return () => clearInterval(timer);
   }, [navigate]);
 
-  const handleGoHome = () => navigate("/login");
+  const handleGoHome = () => navigate("/");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-6">

@@ -5,6 +5,7 @@ import {
   ChevronsUpDown,
   // CreditCard,
   LogOut,
+  Settings,
   // Sparkles,
 } from "lucide-react";
 
@@ -24,6 +25,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Link } from "react-router-dom";
 
 export function NavUser({
   user,
@@ -100,7 +102,7 @@ export function NavUser({
                 Upgrade to Pro
               </DropdownMenuItem> */}
             </DropdownMenuGroup>
-            {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuSeparator />
             <DropdownMenuGroup>
               {/* <DropdownMenuItem>
                 <BadgeCheck />
@@ -114,6 +116,14 @@ export function NavUser({
                 <Bell />
                 Notifications
               </DropdownMenuItem> */}
+            </DropdownMenuGroup>
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <Link to="/settings" className="cursor-pointer">
+                  <Settings />
+                  Configurações
+                </Link>
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>

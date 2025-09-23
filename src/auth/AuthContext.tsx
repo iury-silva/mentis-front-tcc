@@ -7,6 +7,8 @@ export interface User {
   name: string;
   role: string;
   avatar: string;
+  createdAt: string;
+  updatedAt: string;
   // Add other user properties here if needed in the future
 }
 

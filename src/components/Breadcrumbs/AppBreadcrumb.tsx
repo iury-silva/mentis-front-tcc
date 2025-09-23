@@ -53,19 +53,27 @@ export function AppBreadcrumb() {
     const parts = location.pathname.split("/").filter(Boolean);
     const base = user?.role === "user" ? "/dashboard-user" : "/dashboard";
 
-    const crumbs: Crumb[] = parts.map((seg, idx) => {
-      const href = "/" + parts.slice(0, idx + 1).join("/");
-      let label = prettyLabel(seg);
+    const crumbs: Crumb[] = parts
+      .map((seg, idx) => {
+        const href = "/" + parts.slice(0, idx + 1).join("/");
+        let label = prettyLabel(seg);
 
-      // Tratamento especial para rotas de questionário
-      if (parts[idx - 1] === "blocks" && seg.includes("-")) {
-        label = "Responder";
-      } else if (parts[idx - 1] === "responses" && seg.includes("-")) {
-        label = "Revisar";
-      }
+        // Tratamento especial para rotas de questionário
+        if (parts[idx - 1] === "blocks" && seg.includes("-")) {
+          label = "Responder";
+        } else if (parts[idx - 1] === "responses" && seg.includes("-")) {
+          label = "Revisar";
+        }
 
-      return { href, label };
-    });
+        // Evitar links para rotas intermediárias inválidas
+        // Se estamos em /questionnaire/blocks ou /questionnaire/responses, remover o segmento
+        if (seg === "blocks" || seg === "responses") {
+          return null; // Marcar para remoção
+        }
+
+        return { href, label };
+      })
+      .filter(Boolean) as Crumb[]; // Remover itens null
 
     return [{ href: base, label: "Início", icon: Home }, ...crumbs];
   }, [location.pathname, user?.role]);
