@@ -7,8 +7,13 @@ import { Separator } from "@/components/ui/separator";
 import { AppSidebar } from "@/components/Sidebar";
 import { Outlet } from "react-router-dom";
 import { AppBreadcrumb } from "@/components/Breadcrumbs/AppBreadcrumb";
+import { SearchCommand } from "@/components/SearchCommand";
+import { HeaderUser } from "@/components/HeaderUser";
+import { useAuth } from "@/auth/useAuth";
 
 export const AppLayout: React.FC = () => {
+  const { user, logout } = useAuth();
+  
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -19,8 +24,12 @@ export const AppLayout: React.FC = () => {
             orientation="vertical"
             className="mr-2 data-[orientation=vertical]:h-4"
           />
-          <div className="flex-1 min-w-0">
-            <AppBreadcrumb />
+          <div className="flex items-center gap-4 flex-1 min-w-0">
+            <div className="flex-1 min-w-0">
+              <AppBreadcrumb />
+            </div>
+            <SearchCommand />
+            {user && <HeaderUser user={user} onLogout={logout} />}
           </div>
         </header>
         <main className="flex flex-1 flex-col gap-4">

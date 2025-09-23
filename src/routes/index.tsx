@@ -62,7 +62,6 @@ const AppRoutes: React.FC = () => {
               element={<BlockReviewPage />}
             />
             <Route path="/mood-tracker" element={<MoodTracker />} />
-            <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>
 
@@ -70,6 +69,7 @@ const AppRoutes: React.FC = () => {
         <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
           <Route element={<AppLayout />}>
             {/* Add other protected app routes here, e.g., /dashboard, /profile */}
+            <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>
 

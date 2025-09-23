@@ -7,7 +7,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavMain } from "./components/nav-main";
-import { NavUser } from "./components/nav-user";
+// import { NavUser } from "./components/nav-user";
 import {
   HomeIcon,
   // UserIcon,
@@ -25,7 +25,7 @@ import {
 // } from "lucide-react";
 
 export function AppSidebar() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   // Defina seus itens da sidebar, com ícones e roles
   const items = [
@@ -91,7 +91,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        {user && <NavUser user={user} onLogout={logout} />}
+        {/* {user && <NavUser user={user} onLogout={logout} />} */}
       </SidebarFooter>
 
       <SidebarRail />
