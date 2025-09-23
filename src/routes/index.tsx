@@ -3,7 +3,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 //components
-import ScrollToTop from "@/components/ScrollToTop";
+import ScrollToTop from "@/utils/ScrollToTop";
 
 //routes
 import LoginPage from "@/pages/Auth/LoginPage";
@@ -18,7 +18,7 @@ import BlockDetailPage from "@/pages/Questionnaire/BlockDetailPage";
 import BlockReviewPage from "@/pages/Questionnaire/BlockReviewPage";
 import MoodTracker from "@/pages/MoodTracker/MoodTracker";
 import SettingsPage from "@/pages/Settings/SettingsPage";
-import HomeRedirect from "@/components/HomeRedirect";
+import HomeRedirect from "@/utils/HomeRedirect";
 
 //Layouts
 import AuthLayout from "@/layouts/AuthLayout";

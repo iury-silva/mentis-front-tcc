@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/useAuth";
-import { useIsMobile } from '../hooks/use-mobile';
+import { useIsMobile } from "../../hooks/use-mobile";
 
 export function SearchCommand() {
   const [open, setOpen] = React.useState(false);

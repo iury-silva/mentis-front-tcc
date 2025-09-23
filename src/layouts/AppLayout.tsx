@@ -7,13 +7,13 @@ import { Separator } from "@/components/ui/separator";
 import { AppSidebar } from "@/components/Sidebar";
 import { Outlet } from "react-router-dom";
 import { AppBreadcrumb } from "@/components/Breadcrumbs/AppBreadcrumb";
-import { SearchCommand } from "@/components/SearchCommand";
-import { HeaderUser } from "@/components/HeaderUser";
+import { SearchCommand } from "@/components/Forms/SearchCommand";
+import { HeaderUser } from "@/components/Sidebar/components/HeaderUser";
 import { useAuth } from "@/auth/useAuth";
 
 export const AppLayout: React.FC = () => {
   const { user, logout } = useAuth();
-  
+
   return (
     <SidebarProvider>
       <AppSidebar />

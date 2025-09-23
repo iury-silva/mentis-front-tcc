@@ -35,20 +35,20 @@ function ReviewModalItem({
   index: number;
 }) {
   return (
-    <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 space-y-3">
-      <div className="flex items-start gap-3">
-        <div className="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+    <div className="bg-slate-50 rounded-lg sm:rounded-xl border border-slate-200 p-3 sm:p-4 space-y-2 sm:space-y-3">
+      <div className="flex items-start gap-2 sm:gap-3">
+        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 mt-0.5">
           {index + 1}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-slate-800 mb-3 leading-relaxed">
+          <h3 className="font-semibold text-slate-800 mb-2 sm:mb-3 leading-relaxed text-sm sm:text-base">
             {question.question}
           </h3>
-          <div className="bg-white rounded-lg border border-emerald-200 p-3">
-            <p className="text-sm text-emerald-700 font-medium mb-1">
+          <div className="bg-white rounded-lg border border-emerald-200 p-2 sm:p-3">
+            <p className="text-xs sm:text-sm text-emerald-700 font-medium mb-1">
               Sua resposta:
             </p>
-            <p className="text-emerald-800 font-semibold break-words">
+            <p className="text-emerald-800 font-semibold break-words text-sm sm:text-base">
               {answer || "Não respondida"}
             </p>
           </div>
@@ -68,27 +68,27 @@ export function ReviewModal({
 }: ReviewModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0 gap-0 overflow-hidden">
+      <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] p-0 gap-0 overflow-hidden sm:w-full">
         {/* Header do Modal */}
-        <DialogHeader className="bg-gradient-to-r from-emerald-50 to-green-50 border-b border-emerald-200 p-6 pb-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-              <Eye className="w-5 h-5 text-white" />
+        <DialogHeader className="bg-gradient-to-r from-emerald-50 to-green-50 border-b border-emerald-200 p-4 sm:p-6 pb-3 sm:pb-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg">
+              <Eye className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <div className="flex-1">
-              <DialogTitle className="text-xl font-bold text-slate-800 mb-1">
+              <DialogTitle className="text-lg sm:text-xl font-bold text-slate-800 mb-1">
                 Revisar Respostas
               </DialogTitle>
-              <DialogDescription className="text-slate-600">
-                Confirme suas respostas antes de finalizar o questionário
+              <DialogDescription className="text-sm sm:text-base text-slate-600">
+                Confirme suas respostas antes de finalizar
               </DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
         {/* Conteúdo do Modal com ScrollArea */}
-        <ScrollArea className="flex-1 max-h-[60vh] p-6">
-          <div className="space-y-4 pr-4">
+        <ScrollArea className="flex-1 max-h-[50vh] sm:max-h-[60vh] p-3 sm:p-6">
+          <div className="space-y-3 sm:space-y-4 pr-2 sm:pr-4">
             {questions.map((question, index) => {
               const answer = answers[question.id]?.answer || "";
               return (
@@ -104,31 +104,36 @@ export function ReviewModal({
         </ScrollArea>
 
         {/* Footer do Modal */}
-        <div className="bg-slate-50 border-t border-slate-200 p-6 pt-4">
-          <div className="flex flex-col sm:flex-row gap-3 justify-end">
+        <div className="bg-slate-50 border-t border-slate-200 p-3 sm:p-6 pt-3 sm:pt-4">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-end">
             <Button
               onClick={onClose}
               variant="outline"
-              className="gap-2"
+              className="gap-2 text-sm sm:text-base h-9 sm:h-10"
               disabled={isLoading}
             >
               <Edit3 className="w-4 h-4" />
-              Editar Respostas
+              <span className="hidden sm:inline">Editar Respostas</span>
+              <span className="sm:hidden">Editar</span>
             </Button>
             <Button
               onClick={onConfirm}
-              className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white gap-2"
+              className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white gap-2 text-sm sm:text-base h-9 sm:h-10"
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
                   <Clock className="w-4 h-4 animate-spin" />
-                  Finalizando...
+                  <span className="hidden sm:inline">Finalizando...</span>
+                  <span className="sm:hidden">Finalizando...</span>
                 </>
               ) : (
                 <>
                   <CheckCircle className="w-4 h-4" />
-                  Confirmar e Finalizar
+                  <span className="hidden sm:inline">
+                    Confirmar e Finalizar
+                  </span>
+                  <span className="sm:hidden">Finalizar</span>
                 </>
               )}
             </Button>
