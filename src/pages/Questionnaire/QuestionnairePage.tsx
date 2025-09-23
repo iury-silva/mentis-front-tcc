@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { LockKeyhole, LockKeyholeOpen, Eye } from "lucide-react";
 import { TermsModal } from "@/components/Questionnaire/TermsModal";
+import { Button } from "@/components/ui/button";
 
 interface Block {
   id: string;
@@ -347,7 +348,7 @@ export default function QuestionnairePage() {
                         {/* Botão para ver respostas (apenas para blocos concluídos) */}
                         {blockData.isCompleted && (
                           <div className="px-6 pb-6">
-                            <button
+                            <Button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleViewResponses(block.id);
@@ -356,7 +357,7 @@ export default function QuestionnairePage() {
                             >
                               <Eye className="w-4 h-4" />
                               Ver Respostas
-                            </button>
+                            </Button>
                           </div>
                         )}
                       </div>

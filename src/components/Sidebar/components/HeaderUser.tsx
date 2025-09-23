@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 interface HeaderUserProps {
   user: {
@@ -24,14 +25,17 @@ export function HeaderUser({ user, onLogout }: HeaderUserProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="relative h-8 w-8 rounded-full border-2 border-transparent flex items-center justify-center">
+        <Button
+          variant="ghost"
+          className="relative h-8 w-8 rounded-full border-2 border-transparent flex items-center justify-center"
+        >
           <Avatar className="h-8 w-8">
             <AvatarImage src={user.avatar} alt={user.name} />
             <AvatarFallback className="text-sm bg-slate-500 text-white">
               {user.name.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-        </button>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">

@@ -19,20 +19,22 @@ async function apiFetch(path: string, options: RequestInit = {}) {
     // Token expirado ou inválido
     localStorage.removeItem("authToken");
     localStorage.removeItem("user");
-    window.location.href = "/login";
+
+    window.location.href = "/login?expired=true";
+
     return;
   }
-  
+
   // Tratar erros HTTP
   if (!res.ok) {
     const errorData = await res
-    .json()
-    .catch(() => ({ message: "Erro desconhecido" }));
+      .json()
+      .catch(() => ({ message: "Erro desconhecido" }));
     const error = new Error(errorData.message || "Erro desconhecido");
     (error as any).response = { data: errorData, status: res.status };
     throw error;
   }
-    
+
   // Tenta retornar JSON
   const text = await res.text();
   try {

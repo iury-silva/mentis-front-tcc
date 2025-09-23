@@ -306,14 +306,14 @@ const DashboardAdminPage: React.FC = () => {
             <div className="flex items-center gap-3">
               <Badge
                 variant="subtle"
-                className="hidden sm:flex items-center gap-2"
+                className="hidden sm:flex items-center gap-2 border border-slate-100"
               >
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                 Última atualização: {new Date().toLocaleTimeString("pt-BR")}
               </Badge>
               <Button
                 size="sm"
-                variant="outline"
+                variant="ghost"
                 onClick={() => refetch()}
                 disabled={isFetching}
                 className="bg-white/70 backdrop-blur-sm"

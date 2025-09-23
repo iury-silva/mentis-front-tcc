@@ -17,7 +17,7 @@ const MoodTracker: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-pink-50 to-purple-50">
       {/* Header */}
       <header className="bg-white/60 backdrop-blur-sm border-b border-white/20 pt-4">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
@@ -25,7 +25,7 @@ const MoodTracker: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-slate-800">
-                  Registro de Humor 💝
+                  Registro de Humor
                 </h1>
                 {!isMobile && (
                   <p className="text-sm text-slate-600">
@@ -46,7 +46,7 @@ const MoodTracker: React.FC = () => {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           {/* Status Card */}
           <Card className="bg-gradient-to-r from-white/80 to-blue-50/60 backdrop-blur-sm shadow-xl border-blue-200">
