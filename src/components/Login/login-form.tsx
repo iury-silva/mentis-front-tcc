@@ -119,7 +119,7 @@ export function LoginForm({
               <FormItem>
                 <FormLabel>Senha</FormLabel>
                 <FormControl>
-                  <Input type="password" {...field} />
+                  <Input type="password" showPasswordToggle={true} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

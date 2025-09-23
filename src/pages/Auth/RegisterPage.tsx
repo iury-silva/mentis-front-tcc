@@ -11,11 +11,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { api } from "@/api";
 import { useState } from "react";
+import { CheckCircle } from "lucide-react";
 import toast from "react-hot-toast";
-
 
 // Schema de validação Zod para registro
 const registerSchema = z
@@ -54,7 +55,9 @@ export function RegisterPage() {
         email: data.email,
         password: data.password,
       });
-      toast.success("Cadastro realizado com sucesso! Faça login para continuar.");
+      toast.success(
+        "Cadastro realizado com sucesso! Faça login para continuar."
+      );
       navigate("/login");
     } catch (error) {
       console.error("Erro ao cadastrar:", error);
@@ -69,13 +72,18 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="relative grid min-h-svh lg:grid-cols-2">
+    <div className="relative grid min-h-svh lg:grid-cols-2 overflow-hidden">
       {/* Logo M no canto esquerdo (desktop) */}
       <div className="absolute top-4 left-4 hidden lg:block z-20">
+        <img src="/images/icone-mentisV2.png" alt="Logo M" className="w-10" />
+      </div>
+
+      {/* Ondas decorativas no topo direito (apenas desktop) */}
+      <div className="absolute -top-18 -right-96 hidden lg:block z-10 pointer-events-none">
         <img
-          src="/images/icone-mentisV2.png"
-          alt="Logo M"
-          className="w-10"
+          src="/images/layered-waves-haikei.svg"
+          alt=""
+          className="transform rotate-140 translate-x-16 -translate-y-8"
         />
       </div>
 
@@ -92,102 +100,34 @@ export function RegisterPage() {
           </div>
 
           <div className="flex flex-col gap-4 max-w-xs">
-            <h2 className="text-3xl font-bold">Bem-vindo ao Mentis!</h2>
-            <p className="text-sm text-muted-foreground">
+            <h2 className="text-3xl font-bold text-center">Bem-vindo ao Mentis!</h2>
+            <p className="text-sm text-muted-foreground text-center">
               Organize e otimize suas tarefas diárias de forma prática:
             </p>
             <div className="space-y-4">
               <ul className="space-y-3">
                 <li className="flex items-center gap-3">
-                  <svg
-                    className="w-5 h-5 text-green-500 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                   <span>Análise de voz com IA para insights emocionais</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <svg
-                    className="w-5 h-5 text-green-500 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                   <span>Registro emocional diário personalizado</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <svg
-                    className="w-5 h-5 text-green-500 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                   <span>Dashboard intuitivo com histórico de bem-estar</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <svg
-                    className="w-5 h-5 text-green-500 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                   <span>Sugestões de autocuidado com IA</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <svg
-                    className="w-5 h-5 text-green-500 flex-shrink-0"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
                   <span>Privacidade e segurança de dados garantidas</span>
                 </li>
               </ul>
             </div>
-            {/* <ul className="flex flex-col gap-2">
-              <li className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="inline-block w-2 h-2 bg-black rounded-full"></span>
-                Gerenciamento de contas
-              </li>
-              <li className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="inline-block w-2 h-2 bg-black rounded-full"></span>
-                Integração com Google
-              </li>
-              <li className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="inline-block w-2 h-2 bg-black rounded-full"></span>
-                Dashboard intuitivo
-              </li>
-              <li className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span className="inline-block w-2 h-2 bg-black rounded-full"></span>
-                Suporte rápido e eficiente
-              </li>
-            </ul> */}
           </div>
         </div>
       </div>
@@ -256,9 +196,9 @@ export function RegisterPage() {
                     <FormItem>
                       <FormLabel>Senha</FormLabel>
                       <FormControl>
-                        <Input
+                        <PasswordInput
                           placeholder="Sua senha"
-                          type="password"
+                          showStrengthIndicator={true}
                           {...field}
                         />
                       </FormControl>
@@ -274,9 +214,9 @@ export function RegisterPage() {
                     <FormItem>
                       <FormLabel>Confirmar senha</FormLabel>
                       <FormControl>
-                        <Input
+                        <PasswordInput
                           placeholder="Confirme sua senha"
-                          type="password"
+                          showStrengthIndicator={false}
                           {...field}
                         />
                       </FormControl>
