@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { api } from "@/api";
 import { useState } from "react";
+import toast from "react-hot-toast";
+
 
 // Schema de validação Zod para registro
 const registerSchema = z
@@ -52,11 +54,11 @@ export function RegisterPage() {
         email: data.email,
         password: data.password,
       });
-      alert("Cadastro realizado com sucesso! Faça login para continuar.");
+      toast.success("Cadastro realizado com sucesso! Faça login para continuar.");
       navigate("/login");
     } catch (error) {
       console.error("Erro ao cadastrar:", error);
-      alert("Erro ao cadastrar. Tente novamente.");
+      toast.error("Erro ao cadastrar. Tente novamente.");
     } finally {
       setLoading(false);
     }

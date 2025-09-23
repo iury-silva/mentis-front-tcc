@@ -15,6 +15,17 @@ async function apiFetch(path: string, options: RequestInit = {}) {
     headers,
   });
 
+  
+  // Tratar erros HTTP
+  if (!res.ok) {
+    const errorData = await res
+    .json()
+    .catch(() => ({ message: "Erro desconhecido" }));
+    const error = new Error(errorData.message || "Erro desconhecido");
+    (error as any).response = { data: errorData, status: res.status };
+    throw error;
+  }
+  
   if (res.status === 401) {
     // Token expirado ou inválido
     localStorage.removeItem("authToken");
@@ -22,7 +33,7 @@ async function apiFetch(path: string, options: RequestInit = {}) {
     window.location.href = "/login";
     return;
   }
-
+  
   // Tenta retornar JSON
   const text = await res.text();
   try {
@@ -36,8 +47,14 @@ async function apiFetch(path: string, options: RequestInit = {}) {
 export const api = {
   get: (url: string) => apiFetch(url),
   post: (url: string, body?: any) =>
-    apiFetch(url, { method: "POST", body: body ? JSON.stringify(body) : undefined }),
+    apiFetch(url, {
+      method: "POST",
+      body: body ? JSON.stringify(body) : undefined,
+    }),
   put: (url: string, body?: any) =>
-    apiFetch(url, { method: "PUT", body: body ? JSON.stringify(body) : undefined }),
+    apiFetch(url, {
+      method: "PUT",
+      body: body ? JSON.stringify(body) : undefined,
+    }),
   delete: (url: string) => apiFetch(url, { method: "DELETE" }),
 };

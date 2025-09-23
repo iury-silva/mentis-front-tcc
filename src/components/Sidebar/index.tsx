@@ -10,9 +10,9 @@ import { NavMain } from "./components/nav-main";
 import { NavUser } from "./components/nav-user";
 import {
   HomeIcon,
-  UserIcon,
-  Cog6ToothIcon,
-  UsersIcon,
+  // UserIcon,
+  // Cog6ToothIcon,
+  // UsersIcon,
   QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline";
 
@@ -44,26 +44,27 @@ export function AppSidebar() {
       title: "Questionário",
       url: "/questionnaire",
       icon: QuestionMarkCircleIcon,
+      role: "user", // só user vê
     },
-    {
-      title: "Perfil",
-      url: "/profile",
-      icon: UserIcon,
-    },
-    {
-      title: "Usuários",
-      url: "/users",
-      icon: UsersIcon,
-      items: [
-        { title: "Listar Usuários", url: "/users/list" },
-        { title: "Adicionar Usuário", url: "/users/add" },
-      ],
-    },
-    {
-      title: "Configurações",
-      url: "/settings",
-      icon: Cog6ToothIcon,
-    },
+    // {
+    //   title: "Perfil",
+    //   url: "/profile",
+    //   icon: UserIcon,
+    // },
+    // {
+    //   title: "Usuários",
+    //   url: "/users",
+    //   icon: UsersIcon,
+    //   items: [
+    //     { title: "Listar Usuários", url: "/users/list" },
+    //     { title: "Adicionar Usuário", url: "/users/add" },
+    //   ],
+    // },
+    // {
+    //   title: "Configurações",
+    //   url: "/settings",
+    //   icon: Cog6ToothIcon,
+    // },
   ];
 
   return (

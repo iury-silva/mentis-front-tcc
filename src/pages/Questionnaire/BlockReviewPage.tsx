@@ -6,7 +6,7 @@ import { Page } from "@/components/Layout/Page";
 import { useAuth } from "@/auth/useAuth";
 import { ArrowLeft, CheckCircle, Calendar } from "lucide-react";
 
-interface QuestionResponse {
+interface UserAnswerResponse {
   id: string;
   userId: string;
   questionId: string;
@@ -21,13 +21,16 @@ interface QuestionResponse {
   };
 }
 
-type ResponsesData = QuestionResponse[];
+interface ResponsesData {
+  userAnswers: UserAnswerResponse[];
+  blockTitle: string;
+}
 
 function ResponseItem({
   response,
   index,
 }: {
-  response: QuestionResponse;
+  response: UserAnswerResponse;
   index: number;
 }) {
   return (
@@ -83,7 +86,7 @@ export default function BlockReviewPage() {
   const { user } = useAuth();
 
   const {
-    data: responses = [],
+    data: responses,
     isLoading,
     isError,
   } = useQuery<ResponsesData>({
@@ -92,7 +95,7 @@ export default function BlockReviewPage() {
       const res = await api.get(
         `/questionnaire/responses/${user?.id}/${blockId}`
       );
-      return res ?? [];
+      return res;
     },
     enabled: !!user?.id && !!blockId,
   });
@@ -126,7 +129,7 @@ export default function BlockReviewPage() {
     );
   }
 
-  if (!responses.length) {
+  if (!responses?.userAnswers || responses.userAnswers.length === 0) {
     return (
       <Page title="Sem respostas">
         <div className="text-center py-12">
@@ -144,8 +147,8 @@ export default function BlockReviewPage() {
     );
   }
 
-  const blockTitle = responses[0]?.question?.blockId
-    ? `Bloco ${responses[0].question.blockId.slice(0, 8)}...`
+  const blockTitle = responses?.blockTitle
+    ? `${responses.blockTitle}`
     : "Revisão de Respostas";
 
   return (
@@ -175,18 +178,17 @@ export default function BlockReviewPage() {
                 {blockTitle}
               </h2>
               <p className="text-slate-600 leading-relaxed">
-                Suas respostas foram salvas com sucesso. Você pode revisar e
-                editar quando necessário.
+                Suas respostas foram salvas com sucesso.
               </p>
               <div className="mt-4 flex items-center gap-4 text-sm text-slate-500">
                 <span className="flex items-center gap-1">
-                  ✅ {responses.length} respostas registradas
+                  ✅ {responses.userAnswers.length} respostas registradas
                 </span>
                 <span className="flex items-center gap-1">
                   📅 Última atualização:{" "}
                   {new Date(
                     Math.max(
-                      ...responses.map((r) => new Date(r.createdAt).getTime())
+                      ...responses.userAnswers.map((r) => new Date(r.createdAt).getTime())
                     )
                   ).toLocaleDateString("pt-BR")}
                 </span>
@@ -203,7 +205,7 @@ export default function BlockReviewPage() {
           </h3>
 
           <div className="space-y-4">
-            {responses.map((response, index) => (
+            {responses.userAnswers.map((response, index) => (
               <ResponseItem
                 key={response.id}
                 response={response}

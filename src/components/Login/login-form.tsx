@@ -33,7 +33,10 @@ const loginSchema = z.object({
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
+export function LoginForm({
+  className,
+  ...props
+}: React.ComponentProps<"form">) {
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -49,18 +52,31 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
   // 3️⃣ Mutation com Tanstack Query
   const mutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
-      const res = await api.post("/login", data);
-      console.log(res);
-      
-      return res;
+      try {
+        const res = await api.post("/login", data);
+        console.log("Login response:", res);
+
+        // Verifica se a resposta tem os campos necessários
+        if (!res?.access_token || !res?.user) {
+          throw new Error("Resposta inválida do servidor");
+        }
+
+        return res;
+      } catch (error) {
+        console.error("Login error:", error);
+        throw error; // Re-lança o erro para ser capturado pelo onError
+      }
     },
     onSuccess: (data) => {
       toast.success("Login realizado com sucesso!");
       login(data); // salva token e usuário no contexto
-      navigate(data.user.role.includes("admin") ? "/dashboard" : "/dashboard-user");
+      navigate(
+        data.user.role.includes("admin") ? "/dashboard" : "/dashboard-user"
+      );
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Falha no login, verifique suas credenciais.");
+      console.error("Mutation error:", error);
+      toast.error("Falha no login, verifique suas credenciais.");
     },
   });
 
@@ -111,7 +127,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
           />
 
           {/* Botão login normal */}
-          <Button type="submit" className="w-full" disabled={mutation.isPending}>
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={mutation.isPending}
+          >
             {mutation.isPending ? "Entrando..." : "Login"}
           </Button>
 
@@ -129,7 +149,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
             className="w-full flex items-center gap-2"
             onClick={handleGoogleLogin}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.5 544.3" className="h-4 w-4">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 533.5 544.3"
+              className="h-4 w-4"
+            >
               <path
                 fill="#EA4335"
                 d="M533.5 278.4c0-18.5-1.5-37-4.7-55H272v104h147.3c-6.4 34.8-26 64.3-55.5 84.1v69.8h89.4c52.4-48.2 80.3-119.3 80.3-202.9z"
