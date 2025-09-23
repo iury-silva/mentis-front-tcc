@@ -14,6 +14,7 @@ import {
   // Cog6ToothIcon,
   // UsersIcon,
   QuestionMarkCircleIcon,
+  HeartIcon,
 } from "@heroicons/react/24/outline";
 
 // import {
@@ -46,6 +47,12 @@ export function AppSidebar() {
       icon: QuestionMarkCircleIcon,
       role: "user", // só user vê
     },
+    {
+      title: "Registro de Humor",
+      url: "/mood-tracker",
+      icon: HeartIcon,
+      role: "user", // só user vê
+    },
     // {
     //   title: "Perfil",
     //   url: "/profile",
@@ -75,9 +82,7 @@ export function AppSidebar() {
         </div>
         <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
           <span className="truncate font-bold text-slate-800">Mentis</span>
-          <span className="truncate text-xs">
-            Saúde Mental
-          </span>
+          <span className="truncate text-xs">Saúde Mental</span>
         </div>
       </SidebarHeader>
 

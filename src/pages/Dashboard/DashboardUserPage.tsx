@@ -233,20 +233,20 @@ const DashboardUserPage: React.FC = () => {
     },
   ];
 
-  const recentActivities = [
-    {
-      title: "Questionário de Bem-estar",
-      description: "Última resposta registrada",
-      status: "completed",
-      date: new Date().toLocaleDateString("pt-BR"),
-    },
-    {
-      title: "Registro de Humor",
-      description: "Registre como você está se sentindo hoje",
-      status: "pending",
-      date: "Hoje",
-    },
-  ];
+  // const recentActivities = [
+  //   {
+  //     title: "Questionário de Bem-estar",
+  //     description: "Última resposta registrada",
+  //     status: "completed",
+  //     date: new Date().toLocaleDateString("pt-BR"),
+  //   },
+  //   {
+  //     title: "Registro de Humor",
+  //     description: "Registre como você está se sentindo hoje",
+  //     status: "pending",
+  //     date: "Hoje",
+  //   },
+  // ];
 
   const quickActions = [
     {
@@ -519,7 +519,7 @@ const DashboardUserPage: React.FC = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {recentActivities.map((activity, index) => (
+                  {/* {recentActivities.map((activity, index) => (
                     <div
                       key={index}
                       className="flex items-center gap-3 p-3 rounded-lg bg-slate-50"
@@ -545,7 +545,12 @@ const DashboardUserPage: React.FC = () => {
                         {activity.date}
                       </Badge>
                     </div>
-                  ))}
+                  ))} */}
+                  {/* em breve */}
+                  <div className="text-center text-sm text-muted-foreground">
+                    <AlertCircle className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
+                    Em breve, você poderá ver suas atividades recentes aqui!
+                  </div>
                 </CardContent>
               </Card>
             </div>
