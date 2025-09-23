@@ -27,7 +27,7 @@ export function HeaderUser({ user, onLogout }: HeaderUserProps) {
         <button className="relative h-8 w-8 rounded-full border-2 border-transparent flex items-center justify-center">
           <Avatar className="h-8 w-8">
             <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback className="text-sm">
+            <AvatarFallback className="text-sm bg-slate-500 text-white">
               {user.name.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
