@@ -15,6 +15,13 @@ async function apiFetch(path: string, options: RequestInit = {}) {
     headers,
   });
 
+  if (res.status === 401) {
+    // Token expirado ou inválido
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+    return;
+  }
   
   // Tratar erros HTTP
   if (!res.ok) {
@@ -25,15 +32,7 @@ async function apiFetch(path: string, options: RequestInit = {}) {
     (error as any).response = { data: errorData, status: res.status };
     throw error;
   }
-  
-  if (res.status === 401) {
-    // Token expirado ou inválido
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("user");
-    window.location.href = "/login";
-    return;
-  }
-  
+    
   // Tenta retornar JSON
   const text = await res.text();
   try {
