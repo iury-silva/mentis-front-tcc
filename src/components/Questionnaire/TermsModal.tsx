@@ -30,32 +30,34 @@ export function TermsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-2 sm:p-4">
+      <div className="bg-white rounded-lg sm:rounded-2xl shadow-2xl w-full max-w-xs sm:max-w-md md:max-w-2xl lg:max-w-4xl max-h-[95vh] sm:max-h-[90vh] flex flex-col mx-2 sm:mx-0">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-slate-200">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-800">
+        <div className="flex items-start sm:items-center justify-between p-4 sm:p-6 border-b border-slate-200">
+          <div className="flex-1 pr-2">
+            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800 leading-tight">
               Termo de Consentimento
             </h2>
-            <p className="text-slate-600 mt-1">{title}</p>
+            <p className="text-xs sm:text-sm md:text-base text-slate-600 mt-1 line-clamp-2">
+              {title}
+            </p>
           </div>
           <Button
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="text-slate-500 hover:text-slate-700"
+            className="text-slate-500 hover:text-slate-700 flex-shrink-0 ml-2"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </Button>
         </div>
 
         {/* Content */}
         <div className="flex-1 overflow-hidden">
-          <ScrollArea className="h-[400px] w-full">
-            <div className="px-6 py-4">
+          <ScrollArea className="h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] w-full">
+            <div className="px-4 sm:px-6 py-3 sm:py-4">
               <div
-                className="space-y-4 text-sm leading-relaxed"
+                className="space-y-3 sm:space-y-4 text-xs sm:text-sm leading-relaxed"
                 style={{
                   color: "#64748b",
                 }}
@@ -96,17 +98,17 @@ export function TermsModal({
         </div>
 
         {/* Footer */}
-        <div className="border-t border-slate-200 p-6 space-y-4">
-          <div className="flex items-start space-x-3">
+        <div className="border-t border-slate-200 p-4 sm:p-6 space-y-3 sm:space-y-4">
+          <div className="flex items-start space-x-2 sm:space-x-3">
             <Checkbox
               id="agree-terms"
               checked={agreed}
               onCheckedChange={(checked) => setAgreed(checked === true)}
-              className="mt-1"
+              className="mt-0.5 sm:mt-1 flex-shrink-0"
             />
             <label
               htmlFor="agree-terms"
-              className="text-sm text-slate-700 leading-relaxed cursor-pointer"
+              className="text-xs sm:text-sm text-slate-700 leading-relaxed cursor-pointer"
             >
               Li e concordo com os termos de consentimento livre e esclarecido
               apresentados acima. Compreendo que minha participação é voluntária
@@ -114,14 +116,18 @@ export function TermsModal({
             </label>
           </div>
 
-          <div className="flex justify-end gap-3">
-            <Button variant="outline" onClick={onClose}>
+          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="w-full sm:w-auto order-2 sm:order-1"
+            >
               Não aceito
             </Button>
             <Button
               onClick={handleAccept}
               disabled={!agreed}
-              className="bg-gradient-to-r from-primary to-red-400 hover:from-primary/90 hover:to-red-500"
+              className="w-full sm:w-auto bg-gradient-to-r from-primary to-red-400 hover:from-primary/90 hover:to-red-500 order-1 sm:order-2"
             >
               Aceito e desejo continuar
             </Button>

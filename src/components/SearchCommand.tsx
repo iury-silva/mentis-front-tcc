@@ -11,11 +11,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/useAuth";
+import { useIsMobile } from '../hooks/use-mobile';
 
 export function SearchCommand() {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -33,6 +35,10 @@ export function SearchCommand() {
     navigate(path);
     setOpen(false);
   };
+
+  if (isMobile) {
+    return null; // Não renderiza nada em dispositivos móveis
+  }
 
   const dashboardPath =
     user?.role === "admin" ? "/dashboard" : "/dashboard-user";
