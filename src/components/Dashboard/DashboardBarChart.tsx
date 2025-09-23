@@ -8,10 +8,19 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type {
+  RegistrationsByMonth,
+  ResponsesByBlock,
+  ResponsesByMonth,
+  DailyActivity,
+} from "@/types/dashboard.types";
 
-interface BarChartData {
-  [key: string]: string | number | object;
-}
+type BarChartData =
+  | RegistrationsByMonth
+  | ResponsesByBlock
+  | ResponsesByMonth
+  | DailyActivity
+  | { [key: string]: string | number };
 
 interface DashboardBarChartProps {
   title: string;

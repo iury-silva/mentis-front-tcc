@@ -15,6 +15,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   User,
   FileText,
@@ -39,6 +40,150 @@ interface UserDashboardData {
   totalQuestionnaires: number;
   notAnsweredQuestionnaires: number;
 }
+
+// Skeleton Components
+const UserStatsCardSkeleton = () => (
+  <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+    <CardContent className="p-6">
+      <div className="flex items-center justify-between">
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-8 w-12" />
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-3 w-16" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="w-12 h-12 rounded-full" />
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const QuickActionsSkeleton = () => (
+  <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+    <CardHeader>
+      <div className="flex items-center gap-2">
+        <Skeleton className="w-5 h-5" />
+        <Skeleton className="h-5 w-24" />
+      </div>
+      <Skeleton className="h-4 w-48" />
+    </CardHeader>
+    <CardContent className="space-y-3">
+      {[...Array(3)].map((_, index) => (
+        <Card key={index} className="bg-slate-50">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <Skeleton className="w-10 h-10 rounded-full" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-3 w-48" />
+              </div>
+              <Skeleton className="h-6 w-8 rounded-full" />
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </CardContent>
+  </Card>
+);
+
+const RecentActivitiesSkeleton = () => (
+  <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+    <CardHeader>
+      <div className="flex items-center gap-2">
+        <Skeleton className="w-5 h-5" />
+        <Skeleton className="h-5 w-28" />
+      </div>
+      <Skeleton className="h-4 w-40" />
+    </CardHeader>
+    <CardContent className="space-y-4">
+      {[...Array(2)].map((_, index) => (
+        <div
+          key={index}
+          className="flex items-center gap-3 p-3 rounded-lg bg-slate-50"
+        >
+          <Skeleton className="w-8 h-8 rounded-full" />
+          <div className="flex-1 space-y-2">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-3 w-48" />
+          </div>
+          <Skeleton className="h-6 w-16 rounded-full" />
+        </div>
+      ))}
+    </CardContent>
+  </Card>
+);
+
+const ProgressSkeleton = () => (
+  <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+    <CardHeader>
+      <div className="flex items-center gap-2">
+        <Skeleton className="w-5 h-5" />
+        <Skeleton className="h-5 w-24" />
+      </div>
+      <Skeleton className="h-4 w-52" />
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-6">
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+          <Skeleton className="h-3 w-full rounded-full" />
+        </div>
+
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <Skeleton className="h-4 w-36" />
+            <Skeleton className="h-4 w-16" />
+          </div>
+          <Skeleton className="h-3 w-full rounded-full" />
+        </div>
+
+        <Separator />
+
+        <div className="grid grid-cols-2 gap-4 text-center">
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-8 mx-auto" />
+            <Skeleton className="h-3 w-20 mx-auto" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-8 mx-auto" />
+            <Skeleton className="h-3 w-20 mx-auto" />
+          </div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const WeeklySummarySkeleton = () => (
+  <Card className="bg-gradient-to-r from-white/60 to-purple-50/80 backdrop-blur-sm border-white/20 shadow-xl">
+    <CardHeader>
+      <div className="flex items-center justify-between">
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-4 w-40" />
+        </div>
+      </div>
+    </CardHeader>
+    <Separator />
+    <CardContent className="pt-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[...Array(3)].map((_, index) => (
+          <Card key={index} className="bg-white/50">
+            <CardContent className="p-6 text-center">
+              <Skeleton className="h-8 w-8 mx-auto mb-2" />
+              <Skeleton className="h-4 w-24 mx-auto" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </CardContent>
+  </Card>
+);
 
 const DashboardUserPage: React.FC = () => {
   const { user } = useAuth();
@@ -131,20 +276,57 @@ const DashboardUserPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardContent className="pt-6">
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-red-400 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
-                <Loader2 className="w-8 h-8 animate-spin text-white" />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        {/* Header Skeleton */}
+        <header className="bg-white/60 backdrop-blur-sm border-b border-white/20 sticky top-0 z-10 mt-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <div className="flex items-center gap-4">
+                <Skeleton className="w-10 h-10 rounded-xl" />
+                <div className="space-y-1">
+                  <Skeleton className="h-5 w-40" />
+                  {!isMobile && <Skeleton className="h-4 w-60" />}
+                </div>
               </div>
-              <div>
-                <CardTitle className="text-xl mb-2">Carregando Dashboard</CardTitle>
-                <CardDescription>Coletando seus dados...</CardDescription>
+              <div className="flex items-center gap-3">
+                <Skeleton className="hidden sm:flex h-6 w-48 rounded-full" />
+                <Skeleton className="h-8 w-20 rounded" />
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </header>
+
+        {/* Main Content Skeleton */}
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="space-y-8">
+            {/* Stats Grid Skeleton */}
+            <section>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[...Array(3)].map((_, index) => (
+                  <UserStatsCardSkeleton key={index} />
+                ))}
+              </div>
+            </section>
+
+            {/* Actions and Activities Skeleton */}
+            <section>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <QuickActionsSkeleton />
+                <RecentActivitiesSkeleton />
+              </div>
+            </section>
+
+            {/* Progress Skeleton */}
+            <section>
+              <ProgressSkeleton />
+            </section>
+
+            {/* Weekly Summary Skeleton */}
+            <section>
+              <WeeklySummarySkeleton />
+            </section>
+          </div>
+        </main>
       </div>
     );
   }
@@ -198,7 +380,10 @@ const DashboardUserPage: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              <Badge variant="outline" className="hidden sm:flex items-center gap-2">
+              <Badge
+                variant="outline"
+                className="hidden sm:flex items-center gap-2"
+              >
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                 Última atualização: {new Date().toLocaleTimeString("pt-BR")}
               </Badge>
@@ -228,20 +413,31 @@ const DashboardUserPage: React.FC = () => {
           <section>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {stats.map((stat, index) => (
-                <Card key={index} className="bg-white/70 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                <Card
+                  key={index}
+                  className="bg-white/70 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
+                >
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div className="space-y-2">
-                        <p className="text-sm text-muted-foreground">{stat.title}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {stat.title}
+                        </p>
                         <p className="text-3xl font-bold">{stat.value}</p>
-                        <p className="text-xs text-muted-foreground">{stat.description}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {stat.description}
+                        </p>
                       </div>
-                      <div className={`p-3 rounded-full ${stat.bgColor} ${stat.color}`}>
+                      <div
+                        className={`p-3 rounded-full ${stat.bgColor} ${stat.color}`}
+                      >
                         <stat.icon className="w-6 h-6" />
                       </div>
                     </div>
                     <div className="mt-4 pt-4 border-t">
-                      <p className="text-xs text-muted-foreground">{stat.trend}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {stat.trend}
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -259,29 +455,38 @@ const DashboardUserPage: React.FC = () => {
                     <BookOpen className="w-5 h-5" />
                     Ações Rápidas
                   </CardTitle>
-                  <CardDescription>Acesso direto às principais funcionalidades</CardDescription>
+                  <CardDescription>
+                    Acesso direto às principais funcionalidades
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   {quickActions.map((action, index) => (
                     <Card
                       key={index}
                       className={`transition-all cursor-pointer hover:shadow-lg ${
-                        action.highlight 
-                          ? "bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200" 
+                        action.highlight
+                          ? "bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200"
                           : "bg-slate-50 hover:bg-slate-100"
                       }`}
                       onClick={action.action}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3">
-                          <div className={`p-2 rounded-lg bg-gradient-to-r ${action.color} text-white`}>
+                          <div
+                            className={`p-2 rounded-lg bg-gradient-to-r ${action.color} text-white`}
+                          >
                             <action.icon className="w-4 h-4" />
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center gap-2">
-                              <h4 className="font-medium text-sm">{action.title}</h4>
+                              <h4 className="font-medium text-sm">
+                                {action.title}
+                              </h4>
                               {action.count && action.count > 0 && (
-                                <Badge variant="destructive" className="text-xs h-5">
+                                <Badge
+                                  variant="destructive"
+                                  className="text-xs h-5"
+                                >
                                   {action.count}
                                 </Badge>
                               )}
@@ -291,7 +496,9 @@ const DashboardUserPage: React.FC = () => {
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-xs text-muted-foreground">{action.description}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {action.description}
+                            </p>
                           </div>
                         </div>
                       </CardContent>
@@ -307,7 +514,9 @@ const DashboardUserPage: React.FC = () => {
                     <Clock className="w-5 h-5" />
                     Atividade Recente
                   </CardTitle>
-                  <CardDescription>Suas últimas interações no sistema</CardDescription>
+                  <CardDescription>
+                    Suas últimas interações no sistema
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {recentActivities.map((activity, index) => (
@@ -328,9 +537,13 @@ const DashboardUserPage: React.FC = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm">{activity.title}</p>
-                        <p className="text-xs text-muted-foreground">{activity.description}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {activity.description}
+                        </p>
                       </div>
-                      <Badge variant="outline" className="text-xs">{activity.date}</Badge>
+                      <Badge variant="outline" className="text-xs">
+                        {activity.date}
+                      </Badge>
                     </div>
                   ))}
                 </CardContent>
@@ -346,41 +559,53 @@ const DashboardUserPage: React.FC = () => {
                   <Target className="w-5 h-5" />
                   Seu Progresso
                 </CardTitle>
-                <CardDescription>Acompanhe sua participação nos questionários</CardDescription>
+                <CardDescription>
+                  Acompanhe sua participação nos questionários
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Perguntas Respondidas</span>
+                      <span className="text-sm font-medium">
+                        Perguntas Respondidas
+                      </span>
                       <span className="text-sm text-muted-foreground">
-                        {dashboardData?.answeredQuestions || 0} de {dashboardData?.totalQuestions || 0}
+                        {dashboardData?.answeredQuestions || 0} de{" "}
+                        {dashboardData?.totalQuestions || 0}
                       </span>
                     </div>
                     <div className="w-full bg-slate-200 rounded-full h-3">
                       <div
                         className="bg-gradient-to-r from-emerald-500 to-green-500 h-3 rounded-full transition-all duration-500"
-                        style={{ width: `${dashboardData?.completionRate || 0}%` }}
+                        style={{
+                          width: `${dashboardData?.completionRate || 0}%`,
+                        }}
                       ></div>
                     </div>
                   </div>
 
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">Questionários Concluídos</span>
+                      <span className="text-sm font-medium">
+                        Questionários Concluídos
+                      </span>
                       <span className="text-sm text-muted-foreground">
-                        {dashboardData?.completedQuestionnaires || 0} de {dashboardData?.totalQuestionnaires || 0}
+                        {dashboardData?.completedQuestionnaires || 0} de{" "}
+                        {dashboardData?.totalQuestionnaires || 0}
                       </span>
                     </div>
                     <div className="w-full bg-slate-200 rounded-full h-3">
                       <div
                         className="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full transition-all duration-500"
-                        style={{ 
+                        style={{
                           width: `${
-                            dashboardData?.totalQuestionnaires 
-                              ? (dashboardData.completedQuestionnaires / dashboardData.totalQuestionnaires) * 100
+                            dashboardData?.totalQuestionnaires
+                              ? (dashboardData.completedQuestionnaires /
+                                  dashboardData.totalQuestionnaires) *
+                                100
                               : 0
-                          }%` 
+                          }%`,
                         }}
                       ></div>
                     </div>
@@ -393,13 +618,17 @@ const DashboardUserPage: React.FC = () => {
                       <p className="text-2xl font-bold text-emerald-600">
                         {dashboardData?.answeredQuestions || 0}
                       </p>
-                      <p className="text-xs text-muted-foreground">Respostas Enviadas</p>
+                      <p className="text-xs text-muted-foreground">
+                        Respostas Enviadas
+                      </p>
                     </div>
                     <div>
                       <p className="text-2xl font-bold text-blue-600">
                         {dashboardData?.completionRate || 0}%
                       </p>
-                      <p className="text-xs text-muted-foreground">Taxa de Conclusão</p>
+                      <p className="text-xs text-muted-foreground">
+                        Taxa de Conclusão
+                      </p>
                     </div>
                   </div>
 
@@ -408,7 +637,8 @@ const DashboardUserPage: React.FC = () => {
                     <Alert>
                       <Sparkles className="h-4 w-4" />
                       <AlertDescription>
-                        Continue respondendo os questionários para desbloquear insights sobre seu bem-estar!
+                        Continue respondendo os questionários para desbloquear
+                        insights sobre seu bem-estar!
                       </AlertDescription>
                     </Alert>
                   )}
@@ -424,7 +654,9 @@ const DashboardUserPage: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle>Resumo da Semana</CardTitle>
-                    <CardDescription>Suas conquistas e progresso</CardDescription>
+                    <CardDescription>
+                      Suas conquistas e progresso
+                    </CardDescription>
                   </div>
                 </div>
               </CardHeader>
@@ -434,9 +666,13 @@ const DashboardUserPage: React.FC = () => {
                   <Card className="bg-white/50">
                     <CardContent className="p-6 text-center">
                       <div className="text-2xl font-bold text-slate-900 mb-1">
-                        {Math.round((dashboardData?.answeredQuestions || 0) / 7)}
+                        {Math.round(
+                          (dashboardData?.answeredQuestions || 0) / 7
+                        )}
                       </div>
-                      <CardDescription>Média diária de respostas</CardDescription>
+                      <CardDescription>
+                        Média diária de respostas
+                      </CardDescription>
                     </CardContent>
                   </Card>
 
@@ -445,7 +681,9 @@ const DashboardUserPage: React.FC = () => {
                       <div className="text-2xl font-bold text-slate-900 mb-1">
                         {dashboardData?.totalQuestionnaires || 0}
                       </div>
-                      <CardDescription>Questionários disponíveis</CardDescription>
+                      <CardDescription>
+                        Questionários disponíveis
+                      </CardDescription>
                     </CardContent>
                   </Card>
 
@@ -454,7 +692,9 @@ const DashboardUserPage: React.FC = () => {
                       <div className="text-2xl font-bold text-slate-900 mb-1">
                         {dashboardData?.completedQuestionnaires || 0}
                       </div>
-                      <CardDescription>Questionários finalizados</CardDescription>
+                      <CardDescription>
+                        Questionários finalizados
+                      </CardDescription>
                     </CardContent>
                   </Card>
                 </div>

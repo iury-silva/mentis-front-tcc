@@ -7,12 +7,17 @@ import {
   Legend,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type {
+  ChartDataItem,
+  UsersByRole,
+  QuestionTypeDistribution,
+} from "@/types/dashboard.types";
 
-interface ChartData {
-  name: string;
-  value: number;
-  fill: string;
-}
+type ChartData =
+  | ChartDataItem
+  | UsersByRole
+  | QuestionTypeDistribution
+  | { name: string; value: number; fill: string };
 
 interface DashboardPieChartProps {
   title: string;
@@ -53,9 +58,26 @@ export function DashboardPieChart({
     return null;
   };
 
+  // Função auxiliar para obter o valor correto independente do tipo
+  const getValue = (item: ChartData): number => {
+    if ("value" in item) return item.value;
+    if ("count" in item) return item.count;
+    return 0;
+  };
+
   const dataWithTotal = data.map((item) => ({
     ...item,
-    total: data.reduce((acc, curr) => acc + curr.value, 0),
+    name:
+      "name" in item
+        ? item.name
+        : "role" in item
+        ? item.role
+        : "type" in item
+        ? item.type
+        : "",
+    value: getValue(item),
+    fill: item.fill,
+    total: data.reduce((acc, curr) => acc + getValue(curr), 0),
   }));
 
   return (

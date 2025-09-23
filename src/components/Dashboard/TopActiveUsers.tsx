@@ -58,10 +58,10 @@ export function TopActiveUsers({ users, className = "" }: TopActiveUsersProps) {
           users.map((user, index) => (
             <div
               key={user.email}
-              className="flex items-center justify-between p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors"
+              className="flex items-start sm:items-center justify-between p-3 sm:p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors gap-3"
             >
-              <div className="flex items-center gap-3">
-                <div className="relative">
+              <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+                <div className="relative flex-shrink-0">
                   <Avatar className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary to-red-400 text-white font-medium">
                     {getInitials(user.name)}
                   </Avatar>
@@ -79,28 +79,31 @@ export function TopActiveUsers({ users, className = "" }: TopActiveUsersProps) {
                     </div>
                   )}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-medium text-slate-900 truncate">
+                <div className="flex-1 min-w-0 space-y-1">
+                  <h4 className="font-medium text-slate-900 truncate text-sm sm:text-base">
                     {user.name}
                   </h4>
-                  <p className="text-sm text-slate-600 truncate">
+                  <p className="text-xs sm:text-sm text-slate-600 truncate">
                     {user.email}
                   </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Calendar className="w-3 h-3 text-slate-400" />
-                    <span className="text-xs text-slate-500">
-                      Último acesso: {formatDate(user.lastActivity)}
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <Calendar className="w-3 h-3 text-slate-400 flex-shrink-0" />
+                    <span className="text-xs text-slate-500 truncate">
+                      <span className="hidden sm:inline">Último acesso: </span>
+                      {formatDate(user.lastActivity)}
                     </span>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex-shrink-0">
                 <Badge
                   variant="secondary"
-                  className="bg-primary/10 text-primary hover:bg-primary/20"
+                  className="bg-primary/10 text-primary hover:bg-primary/20 text-xs"
                 >
                   <MessageSquare className="w-3 h-3 mr-1" />
-                  {user.responses} respostas
+                  <span className="hidden sm:inline">respostas</span>
+                  <span className="sm:hidden">resp.</span>
+                  <span className="ml-1">{user.responses}</span>
                 </Badge>
               </div>
             </div>

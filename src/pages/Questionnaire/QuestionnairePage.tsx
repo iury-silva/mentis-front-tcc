@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { api } from "@/api";
 import { useAuth } from "@/auth/useAuth";
 import { Page } from "@/components/Layout/Page";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from "@/components/ui/card";
 import { LockKeyhole, LockKeyholeOpen, Eye } from "lucide-react";
 import { TermsModal } from "@/components/Questionnaire/TermsModal";
 
@@ -26,6 +28,71 @@ interface Questionnaire {
 
 type QuestionnaireResponse = Questionnaire[];
 
+// Skeleton Components
+const QuestionnaireHeaderSkeleton = () => (
+  <div className="bg-gradient-to-r from-primary/15 to-red-50 rounded-2xl p-6 border border-primary/10">
+    <div className="flex items-start gap-4">
+      <Skeleton className="w-12 h-12 rounded-xl" />
+      <div className="flex-1 space-y-3">
+        <Skeleton className="h-7 w-48" />
+        <Skeleton className="h-5 w-full" />
+        <Skeleton className="h-5 w-3/4" />
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-4 w-32" />
+          <Skeleton className="h-4 w-24" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const BlockCardSkeleton = () => (
+  <Card className="bg-white rounded-2xl border-2 border-slate-200">
+    <div className="p-6 space-y-4">
+      {/* Ícone hexagonal skeleton */}
+      <div className="flex justify-center">
+        <Skeleton className="w-16 h-18 rounded-lg" />
+      </div>
+
+      {/* Título do bloco skeleton */}
+      <div className="text-center space-y-2">
+        <Skeleton className="h-5 w-32 mx-auto" />
+        <Skeleton className="h-6 w-24 rounded-full mx-auto" />
+      </div>
+
+      {/* Número do bloco skeleton */}
+      <div className="absolute top-4 right-4">
+        <Skeleton className="w-8 h-8 rounded-full" />
+      </div>
+    </div>
+  </Card>
+);
+
+const QuestionnaireListSkeleton = () => (
+  <div className="space-y-8">
+    {[...Array(2)].map((_, questionnaireIndex) => (
+      <div key={questionnaireIndex} className="space-y-6">
+        <QuestionnaireHeaderSkeleton />
+
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Skeleton className="w-2 h-6 rounded-full" />
+            <Skeleton className="h-5 w-40" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, blockIndex) => (
+              <div key={blockIndex} className="relative">
+                <BlockCardSkeleton />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 export default function QuestionnairePage() {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -41,7 +108,7 @@ export default function QuestionnairePage() {
     enabled: !!user?.id,
   });
 
-  const { data } = query;
+  const { data, isLoading } = query;
 
   useEffect(() => {
     if (data) {
@@ -105,6 +172,17 @@ export default function QuestionnairePage() {
   const handleViewResponses = (blockId: string) => {
     navigate(`/questionnaire/responses/${blockId}`);
   };
+
+  if (isLoading) {
+    return (
+      <Page
+        title="Questionários"
+        description="Complete os questionários para acompanhar seu progresso"
+      >
+        <QuestionnaireListSkeleton />
+      </Page>
+    );
+  }
 
   return (
     <>

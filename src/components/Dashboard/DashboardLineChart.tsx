@@ -8,10 +8,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { DailyActivity, ResponsesByMonth } from "@/types/dashboard.types";
 
-interface LineChartData {
-  [key: string]: string | number;
-}
+type LineChartData =
+  | DailyActivity
+  | ResponsesByMonth
+  | { [key: string]: string | number };
 
 interface DashboardLineChartProps {
   title: string;

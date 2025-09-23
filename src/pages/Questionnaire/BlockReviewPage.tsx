@@ -3,6 +3,7 @@ import { api } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Page } from "@/components/Layout/Page";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/auth/useAuth";
 import { ArrowLeft, CheckCircle, Calendar } from "lucide-react";
 
@@ -80,6 +81,71 @@ function ResponseItem({
   );
 }
 
+// Skeleton Components
+const ResponseItemSkeleton = () => (
+  <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
+    <div className="flex items-start justify-between">
+      <div className="flex-1">
+        <div className="flex items-center gap-3 mb-3">
+          <Skeleton className="w-8 h-8 rounded-full" />
+          <Skeleton className="h-4 w-20" />
+        </div>
+        <Skeleton className="h-6 w-full mb-3" />
+        <Skeleton className="h-6 w-3/4 mb-4" />
+
+        <div className="bg-slate-50 rounded-xl p-4">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-2/3 mt-2" />
+        </div>
+      </div>
+    </div>
+
+    <div className="flex items-center gap-2 text-sm text-slate-500 pt-2">
+      <Skeleton className="w-4 h-4" />
+      <Skeleton className="h-4 w-32" />
+    </div>
+  </div>
+);
+
+const BlockReviewPageSkeleton = () => (
+  <Page title="Carregando...">
+    <div className="space-y-6">
+      {/* Header Skeleton */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Skeleton className="w-10 h-10 rounded-lg" />
+          <div className="space-y-2">
+            <Skeleton className="h-6 w-48" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+        </div>
+      </div>
+
+      {/* Summary Skeleton */}
+      <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <Skeleton className="w-6 h-6" />
+          <Skeleton className="h-5 w-32" />
+        </div>
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-2/3 mt-2" />
+      </div>
+
+      {/* Responses Skeleton */}
+      <div className="space-y-6">
+        {[...Array(3)].map((_, index) => (
+          <ResponseItemSkeleton key={index} />
+        ))}
+      </div>
+
+      {/* Back Button Skeleton */}
+      <div className="pt-6">
+        <Skeleton className="h-12 w-48 rounded-lg" />
+      </div>
+    </div>
+  </Page>
+);
+
 export default function BlockReviewPage() {
   const { blockId } = useParams<{ blockId: string }>();
   const navigate = useNavigate();
@@ -101,16 +167,7 @@ export default function BlockReviewPage() {
   });
 
   if (isLoading) {
-    return (
-      <Page title="Carregando...">
-        <div className="flex items-center justify-center py-12">
-          <div className="flex items-center gap-3">
-            <div className="w-6 h-6 text-sky-500 animate-spin rounded-full border-2 border-sky-500 border-t-transparent" />
-            <span className="text-slate-600">Carregando suas respostas...</span>
-          </div>
-        </div>
-      </Page>
-    );
+    return <BlockReviewPageSkeleton />;
   }
 
   if (isError) {
@@ -188,7 +245,9 @@ export default function BlockReviewPage() {
                   📅 Última atualização:{" "}
                   {new Date(
                     Math.max(
-                      ...responses.userAnswers.map((r) => new Date(r.createdAt).getTime())
+                      ...responses.userAnswers.map((r) =>
+                        new Date(r.createdAt).getTime()
+                      )
                     )
                   ).toLocaleDateString("pt-BR")}
                 </span>

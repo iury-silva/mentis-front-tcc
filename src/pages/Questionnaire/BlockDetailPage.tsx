@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Page } from "@/components/Layout/Page";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/auth/useAuth";
 import toast from "react-hot-toast";
-import { ArrowLeft, CheckCircle, Clock, Eye } from "lucide-react";
+import { ArrowLeft, CheckCircle, Eye } from "lucide-react";
 import { ReviewModal } from "@/components/Questionnaire/ReviewModal";
 
 interface Question {
@@ -147,6 +148,70 @@ function QuestionItem({
   );
 }
 
+// Skeleton Component para perguntas
+const QuestionSkeleton = () => (
+  <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <Skeleton className="w-8 h-8 rounded-full" />
+        <Skeleton className="h-2 w-24 rounded-full" />
+      </div>
+      <Skeleton className="w-6 h-6 rounded-full" />
+    </div>
+
+    <div className="space-y-4">
+      <Skeleton className="h-6 w-full" />
+      <Skeleton className="h-6 w-3/4" />
+    </div>
+
+    <div className="space-y-3">
+      <Skeleton className="h-10 w-full rounded-lg" />
+      <Skeleton className="h-10 w-full rounded-lg" />
+      <Skeleton className="h-10 w-full rounded-lg" />
+    </div>
+  </div>
+);
+
+const BlockDetailPageSkeleton = () => (
+  <Page title="Carregando...">
+    <div className="space-y-6">
+      {/* Header Skeleton */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Skeleton className="w-10 h-10 rounded-lg" />
+          <div className="space-y-2">
+            <Skeleton className="h-6 w-48" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+        </div>
+        <Skeleton className="w-24 h-10 rounded-lg" />
+      </div>
+
+      {/* Progress Skeleton */}
+      <div className="space-y-2">
+        <div className="flex justify-between items-center">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-4 w-16" />
+        </div>
+        <Skeleton className="h-2 w-full rounded-full" />
+      </div>
+
+      {/* Questions Skeleton */}
+      <div className="space-y-6">
+        {[...Array(3)].map((_, index) => (
+          <QuestionSkeleton key={index} />
+        ))}
+      </div>
+
+      {/* Action Buttons Skeleton */}
+      <div className="flex gap-3 pt-6">
+        <Skeleton className="h-12 w-32 rounded-lg" />
+        <Skeleton className="h-12 w-40 rounded-lg" />
+      </div>
+    </div>
+  </Page>
+);
+
 export default function BlockDetailPage() {
   const { blockId } = useParams<{ blockId: string }>();
   const navigate = useNavigate();
@@ -246,16 +311,7 @@ export default function BlockDetailPage() {
     questions.length > 0 ? (answeredCount / questions.length) * 100 : 0;
 
   if (isLoading) {
-    return (
-      <Page title="Carregando...">
-        <div className="flex items-center justify-center py-12">
-          <div className="flex items-center gap-3">
-            <Clock className="w-6 h-6 text-sky-500 animate-spin" />
-            <span className="text-slate-600">Carregando perguntas...</span>
-          </div>
-        </div>
-      </Page>
-    );
+    return <BlockDetailPageSkeleton />;
   }
 
   if (isError) {

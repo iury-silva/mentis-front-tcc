@@ -1,6 +1,5 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "../../auth/useAuth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-// import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
 import { StatsCard } from "@/components/Dashboard/StatsCard";
 import { DashboardPieChart } from "@/components/Dashboard/DashboardPieChart";
 import { DashboardBarChart } from "@/components/Dashboard/DashboardBarChart";
@@ -28,12 +27,136 @@ import {
   RefreshCw,
   BarChart3,
   TrendingUp,
-  // AlertCircle,
 } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+
+// Skeleton Components
+const StatsCardSkeleton = () => (
+  <Card className="bg-white/70 backdrop-blur-sm">
+    <CardContent className="p-6">
+      <div className="flex items-center justify-between">
+        <div className="space-y-2 flex-1">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-8 w-16" />
+          <Skeleton className="h-3 w-32" />
+        </div>
+        <Skeleton className="w-10 h-10 rounded-lg" />
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const ChartSkeleton = () => (
+  <Card className="bg-white/70 backdrop-blur-sm">
+    <CardHeader className="pb-4">
+      <Skeleton className="h-5 w-32" />
+      <Skeleton className="h-4 w-48" />
+    </CardHeader>
+    <CardContent>
+      <Skeleton className="h-64 w-full rounded-lg" />
+    </CardContent>
+  </Card>
+);
+
+const BlockPerformanceSkeleton = () => (
+  <Card className="bg-white/70 backdrop-blur-sm border-white/20 shadow-xl">
+    <CardHeader>
+      <div className="flex items-center gap-3">
+        <Skeleton className="w-8 h-8 rounded-lg" />
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-40" />
+          <Skeleton className="h-4 w-56" />
+        </div>
+      </div>
+    </CardHeader>
+    <CardContent>
+      <div className="space-y-4">
+        {[...Array(3)].map((_, index) => (
+          <Card key={index} className="bg-white/80 border-white/30">
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex-1 space-y-3 min-w-0">
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="w-6 h-6 rounded" />
+                    <Skeleton className="h-5 w-32" />
+                  </div>
+                  <Skeleton className="h-4 w-48" />
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                    <Skeleton className="h-6 w-24 rounded-full" />
+                  </div>
+                </div>
+                <div className="text-center sm:text-right flex-shrink-0">
+                  <Skeleton className="h-8 w-16 mx-auto sm:mx-0 mb-2" />
+                  <Skeleton className="h-5 w-20 rounded-full" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const TopActiveUsersSkeleton = () => (
+  <Card className="bg-white/70 backdrop-blur-sm">
+    <CardHeader className="pb-4">
+      <div className="flex items-center gap-2">
+        <Skeleton className="w-5 h-5" />
+        <Skeleton className="h-5 w-32" />
+      </div>
+      <Skeleton className="h-4 w-48" />
+    </CardHeader>
+    <CardContent className="space-y-4">
+      {[...Array(5)].map((_, index) => (
+        <div
+          key={index}
+          className="flex items-start sm:items-center justify-between p-3 sm:p-4 bg-slate-50 rounded-lg gap-3"
+        >
+          <div className="flex items-start sm:items-center gap-3 flex-1 min-w-0">
+            <Skeleton className="w-10 h-10 rounded-full flex-shrink-0" />
+            <div className="flex-1 min-w-0 space-y-2">
+              <Skeleton className="h-4 w-32" />
+              <Skeleton className="h-3 w-48" />
+              <Skeleton className="h-3 w-24" />
+            </div>
+          </div>
+          <Skeleton className="h-6 w-16 rounded-full flex-shrink-0" />
+        </div>
+      ))}
+    </CardContent>
+  </Card>
+);
+
+const SystemSummarySkeleton = () => (
+  <Card className="bg-gradient-to-r from-white/60 to-blue-50/80 backdrop-blur-sm border-white/20 shadow-xl">
+    <CardHeader>
+      <div className="flex items-center justify-between">
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-4 w-48" />
+        </div>
+      </div>
+    </CardHeader>
+    <Separator />
+    <CardContent className="pt-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[...Array(3)].map((_, index) => (
+          <Card key={index} className="bg-white/50">
+            <CardContent className="p-6 text-center">
+              <Skeleton className="h-8 w-16 mx-auto mb-2" />
+              <Skeleton className="h-4 w-32 mx-auto" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </CardContent>
+  </Card>
+);
 
 const DashboardAdminPage: React.FC = () => {
-  const { user } = useAuth();
-
+  const isMobile = useIsMobile();
   const {
     data: dashboardData,
     isLoading,
@@ -49,22 +172,83 @@ const DashboardAdminPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardContent className="pt-6">
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-red-400 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
-                <Loader2 className="w-8 h-8 animate-spin text-white" />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        {/* Header Skeleton */}
+        <header className="bg-white/60 backdrop-blur-sm border-b border-white/20 sticky top-0 z-10 mt-4">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <div className="flex items-center gap-4">
+                <Skeleton className="w-10 h-10 rounded-xl" />
+                <div className="space-y-1">
+                  <Skeleton className="h-5 w-32" />
+                  {!isMobile && <Skeleton className="h-4 w-48" />}
+                </div>
               </div>
-              <div>
-                <CardTitle className="text-xl mb-2">
-                  Carregando Dashboard
-                </CardTitle>
-                <CardDescription>Coletando dados do sistema...</CardDescription>
+              <div className="flex items-center gap-3">
+                <Skeleton className="hidden sm:flex h-6 w-48 rounded-full" />
+                <Skeleton className="h-8 w-20 rounded" />
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </header>
+
+        {/* Main Content Skeleton */}
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="space-y-8">
+            {/* Stats Overview Skeleton */}
+            <section>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[...Array(4)].map((_, index) => (
+                  <StatsCardSkeleton key={index} />
+                ))}
+              </div>
+            </section>
+
+            {/* Distribution Charts Skeleton */}
+            <section>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <ChartSkeleton />
+                <ChartSkeleton />
+              </div>
+            </section>
+
+            {/* Trend Charts Skeleton */}
+            <section>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <ChartSkeleton />
+                <ChartSkeleton />
+              </div>
+            </section>
+
+            {/* Block Analysis Skeleton */}
+            <section>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <ChartSkeleton />
+                <ChartSkeleton />
+              </div>
+            </section>
+
+            {/* Block Performance Skeleton */}
+            <section>
+              <BlockPerformanceSkeleton />
+            </section>
+
+            {/* Top Active Users Skeleton */}
+            <section>
+              <TopActiveUsersSkeleton />
+            </section>
+
+            {/* Response Evolution Skeleton */}
+            <section>
+              <ChartSkeleton />
+            </section>
+
+            {/* System Summary Skeleton */}
+            <section>
+              <SystemSummarySkeleton />
+            </section>
+          </div>
+        </main>
       </div>
     );
   }
@@ -111,9 +295,11 @@ const DashboardAdminPage: React.FC = () => {
                 <h1 className="text-xl font-bold text-slate-800">
                   Dashboard Admin
                 </h1>
-                <p className="text-sm text-slate-600">
-                  Análises e métricas do sistema
-                </p>
+                {!isMobile && (
+                  <p className="text-sm text-slate-600">
+                    Análises e métricas do sistema
+                  </p>
+                )}
               </div>
             </div>
 
@@ -263,7 +449,6 @@ const DashboardAdminPage: React.FC = () => {
             </div>
           </section>
 
-          {/* Block Performance */}
           <section>
             <Card className="bg-white/70 backdrop-blur-sm border-white/20 shadow-xl">
               <CardHeader>
@@ -286,40 +471,52 @@ const DashboardAdminPage: React.FC = () => {
                       key={index}
                       className="bg-white/80 border-white/30 hover:shadow-lg transition-all duration-300"
                     >
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1 space-y-3">
+                      <CardContent className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                          <div className="flex-1 space-y-3 min-w-0">
                             <div className="flex items-center gap-3">
                               <Badge
                                 variant="secondary"
-                                className="w-6 h-6 p-0 flex items-center justify-center"
+                                className="w-6 h-6 p-0 flex items-center justify-center flex-shrink-0"
                               >
                                 {index + 1}
                               </Badge>
-                              <CardTitle className="text-base">
+                              <CardTitle className="text-sm sm:text-base truncate">
                                 {block.blockTitle}
                               </CardTitle>
                             </div>
-                            <CardDescription>
+                            <CardDescription className="truncate">
                               {block.questionnaire}
                             </CardDescription>
-                            <div className="flex items-center gap-6">
-                              <Badge variant="outline" className="gap-1">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                              <Badge
+                                variant="outline"
+                                className="gap-1 text-xs"
+                              >
                                 <div className="w-2 h-2 bg-blue-400 rounded-full" />
-                                {block.totalQuestions} perguntas
+                                <span className="hidden sm:inline">
+                                  {block.totalQuestions} perguntas
+                                </span>
+                                <span className="sm:hidden">
+                                  {block.totalQuestions}p
+                                </span>
                               </Badge>
-                              <Badge variant="outline" className="gap-1">
+                              <Badge
+                                variant="outline"
+                                className="gap-1 text-xs"
+                              >
                                 <div className="w-2 h-2 bg-green-400 rounded-full" />
-                                {block.completedUsers} concluído
-                              </Badge>
-                              <Badge variant="outline" className="gap-1">
-                                <div className="w-2 h-2 bg-amber-400 rounded-full" />
-                                {block.partialResponses} parcial
+                                <span className="hidden sm:inline">
+                                  {block.completedUsers} concluído
+                                </span>
+                                <span className="sm:hidden">
+                                  {block.completedUsers}c
+                                </span>
                               </Badge>
                             </div>
                           </div>
-                          <div className="text-right">
-                            <div className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                          <div className="text-center sm:text-right flex-shrink-0">
+                            <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                               {dashboardService.formatPercentage(
                                 block.completionRate
                               )}
@@ -369,7 +566,6 @@ const DashboardAdminPage: React.FC = () => {
                       Métricas consolidadas do sistema
                     </CardDescription>
                   </div>
-                  <Badge variant="outline">Admin: {user?.email}</Badge>
                 </div>
               </CardHeader>
               <Separator />
