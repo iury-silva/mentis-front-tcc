@@ -79,13 +79,13 @@ export function RegisterPage() {
       </div>
 
       {/* Ondas decorativas no topo direito (apenas desktop) */}
-      <div className="absolute -top-18 -right-96 hidden lg:block z-10 pointer-events-none">
+      {/* <div className="absolute -top-18 -right-96 hidden lg:block z-10 pointer-events-none">
         <img
           src="/images/layered-waves-haikei.svg"
           alt=""
           className="transform rotate-140 translate-x-16 -translate-y-8"
         />
-      </div>
+      </div> */}
 
       {/* Left side - Avatar grande + textos + lista */}
       <div className="hidden lg:flex relative items-center justify-center p-6">
