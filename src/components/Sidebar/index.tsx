@@ -91,7 +91,16 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        {/* {user && <NavUser user={user} onLogout={logout} />} */}
+        {/* Versão e Copyright */}
+        <div className="px-2 py-4 text-center group-data-[collapsible=icon]:px-1">
+          <div className="group-data-[collapsible=icon]:hidden">
+            <p className="text-xs text-muted-foreground">Mentis v1.0.0</p>
+            <p className="text-xs text-muted-foreground">© 2025 Mentis</p>
+          </div>
+          <div className="group-data-[collapsible=icon]:block hidden">
+            <div className="w-8 h-1 bg-primary/20 rounded-full mx-auto"></div>
+          </div>
+        </div>
       </SidebarFooter>
 
       <SidebarRail />

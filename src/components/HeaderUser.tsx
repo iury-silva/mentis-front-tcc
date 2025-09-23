@@ -42,8 +42,8 @@ export function HeaderUser({ user, onLogout }: HeaderUserProps) {
             </p>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
+        {/* <DropdownMenuSeparator /> */}
+        <DropdownMenuGroup className="mt-2">
           <DropdownMenuItem asChild>
             <Link to="/settings" className="cursor-pointer">
               <Settings className="mr-2 h-4 w-4" />
