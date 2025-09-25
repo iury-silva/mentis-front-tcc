@@ -10,6 +10,14 @@ import toast from "react-hot-toast";
 import { ArrowLeft, Eye } from "lucide-react";
 import { ReviewModal } from "@/components/Questionnaire/ReviewModal";
 import { QuestionStep } from "@/components/Questionnaire/QuestionStep";
+import { BonificationModal } from "@/components/Questionnaire/BonificationModal";
+import { Trophy } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Question {
   id: string;
@@ -93,26 +101,27 @@ export default function BlockDetailPage() {
     {}
   );
   const [showReviewModal, setShowReviewModal] = useState(false);
+  const [showBonificationModal, setShowBonificationModal] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
 
   // Função para scroll inteligente apenas quando necessário
   const scrollToQuestionIfNeeded = () => {
-      setTimeout(() => {
-        const questionContainer = document.querySelector(".question-container");
-        if (questionContainer) {
-          const rect = questionContainer.getBoundingClientRect();
-          const viewportHeight = window.innerHeight;
+    setTimeout(() => {
+      const questionContainer = document.querySelector(".question-container");
+      if (questionContainer) {
+        const rect = questionContainer.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
 
-          // Só faz scroll se a pergunta não estiver completamente visível
-          if (rect.top < 0 || rect.top > viewportHeight * 0.3) {
-            const y = rect.top + window.scrollY - 100; // aplica offset de -100px
-            window.scrollTo({
-              top: y,
-              behavior: "smooth",
-            });
-          }
+        // Só faz scroll se a pergunta não estiver completamente visível
+        if (rect.top < 0 || rect.top > viewportHeight * 0.3) {
+          const y = rect.top + window.scrollY - 100; // aplica offset de -100px
+          window.scrollTo({
+            top: y,
+            behavior: "smooth",
+          });
         }
-      }, 100);
+      }
+    }, 100);
   };
 
   const query = useQuery<QuestionsResponse>({
@@ -136,13 +145,18 @@ export default function BlockDetailPage() {
       toast.success("Respostas salvas com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["questionnaire"] });
       setShowReviewModal(false);
-      navigate("/questionnaire");
+      setShowBonificationModal(true);
     },
     onError: (error) => {
       console.error("Erro ao salvar respostas:", error);
       toast.error("Erro ao salvar respostas. Tente novamente.");
     },
   });
+
+  const finishBlock = () => {
+    setShowBonificationModal(false);
+    navigate("/questionnaire");
+  };
 
   const { data: questions = [], isLoading, isError } = query;
 
@@ -270,24 +284,23 @@ export default function BlockDetailPage() {
         }
       >
         <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
-          {/* Progresso compacto */}
-          {/* <div className="bg-white rounded-xl border border-slate-200 p-4">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-medium text-slate-700">
-                Progresso: {answeredCount}/{questions.length}
-              </span>
-              <span className="text-sm text-slate-500">
-                {Math.round(progressPercentage)}%
-              </span>
+          {/* Banner de Bonificação */}
+          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex-shrink-0">
+                <Trophy className="w-6 h-6 text-yellow-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-yellow-800 text-sm">
+                  Bonificação por Completar!
+                </h3>
+                <p className="text-yellow-700 text-xs mt-1">
+                  Ao finalizar este questionário, você receberá uma recompensa
+                  especial!
+                </p>
+              </div>
             </div>
-
-            <div className="w-full bg-slate-200 rounded-full h-2">
-              <div
-                className="bg-primary h-2 rounded-full transition-all duration-500 ease-out"
-                style={{ width: `${progressPercentage}%` }}
-              ></div>
-            </div>
-          </div> */}
+          </div>
 
           {/* Pergunta atual */}
           {currentQuestion && (
@@ -314,17 +327,6 @@ export default function BlockDetailPage() {
               </Button>
 
               <div className="hidden sm:block text-center flex-1">
-                {/* <p className="text-xs text-slate-500">
-                  {isCurrentAnswered ? (
-                    <span className="text-emerald-600">✓ Respondida</span>
-                  ) : (
-                    <span className="text-amber-600">
-                      {currentQuestion?.type === "text"
-                        ? "Digite uma resposta para continuar"
-                        : "Escolha uma opção para continuar"}
-                    </span>
-                  )}
-                </p> */}
                 {isLastStep && (
                   <p className="text-xs text-slate-400 mt-1">
                     {allQuestionsAnswered ? (
@@ -338,27 +340,43 @@ export default function BlockDetailPage() {
                 )}
               </div>
 
-              <Button
-                onClick={handleNext}
-                disabled={!canGoNext || (isLastStep && !allQuestionsAnswered)}
-                className={`gap-2 flex-1 sm:flex-none ${
-                  isLastStep
-                    ? "bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300"
-                    : "bg-primary hover:bg-primary/90 disabled:bg-slate-300"
-                }`}
-              >
-                {isLastStep ? (
-                  <>
-                    <Eye className="w-4 h-4" />
-                    <span className="hidden sm:inline">Finalizar</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="hidden sm:inline">Próxima</span>
-                    <ArrowLeft className="w-4 h-4 rotate-180" />
-                  </>
-                )}
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={handleNext}
+                      disabled={
+                        !canGoNext || (isLastStep && !allQuestionsAnswered)
+                      }
+                      className={`gap-2 flex-1 sm:flex-none ${
+                        isLastStep
+                          ? "bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300"
+                          : "bg-primary hover:bg-primary/90 disabled:bg-slate-300"
+                      }`}
+                    >
+                      {isLastStep ? (
+                        <>
+                          <Eye className="w-4 h-4" />
+                          <span className="hidden sm:inline">Finalizar</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="hidden sm:inline">Próxima</span>
+                          <ArrowLeft className="w-4 h-4 rotate-180" />
+                        </>
+                      )}
+                    </Button>
+                  </TooltipTrigger>
+                  {isLastStep && allQuestionsAnswered && (
+                    <TooltipContent>
+                      <p className="text-sm">
+                        🎉 Parabéns! Você receberá uma bonificação especial ao
+                        finalizar!
+                      </p>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
             </div>
 
             {/* Status mobile */}
@@ -402,6 +420,12 @@ export default function BlockDetailPage() {
         answers={answers}
         onConfirm={handleConfirmSubmit}
         isLoading={saveResponsesMutation.isPending}
+      />
+
+      {/* Modal de Bonificação */}
+      <BonificationModal
+        isOpen={showBonificationModal}
+        onClose={() => finishBlock()}
       />
     </>
   );

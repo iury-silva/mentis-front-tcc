@@ -58,6 +58,13 @@ const SettingsPage: React.FC = () => {
     return null;
   }
 
+  const userInitials = user.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
   return (
     <Page
       title="Configurações"
@@ -80,7 +87,7 @@ const SettingsPage: React.FC = () => {
               <Avatar className="h-16 w-16 sm:h-20 sm:w-20">
                 <AvatarImage src={user.avatar || ""} alt={user.name} />
                 <AvatarFallback className="text-base sm:text-lg">
-                  {user.name.charAt(0).toUpperCase()}
+                  {userInitials}
                 </AvatarFallback>
               </Avatar>
               <div className="space-y-2 text-center sm:text-left">

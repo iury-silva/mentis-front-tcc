@@ -30,13 +30,13 @@ export function AppSidebar() {
   // Defina seus itens da sidebar, com ícones e roles
   const items = [
     {
-      title: "Dashboard Admin",
+      title: "Dashboard",
       url: "/dashboard",
       icon: HomeIcon,
       role: "admin", // só admin vê
     },
     {
-      title: "Dashboard User",
+      title: "Dashboard",
       url: "/dashboard-user",
       icon: HomeIcon,
       role: "user", // só user vê

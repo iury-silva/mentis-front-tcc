@@ -22,6 +22,14 @@ interface HeaderUserProps {
 }
 
 export function HeaderUser({ user, onLogout }: HeaderUserProps) {
+
+  const userInitials = user.name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,8 +39,8 @@ export function HeaderUser({ user, onLogout }: HeaderUserProps) {
         >
           <Avatar className="h-8 w-8">
             <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback className="text-sm bg-slate-500 text-white">
-              {user.name.charAt(0).toUpperCase()}
+            <AvatarFallback className="text-sm bg-primary text-white">
+              {userInitials}
             </AvatarFallback>
           </Avatar>
         </Button>
