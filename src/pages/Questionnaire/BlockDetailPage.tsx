@@ -124,13 +124,26 @@ export default function BlockDetailPage() {
     }, 100);
   };
 
+  // Query para verificar se o usuário pode acessar este bloco
+  const blockAccessQuery = useQuery({
+    queryKey: ["block-access", blockId, user?.id],
+    queryFn: async () => {
+      const res = await api.get(
+        `/questionnaire/blocks/${blockId}/access?userId=${user?.id}`
+      );
+      return res;
+    },
+    enabled: !!blockId && !!user?.id,
+    retry: false, // Não tentar novamente em caso de erro 403/401
+  });
+
   const query = useQuery<QuestionsResponse>({
     queryKey: ["block", blockId],
     queryFn: async () => {
       const res = await api.get(`/questionnaire/blocks/${blockId}`);
       return res ?? [];
     },
-    enabled: !!blockId,
+    enabled: !!blockId && blockAccessQuery.data?.canAccess === true,
   });
 
   const saveResponsesMutation = useMutation({
@@ -144,11 +157,13 @@ export default function BlockDetailPage() {
     onSuccess: () => {
       toast.success("Respostas salvas com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["questionnaire"] });
+      queryClient.invalidateQueries({ queryKey: ["block-access"] });
       setShowReviewModal(false);
       setShowBonificationModal(true);
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       console.error("Erro ao salvar respostas:", error);
+
       toast.error("Erro ao salvar respostas. Tente novamente.");
     },
   });
@@ -159,6 +174,11 @@ export default function BlockDetailPage() {
   };
 
   const { data: questions = [], isLoading, isError } = query;
+  const {
+    data: accessData,
+    isLoading: isLoadingAccess,
+    isError: isAccessError,
+  } = blockAccessQuery;
 
   const handleAnswer = useCallback((questionId: string, value: string) => {
     setAnswers((prev) => ({
@@ -230,8 +250,53 @@ export default function BlockDetailPage() {
     });
   };
 
-  if (isLoading) {
+  // Loading state - incluindo verificação de acesso
+  if (isLoading || isLoadingAccess) {
     return <BlockDetailPageSkeleton />;
+  }
+
+  // Verificar se o usuário tem acesso ao bloco
+  if (isAccessError || !accessData?.canAccess) {
+    const message = accessData?.isCompleted
+      ? "Este questionário já foi concluído"
+      : accessData?.isLocked
+      ? "Este bloco está bloqueado. Complete os blocos anteriores primeiro."
+      : "Você não tem permissão para acessar este bloco";
+
+    return (
+      <Page title="Acesso Negado">
+        <div className="text-center py-12 space-y-6">
+          <div className="mx-auto w-24 h-24 bg-red-50 rounded-full flex items-center justify-center">
+            <div className="text-red-500 text-4xl">🔒</div>
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-slate-800 mb-2">
+              {accessData?.isCompleted
+                ? "Questionário Já Concluído"
+                : "Acesso Bloqueado"}
+            </h2>
+            <p className="text-slate-600 max-w-md mx-auto">{message}</p>
+          </div>
+          <div className="space-y-3">
+            <Button
+              onClick={() => navigate("/questionnaire")}
+              className="bg-primary hover:bg-primary/90"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar aos Questionários
+            </Button>
+            {accessData?.isCompleted && (
+              <Button
+                onClick={() => navigate(`/questionnaire/responses/${blockId}`)}
+                variant="outline"
+              >
+                Ver Suas Respostas
+              </Button>
+            )}
+          </div>
+        </div>
+      </Page>
+    );
   }
 
   if (isError) {
@@ -270,7 +335,7 @@ export default function BlockDetailPage() {
     <>
       <Page
         title="Questionário"
-        description="Responda às perguntas abaixo"
+        description={accessData?.blockTitle}
         actions={
           <Button
             onClick={() => navigate("/questionnaire")}
