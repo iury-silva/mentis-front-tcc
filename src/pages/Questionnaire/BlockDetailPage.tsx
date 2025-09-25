@@ -157,7 +157,6 @@ export default function BlockDetailPage() {
     onSuccess: () => {
       toast.success("Respostas salvas com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["questionnaire"] });
-      queryClient.invalidateQueries({ queryKey: ["block-access"] });
       setShowReviewModal(false);
       setShowBonificationModal(true);
     },
@@ -171,6 +170,7 @@ export default function BlockDetailPage() {
   const finishBlock = () => {
     setShowBonificationModal(false);
     navigate("/questionnaire");
+    queryClient.invalidateQueries({ queryKey: ["block-access"] });
   };
 
   const { data: questions = [], isLoading, isError } = query;
