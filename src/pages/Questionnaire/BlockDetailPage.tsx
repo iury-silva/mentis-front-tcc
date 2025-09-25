@@ -101,7 +101,7 @@ export default function BlockDetailPage() {
     {}
   );
   const [showReviewModal, setShowReviewModal] = useState(false);
-  const [showBonificationModal, setShowBonificationModal] = useState(true);
+  const [showBonificationModal, setShowBonificationModal] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
 
   // Função para scroll inteligente apenas quando necessário
