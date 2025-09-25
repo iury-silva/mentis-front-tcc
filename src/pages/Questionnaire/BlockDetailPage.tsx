@@ -97,7 +97,6 @@ export default function BlockDetailPage() {
 
   // Função para scroll inteligente apenas quando necessário
   const scrollToQuestionIfNeeded = () => {
-    if (window.innerWidth <= 768) {
       setTimeout(() => {
         const questionContainer = document.querySelector(".question-container");
         if (questionContainer) {
@@ -114,7 +113,6 @@ export default function BlockDetailPage() {
           }
         }
       }, 100);
-    }
   };
 
   const query = useQuery<QuestionsResponse>({
