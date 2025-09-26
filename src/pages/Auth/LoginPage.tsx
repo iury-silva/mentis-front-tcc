@@ -3,29 +3,29 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { LoginForm } from "@/components/Login/login-form";
+import { LoginForm } from "@/components/Login/LoginForm";
+import { useAuth } from "@/auth/useAuth";
 
 export default function LoginPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const { isAuthenticated, user } = useAuth();
   useEffect(() => {
+    if (isAuthenticated) {
+      window.location.href = user?.role.includes("admin")
+        ? "/dashboard"
+        : "/dashboard-user";
+    }
     // Verificar se foi redirecionado por sessão expirada
     if (searchParams.get("expired") === "true") {
       toast.error("Sessão expirada. Por favor, faça login novamente.", {
-        duration: 5000,
-        position: "top-right",
         icon: "⏰",
-        style: {
-          background: "#fee2e2",
-          color: "#dc2626",
-        },
       });
 
       // Limpar o parâmetro da URL para evitar reexibir o toast
       searchParams.delete("expired");
       setSearchParams(searchParams, { replace: true });
     }
-  }, [searchParams, setSearchParams]);
+  }, [isAuthenticated, searchParams, setSearchParams, user?.role]);
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <div className="absolute bottom-4 left-4 hidden lg:block z-20 brightness-60">

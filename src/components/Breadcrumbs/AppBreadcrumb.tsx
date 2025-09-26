@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Home } from "lucide-react";
 import { useAuth } from "@/auth/useAuth";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/useMobile";
 
 const LABELS: Record<string, string> = {
   dashboard: "Dashboard",

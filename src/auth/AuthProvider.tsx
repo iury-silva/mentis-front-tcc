@@ -1,7 +1,7 @@
 // src/auth/AuthProvider.tsx
 import React, { useState, useEffect, type ReactNode } from 'react';
 import { AuthContext, type AuthContextType, type User, type AuthResponse } from './AuthContext';
-
+import { encrypt, decrypt } from '@/utils/crypto';
 interface AuthProviderProps {
   children: ReactNode;
 }
@@ -13,8 +13,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     // Check localStorage for a token or user data on initial load
-    const storedToken = localStorage.getItem('authToken');
-    const storedUser = localStorage.getItem('authUser');
+    const storedToken = decrypt(localStorage.getItem('authToken') || '');
+    const storedUser = decrypt(localStorage.getItem('authUser') || '');
     if (storedToken && storedUser) {
       try {
         const parsedUser: User = JSON.parse(storedUser);
@@ -34,8 +34,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     console.log("Logging in user:", userData);
     setIsAuthenticated(true);
     setUser(userData.user);
-    localStorage.setItem('authToken', userData.access_token);
-    localStorage.setItem('authUser', JSON.stringify(userData.user));
+    localStorage.setItem('authToken', encrypt(userData.access_token));
+    localStorage.setItem('authUser', encrypt(JSON.stringify(userData.user)));
   };
 
   const logout = () => {

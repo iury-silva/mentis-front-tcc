@@ -28,7 +28,7 @@ import {
   BarChart3,
   TrendingUp,
 } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/useMobile";
 
 // Skeleton Components
 const StatsCardSkeleton = () => (

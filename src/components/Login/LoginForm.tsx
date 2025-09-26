@@ -18,14 +18,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-// Importando sua API centralizada
 import { api } from "@/api";
 
-// Tanstack Query + Toast
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-// 1️⃣ Schema de validação Zod
 const loginSchema = z.object({
   email: z.string().email("Email inválido"),
   password: z.string().min(6, "Senha deve ter no mínimo 6 caracteres"),
@@ -40,7 +37,6 @@ export function LoginForm({
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  // 2️⃣ Configuração do react-hook-form
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -49,14 +45,12 @@ export function LoginForm({
     },
   });
 
-  // 3️⃣ Mutation com Tanstack Query
   const mutation = useMutation({
     mutationFn: async (data: LoginFormData) => {
       try {
         const res = await api.post("/login", data);
         console.log("Login response:", res);
 
-        // Verifica se a resposta tem os campos necessários
         if (!res?.access_token || !res?.user) {
           throw new Error("Resposta inválida do servidor");
         }
@@ -64,12 +58,12 @@ export function LoginForm({
         return res;
       } catch (error) {
         console.error("Login error:", error);
-        throw error; // Re-lança o erro para ser capturado pelo onError
+        throw error;
       }
     },
     onSuccess: (data) => {
       toast.success("Login realizado com sucesso!");
-      login(data); // salva token e usuário no contexto
+      login(data);
       navigate(
         data.user.role.includes("admin") ? "/dashboard" : "/dashboard-user"
       );
@@ -80,12 +74,10 @@ export function LoginForm({
     },
   });
 
-  // 4️⃣ Função de submit
   const onSubmit = (data: LoginFormData) => {
     mutation.mutate(data);
   };
 
-  // 5️⃣ Login via Google
   const handleGoogleLogin = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
   };

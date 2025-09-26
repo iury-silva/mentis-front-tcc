@@ -9,7 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Heart, Wrench, Clock, Calendar, BarChart3, Users } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/useMobile";
 
 const MoodTracker: React.FC = () => {
   const isMobile = useIsMobile();

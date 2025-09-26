@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const API_URL = import.meta.env.VITE_API_URL;
+import { decrypt } from "@/utils/crypto";
 
 async function apiFetch(path: string, options: RequestInit = {}) {
-  const token = localStorage.getItem("authToken");
+  const token = decrypt(localStorage.getItem("authToken") || "");
 
   const headers: HeadersInit = {
     "Content-Type": "application/json",

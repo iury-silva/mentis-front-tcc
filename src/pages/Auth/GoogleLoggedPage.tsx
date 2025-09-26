@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/auth/useAuth";
 import { api } from "@/api";
 import toast from "react-hot-toast";
+import { encrypt } from "@/utils/crypto";
 
 export default function GoogleLogged() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function GoogleLogged() {
         hasAuthenticated.current = true;
 
         // Salva o token
-        localStorage.setItem("authToken", token);
+        localStorage.setItem("authToken", encrypt(token));
 
         const userResponse = await api.get("/me");
 

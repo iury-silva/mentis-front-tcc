@@ -7,11 +7,11 @@ import { Separator } from "@/components/ui/separator";
 import { AppSidebar } from "@/components/Sidebar";
 import { Outlet } from "react-router-dom";
 import { AppBreadcrumb } from "@/components/Breadcrumbs/AppBreadcrumb";
-import { SearchCommand } from "@/components/Forms/SearchCommand";
+import { SearchCommand } from "@/components/Forms/Navbar/SearchCommand";
 import { HeaderUser } from "@/components/Sidebar/components/HeaderUser";
 import { BottomNavigation } from "@/components/Navigation/BottomNavigation";
 import { useAuth } from "@/auth/useAuth";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/useMobile";
 import { Link } from "react-router-dom";
 
 export const AppLayout: React.FC = () => {
