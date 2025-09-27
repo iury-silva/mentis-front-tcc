@@ -205,12 +205,12 @@ const SettingsPage: React.FC = () => {
                         Tem certeza que deseja deletar sua conta? Esta ação é
                         irreversível e todos os seus dados serão permanentemente
                         removidos, incluindo:
-                        <ul className="list-disc list-inside mt-2 space-y-1">
+                        <div className="list-disc list-inside mt-2 space-y-1">
                           <li>Respostas de questionários</li>
                           <li>Histórico de mood tracking</li>
                           <li>Dados do perfil</li>
                           <li>Configurações personalizadas</li>
-                        </ul>
+                        </div>
                       </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
