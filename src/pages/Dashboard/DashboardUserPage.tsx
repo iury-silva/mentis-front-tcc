@@ -276,9 +276,9 @@ const DashboardUserPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <div className="min-h-screen bg-gradient-to-br from-slate-300/50 to-white">
         {/* Header Skeleton */}
-        <header className="bg-white/60 backdrop-blur-sm border-b border-white/20 sticky top-0 z-10 mt-4">
+        <header className="border-b border-white/20 sticky top-0 z-10 mt-4">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center gap-4">
@@ -333,7 +333,7 @@ const DashboardUserPage: React.FC = () => {
 
   if (isError || !dashboardData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-300/50 to-white flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
@@ -358,9 +358,9 @@ const DashboardUserPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-300/50 to-white">
       {/* Header */}
-      <header className="bg-white/60 backdrop-blur-sm border-b border-white/20 pt-4">
+      <header className="border-b border-white/20 pt-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
