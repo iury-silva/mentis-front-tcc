@@ -49,7 +49,6 @@ export function LoginForm({
     mutationFn: async (data: LoginFormData) => {
       try {
         const res = await api.post("/login", data);
-        console.log("Login response:", res);
 
         if (!res?.access_token || !res?.user) {
           throw new Error("Resposta inválida do servidor");
@@ -129,7 +128,7 @@ export function LoginForm({
 
           {/* Divisor */}
           <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-            <span className="bg-background text-muted-foreground relative z-10 px-2">
+            <span className="text-muted-foreground relative z-10 px-2">
               Ou continue com
             </span>
           </div>

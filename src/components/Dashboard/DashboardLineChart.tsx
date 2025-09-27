@@ -39,10 +39,10 @@ export function DashboardLineChart({
       className={`hover:shadow-lg transition-all duration-300 ${className}`}
     >
       <CardHeader className="pb-4">
-        <CardTitle className="text-lg font-semibold text-slate-800">
+        <CardTitle className="text-lg font-semibold text-foreground">
           {title}
         </CardTitle>
-        {description && <p className="text-sm text-slate-600">{description}</p>}
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </CardHeader>
       <CardContent>
         <div className="h-64">

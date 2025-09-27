@@ -27,7 +27,7 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, searchParams, setSearchParams, user?.role]);
   return (
-    <div className="grid min-h-svh lg:grid-cols-2">
+    <div className="grid min-h-svh lg:grid-cols-2 dark:from-primary/10 dark:to-muted/20 dark:bg-gradient-to-br">
       <div className="absolute bottom-4 left-4 hidden lg:block z-20 brightness-60">
         {/* <img src="/images/icone-mentisV2.png" alt="Logo M" className="h-10 w-10" /> */}
         <span className="text-[0.50rem] text-muted-foreground font-light">

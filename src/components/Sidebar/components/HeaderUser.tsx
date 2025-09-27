@@ -39,7 +39,7 @@ export function HeaderUser({ user, onLogout }: HeaderUserProps) {
         >
           <Avatar className="h-8 w-8">
             <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback className="text-sm bg-primary text-white">
+            <AvatarFallback className="text-sm bg-primary text-primary-foreground">
               {userInitials}
             </AvatarFallback>
           </Avatar>

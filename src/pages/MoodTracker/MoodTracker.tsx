@@ -14,21 +14,21 @@ import { useIsMobile } from "@/hooks/useMobile";
 const MoodTracker: React.FC = () => {
   const isMobile = useIsMobile();
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-300/50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 dark:from-primary/10 dark:to-muted/20">
       {/* Header */}
-      <header className="border-b border-white/20 pt-4">
+      <header className="border-b border-border/50 pt-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Heart className="w-5 h-5 text-white" />
+                <Heart className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-slate-800">
+                <h1 className="text-xl font-bold text-foreground">
                   Registro de Humor
                 </h1>
                 {!isMobile && (
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-muted-foreground">
                     Monitore seu bem-estar emocional
                   </p>
                 )}
@@ -49,12 +49,12 @@ const MoodTracker: React.FC = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-6">
           {/* Status Card */}
-          <Card className="bg-gradient-to-r from-white/80 to-blue-50/60 backdrop-blur-sm shadow-xl border-blue-200">
+          <Card className="bg-gradient-to-r from-card/80 to-muted/60 backdrop-blur-sm shadow-xl border-blue-200">
             <CardHeader className="text-center">
               <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Wrench className="w-10 h-10 text-white" />
+                <Wrench className="w-10 h-10 text-primary-foreground" />
               </div>
-              <CardTitle className="text-2xl text-slate-800">
+              <CardTitle className="text-2xl text-foreground">
                 Funcionalidade em Desenvolvimento
               </CardTitle>
               <CardDescription className="text-base">
@@ -65,7 +65,7 @@ const MoodTracker: React.FC = () => {
           </Card>
 
           {/* Features Preview */}
-          <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+          <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Clock className="w-5 h-5 text-blue-600" />
@@ -74,49 +74,49 @@ const MoodTracker: React.FC = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-pink-50 to-purple-50">
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950">
                   <Heart className="w-6 h-6 text-pink-600 mt-1" />
                   <div>
-                    <h4 className="font-medium text-slate-900">
+                    <h4 className="font-medium text-foreground">
                       Registrar Humor Diário
                     </h4>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-muted-foreground">
                       Acompanhe como você se sente todos os dias
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50">
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950 dark:to-indigo-950">
                   <BarChart3 className="w-6 h-6 text-blue-600 mt-1" />
                   <div>
-                    <h4 className="font-medium text-slate-900">
+                    <h4 className="font-medium text-foreground">
                       Gráficos e Estatísticas
                     </h4>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-muted-foreground">
                       Visualize tendências e padrões do seu humor
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-emerald-50 to-teal-50">
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950 dark:to-teal-950">
                   <Calendar className="w-6 h-6 text-emerald-600 mt-1" />
                   <div>
-                    <h4 className="font-medium text-slate-900">
+                    <h4 className="font-medium text-foreground">
                       Histórico Completo
                     </h4>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-muted-foreground">
                       Acesse todos os seus registros anteriores
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-orange-50 to-yellow-50">
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-gradient-to-r from-orange-50 to-yellow-50 dark:from-orange-950 dark:to-yellow-950">
                   <Users className="w-6 h-6 text-orange-600 mt-1" />
                   <div>
-                    <h4 className="font-medium text-slate-900">
+                    <h4 className="font-medium text-foreground">
                       Insights Personalizados
                     </h4>
-                    <p className="text-sm text-slate-600">
+                    <p className="text-sm text-muted-foreground">
                       Receba dicas baseadas nos seus registros
                     </p>
                   </div>

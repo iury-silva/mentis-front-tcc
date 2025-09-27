@@ -31,7 +31,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const login = (userData: AuthResponse) => {
-    console.log("Logging in user:", userData);
     setIsAuthenticated(true);
     setUser(userData.user);
     localStorage.setItem('authToken', encrypt(userData.access_token));

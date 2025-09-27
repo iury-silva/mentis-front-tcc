@@ -43,7 +43,7 @@ interface UserDashboardData {
 
 // Skeleton Components
 const UserStatsCardSkeleton = () => (
-  <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+  <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
     <CardContent className="p-6">
       <div className="flex items-center justify-between">
         <div className="space-y-2 flex-1">
@@ -61,7 +61,7 @@ const UserStatsCardSkeleton = () => (
 );
 
 const QuickActionsSkeleton = () => (
-  <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+  <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
     <CardHeader>
       <div className="flex items-center gap-2">
         <Skeleton className="w-5 h-5" />
@@ -71,7 +71,7 @@ const QuickActionsSkeleton = () => (
     </CardHeader>
     <CardContent className="space-y-3">
       {[...Array(3)].map((_, index) => (
-        <Card key={index} className="bg-slate-50">
+        <Card key={index} className="bg-muted">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <Skeleton className="w-10 h-10 rounded-full" />
@@ -89,7 +89,7 @@ const QuickActionsSkeleton = () => (
 );
 
 const RecentActivitiesSkeleton = () => (
-  <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+  <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
     <CardHeader>
       <div className="flex items-center gap-2">
         <Skeleton className="w-5 h-5" />
@@ -101,7 +101,7 @@ const RecentActivitiesSkeleton = () => (
       {[...Array(2)].map((_, index) => (
         <div
           key={index}
-          className="flex items-center gap-3 p-3 rounded-lg bg-slate-50"
+          className="flex items-center gap-3 p-3 rounded-lg bg-muted"
         >
           <Skeleton className="w-8 h-8 rounded-full" />
           <div className="flex-1 space-y-2">
@@ -116,7 +116,7 @@ const RecentActivitiesSkeleton = () => (
 );
 
 const ProgressSkeleton = () => (
-  <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+  <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
     <CardHeader>
       <div className="flex items-center gap-2">
         <Skeleton className="w-5 h-5" />
@@ -160,7 +160,7 @@ const ProgressSkeleton = () => (
 );
 
 const WeeklySummarySkeleton = () => (
-  <Card className="bg-gradient-to-r from-white/60 to-purple-50/80 backdrop-blur-sm border-white/20 shadow-xl">
+  <Card className="bg-gradient-to-r from-card/60 to-muted/80 backdrop-blur-sm border-border/50 shadow-xl">
     <CardHeader>
       <div className="flex items-center justify-between">
         <div className="space-y-2">
@@ -173,7 +173,7 @@ const WeeklySummarySkeleton = () => (
     <CardContent className="pt-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[...Array(3)].map((_, index) => (
-          <Card key={index} className="bg-white/50">
+          <Card key={index} className="bg-card/50">
             <CardContent className="p-6 text-center">
               <Skeleton className="h-8 w-8 mx-auto mb-2" />
               <Skeleton className="h-4 w-24 mx-auto" />
@@ -276,9 +276,9 @@ const DashboardUserPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-300/50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 dark:from-primary/10 dark:to-muted/20">
         {/* Header Skeleton */}
-        <header className="border-b border-white/20 sticky top-0 z-10 mt-4">
+        <header className="border-b border-border/50 sticky top-0 z-10 mt-4">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center gap-4">
@@ -333,7 +333,7 @@ const DashboardUserPage: React.FC = () => {
 
   if (isError || !dashboardData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-300/50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 flex items-center justify-center dark:from-primary/10 dark:to-muted/20">
         <Card className="w-full max-w-md">
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
@@ -358,21 +358,21 @@ const DashboardUserPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-300/50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 dark:from-primary/10 dark:to-muted/20">
       {/* Header */}
-      <header className="border-b border-white/20 pt-4">
+      <header className="border-b border-border/50 pt-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary to-red-400 rounded-xl flex items-center justify-center shadow-lg">
-                <User className="w-5 h-5 text-white" />
+              <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg">
+                <User className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-slate-800">
+                <h1 className="text-xl font-bold text-foreground">
                   Olá, {user?.name || "Usuário"}! 👋
                 </h1>
                 {!isMobile && (
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-muted-foreground">
                     Acompanhe seu progresso e cuide do seu bem-estar
                   </p>
                 )}
@@ -382,7 +382,7 @@ const DashboardUserPage: React.FC = () => {
             <div className="flex items-center gap-3">
               <Badge
                 variant="outline"
-                className="hidden sm:flex items-center gap-2 border border-slate-100"
+                className="hidden sm:flex items-center gap-2 border border-border"
               >
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                 Última atualização: {new Date().toLocaleTimeString("pt-BR")}
@@ -392,7 +392,7 @@ const DashboardUserPage: React.FC = () => {
                 variant="ghost"
                 onClick={() => refetch()}
                 disabled={isFetching}
-                className="bg-white/70 backdrop-blur-sm"
+                className="bg-card/70 backdrop-blur-sm"
               >
                 {isFetching ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -415,7 +415,7 @@ const DashboardUserPage: React.FC = () => {
               {stats.map((stat, index) => (
                 <Card
                   key={index}
-                  className="bg-white/70 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
+                  className="bg-card/70 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
                 >
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
@@ -449,7 +449,7 @@ const DashboardUserPage: React.FC = () => {
           <section>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Quick Actions */}
-              <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+              <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5" />
@@ -465,15 +465,15 @@ const DashboardUserPage: React.FC = () => {
                       key={index}
                       className={`transition-all cursor-pointer hover:shadow-lg ${
                         action.highlight
-                          ? "bg-gradient-to-r from-pink-50 to-purple-50 border-pink-200"
-                          : "bg-slate-50 hover:bg-slate-100"
+                          ? "bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950"
+                          : "bg-muted hover:bg-accent"
                       }`}
                       onClick={action.action}
                     >
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3">
                           <div
-                            className={`p-2 rounded-lg bg-gradient-to-r ${action.color} text-white`}
+                            className={`p-2 rounded-lg bg-gradient-to-r ${action.color} text-primary-foreground`}
                           >
                             <action.icon className="w-4 h-4" />
                           </div>
@@ -491,7 +491,7 @@ const DashboardUserPage: React.FC = () => {
                                 </Badge>
                               )}
                               {action.highlight && (
-                                <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-xs h-5">
+                                <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-primary-foreground text-xs h-5">
                                   Novo!
                                 </Badge>
                               )}
@@ -508,7 +508,7 @@ const DashboardUserPage: React.FC = () => {
               </Card>
 
               {/* Recent Activity */}
-              <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+              <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Clock className="w-5 h-5" />
@@ -522,7 +522,7 @@ const DashboardUserPage: React.FC = () => {
                   {/* {recentActivities.map((activity, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-slate-50"
+                      className="flex items-center gap-3 p-3 rounded-lg bg-muted"
                     >
                       <div className="flex-shrink-0">
                         {activity.status === "completed" ? (
@@ -558,7 +558,7 @@ const DashboardUserPage: React.FC = () => {
 
           {/* Progress Section */}
           <section>
-            <Card className="bg-white/70 backdrop-blur-sm shadow-xl">
+            <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Target className="w-5 h-5" />
@@ -580,7 +580,7 @@ const DashboardUserPage: React.FC = () => {
                         {dashboardData?.totalQuestions || 0}
                       </span>
                     </div>
-                    <div className="w-full bg-slate-200 rounded-full h-3">
+                    <div className="w-full bg-muted rounded-full h-3">
                       <div
                         className="bg-gradient-to-r from-emerald-500 to-green-500 h-3 rounded-full transition-all duration-500"
                         style={{
@@ -600,7 +600,7 @@ const DashboardUserPage: React.FC = () => {
                         {dashboardData?.totalQuestionnaires || 0}
                       </span>
                     </div>
-                    <div className="w-full bg-slate-200 rounded-full h-3">
+                    <div className="w-full bg-muted rounded-full h-3">
                       <div
                         className="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full transition-all duration-500"
                         style={{
@@ -654,7 +654,7 @@ const DashboardUserPage: React.FC = () => {
 
           {/* Weekly Summary */}
           <section>
-            <Card className="bg-gradient-to-r from-white/60 to-purple-50/80 backdrop-blur-sm border-white/20 shadow-xl">
+            <Card className="bg-gradient-to-r from-card/60 to-muted/80 backdrop-blur-sm border-border/50 shadow-xl">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
@@ -668,9 +668,9 @@ const DashboardUserPage: React.FC = () => {
               <Separator />
               <CardContent className="pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <Card className="bg-white/50">
+                  <Card className="bg-card/50">
                     <CardContent className="p-6 text-center">
-                      <div className="text-2xl font-bold text-slate-900 mb-1">
+                      <div className="text-2xl font-bold text-foreground mb-1">
                         {Math.round(
                           (dashboardData?.answeredQuestions || 0) / 7
                         )}
@@ -681,9 +681,9 @@ const DashboardUserPage: React.FC = () => {
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-white/50">
+                  <Card className="bg-card/50">
                     <CardContent className="p-6 text-center">
-                      <div className="text-2xl font-bold text-slate-900 mb-1">
+                      <div className="text-2xl font-bold text-foreground mb-1">
                         {dashboardData?.totalQuestionnaires || 0}
                       </div>
                       <CardDescription>
@@ -692,9 +692,9 @@ const DashboardUserPage: React.FC = () => {
                     </CardContent>
                   </Card>
 
-                  <Card className="bg-white/50">
+                  <Card className="bg-card/50">
                     <CardContent className="p-6 text-center">
-                      <div className="text-2xl font-bold text-slate-900 mb-1">
+                      <div className="text-2xl font-bold text-foreground mb-1">
                         {dashboardData?.completedQuestionnaires || 0}
                       </div>
                       <CardDescription>

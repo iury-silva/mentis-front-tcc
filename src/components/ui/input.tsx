@@ -22,18 +22,9 @@ function Input({
         ? "text"
         : "password"
       : type;
-  // Função para scroll suave no mobile quando input recebe foco
   const handleMobileFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-    // Chama a função onFocus original se existir
     onFocus?.(event);
 
-    console.log("🔍 Input focus detectado:", {
-      isMobile: window.innerWidth <= 768,
-      windowWidth: window.innerWidth,
-      userAgent: navigator.userAgent.includes("Mobile"),
-    });
-
-    // Detecção mais robusta de mobile
     const isMobile =
       window.innerWidth <= 768 ||
       /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -41,26 +32,18 @@ function Input({
       );
 
     if (isMobile) {
-      console.log("📱 Executando scroll mobile...");
-
-      // Função para fazer o scroll
       const performScroll = () => {
-        // Primeiro tenta encontrar um container com classe específica
         const questionContainer = event.target.closest(
           ".question-container, .form-container, .input-container"
         ) as HTMLElement;
 
-        console.log("🎯 Container encontrado:", questionContainer?.className);
-
         if (questionContainer) {
-          console.log("📋 Fazendo scroll para container");
           // Scroll para o container completo
           questionContainer.scrollIntoView({
             behavior: "smooth",
             block: "start",
           });
         } else {
-          console.log("🎯 Fazendo scroll para input (fallback)");
           // Fallback: scroll para o input centralizado
           event.target.scrollIntoView({
             behavior: "smooth",

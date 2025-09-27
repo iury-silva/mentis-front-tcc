@@ -72,7 +72,7 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="relative grid min-h-svh lg:grid-cols-2 overflow-hidden">
+    <div className="relative grid min-h-svh lg:grid-cols-2 overflow-hidden dark:from-primary/10 dark:to-muted/20 dark:bg-gradient-to-br">
       {/* Logo M no canto esquerdo (desktop) */}
       <div className="absolute top-4 left-4 hidden lg:block z-20">
         <img src="/images/icone-mentisV2.png" alt="Logo M" className="w-10" />
@@ -232,7 +232,7 @@ export function RegisterPage() {
             </Form>
 
             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
-              <span className="relative z-10 bg-background px-2 text-muted-foreground">
+              <span className="relative z-10 px-2 text-muted-foreground">
                 Ou continue com
               </span>
             </div>

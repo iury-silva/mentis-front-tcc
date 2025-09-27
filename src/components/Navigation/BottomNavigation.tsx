@@ -114,7 +114,7 @@ export function BottomNavigation() {
   const hasActiveExtraItem = extraItems.some((item) => isActive(item.url));
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-49 bg-white border-t border-slate-200/50 backdrop-blur-sm md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-49 bg-background border-t border-border/50 backdrop-blur-sm md:hidden">
       <nav className="flex items-center justify-around px-2 py-1">
         {/* Itens principais sempre visíveis */}
         {mainItems.map((item) => {
@@ -129,7 +129,7 @@ export function BottomNavigation() {
                 "flex flex-col items-center justify-center p-2 rounded-lg transition-colors min-w-0 flex-1",
                 active
                   ? "text-primary bg-primary/10"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  : "text-muted-foreground hover:text-accent-foreground hover:bg-muted"
               )}
             >
               <Icon className="w-6 h-6 mb-1 flex-shrink-0" />
@@ -147,7 +147,7 @@ export function BottomNavigation() {
                   "flex flex-col items-center justify-center p-2 rounded-lg transition-colors min-w-0 flex-1",
                   hasActiveExtraItem
                     ? "text-primary bg-primary/10"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    : "text-muted-foreground hover:text-accent-foreground hover:bg-muted"
                 )}
               >
                 {hasActiveExtraItem ? (

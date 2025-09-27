@@ -13,6 +13,7 @@ import { BottomNavigation } from "@/components/Navigation/BottomNavigation";
 import { useAuth } from "@/auth/useAuth";
 import { useIsMobile } from "@/hooks/useMobile";
 import { Link } from "react-router-dom";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export const AppLayout: React.FC = () => {
   const { user, logout } = useAuth();
@@ -21,7 +22,7 @@ export const AppLayout: React.FC = () => {
   if (isMobile) {
     return (
       <div className="flex flex-col min-h-screen">
-        <header className="flex h-12 shrink-0 items-center gap-2 px-4 bg-white border-b border-slate-200/50 sticky top-0 z-20">
+        <header className="flex h-12 shrink-0 items-center gap-2 px-4 bg-background border-b border-border/50 sticky top-0 z-20">
           <Link to={user?.role === "admin" ? "/dashboard" : "/dashboard-user"}>
             <img src="/images/logo-mentisV2.png" alt="Logo" className="w-24" />
           </Link>
@@ -30,6 +31,7 @@ export const AppLayout: React.FC = () => {
               <AppBreadcrumb />
             </div>
             <SearchCommand />
+            <ThemeToggle />
             {user && <HeaderUser user={user} onLogout={logout} />}
           </div>
         </header>
@@ -45,7 +47,7 @@ export const AppLayout: React.FC = () => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-12 shrink-0 items-center gap-2 px-4 bg-transparent border-b border-slate-200/50 backdrop-blur-sm sticky top-0 z-10">
+        <header className="flex h-12 shrink-0 items-center gap-2 px-4 bg-transparent border-b border-border/50 backdrop-blur-sm sticky top-0 z-10">
           <SidebarTrigger className="-ml-1" />
           <Separator
             orientation="vertical"
@@ -56,6 +58,7 @@ export const AppLayout: React.FC = () => {
               <AppBreadcrumb />
             </div>
             <SearchCommand />
+            <ThemeToggle />
             {user && <HeaderUser user={user} onLogout={logout} />}
           </div>
         </header>

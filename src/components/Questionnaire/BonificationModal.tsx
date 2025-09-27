@@ -32,7 +32,7 @@ function BonificationModal({
             <Gift className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-emerald-600" />
             {/* Ícone de check para sucesso */}
             <div className="absolute -top-1 -right-1 bg-emerald-500 rounded-full p-0.5 sm:p-1">
-              <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
+              <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-primary-foreground" />
             </div>
           </div>
 
@@ -45,7 +45,7 @@ function BonificationModal({
             <br className="hidden sm:block" />
             <span className="block sm:inline mt-1 sm:mt-0" />
             {blockTitle && (
-              <span className="font-medium text-slate-800 block sm:inline mt-1 sm:mt-0">
+              <span className="font-medium text-foreground block sm:inline mt-1 sm:mt-0">
                 "{blockTitle}"
               </span>
             )}
@@ -69,7 +69,7 @@ function BonificationModal({
           </div>
 
           {/* Seção principal - envio por email */}
-          <div className="w-full p-3 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl">
+          <div className="w-full p-3 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border border-green-200 rounded-xl">
             <div className="flex items-start gap-2 sm:gap-3">
               <div className="p-1.5 sm:p-2 rounded-lg bg-green-100 shadow-sm flex-shrink-0">
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
@@ -81,7 +81,7 @@ function BonificationModal({
                 <p className="text-green-700 text-xs sm:text-sm mb-3">
                   Seu benefício foi enviado para:
                 </p>
-                <div className="bg-white/80 p-2 sm:p-3 rounded-lg border border-green-100 mb-3">
+                <div className="bg-muted/80 p-2 sm:p-3 rounded-lg border border-green-100 dark:border-green-800 mb-3">
                   <p className="font-medium text-green-900 text-xs sm:text-sm break-all">
                     {user?.email || "seu-email@exemplo.com"}
                   </p>
@@ -116,7 +116,7 @@ function BonificationModal({
           <div className="flex gap-3 w-full pt-2">
             <Button
               onClick={onClose}
-              className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6"
+              className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-primary-foreground shadow-lg text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6"
             >
               <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
               <span className="truncate">Entendi, vou verificar!</span>
@@ -124,7 +124,7 @@ function BonificationModal({
           </div>
 
           {/* Mensagem de agradecimento */}
-          <p className="text-xs text-slate-500 px-2 sm:px-4 bg-slate-50 p-2 sm:p-3 rounded-lg border text-center leading-relaxed">
+          <p className="text-xs text-muted-foreground px-2 sm:px-4 bg-muted p-2 sm:p-3 rounded-lg border text-center leading-relaxed">
             Obrigado por participar! Seu feedback é muito importante para nós.
             ❤️
           </p>

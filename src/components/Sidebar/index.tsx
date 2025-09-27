@@ -77,11 +77,11 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-row items-center justify-start px-2 py-4">
-        <div className="flex items-center justify-center group-data-[collapsible=icon]:justify-center h-12 w-12 rounded-lg bg-gradient-to-br from-slate-100/400 to-slate-200 text-slate-600 font-bold text-lg">
+        <div className="flex items-center justify-center group-data-[collapsible=icon]:justify-center h-12 w-12 rounded-lg font-bold text-lg bg-primary/10 text-primary shrink-0 ">
           <img src="/icone-mentisV2.png" alt="Logo" className="w-8 shrink-0" />
         </div>
         <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-          <span className="truncate font-bold text-slate-800">Mentis</span>
+          <span className="truncate font-bold text-foreground">Mentis</span>
           <span className="truncate text-xs">Saúde Mental</span>
         </div>
       </SidebarHeader>

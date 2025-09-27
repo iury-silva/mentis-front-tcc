@@ -35,19 +35,19 @@ function ResponseItem({
   index: number;
 }) {
   return (
-    <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 p-4 sm:p-6 space-y-3 sm:space-y-4 transition-all duration-200 hover:shadow-lg hover:border-slate-300">
+    <div className="bg-background rounded-xl sm:rounded-2xl border border-border p-4 sm:p-6 space-y-3 sm:space-y-4 transition-all duration-200 hover:shadow-lg hover:border-accent">
       {/* Header da pergunta */}
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
-            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold bg-emerald-500 text-white">
+            <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold bg-emerald-500 text-primary-foreground">
               <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
             </div>
-            <span className="text-xs sm:text-sm text-slate-500 font-medium">
+            <span className="text-xs sm:text-sm text-muted-foreground font-medium">
               Pergunta {index + 1}
             </span>
           </div>
-          <h3 className="text-base sm:text-lg font-semibold text-slate-800 leading-relaxed mb-2 sm:mb-3">
+          <h3 className="text-base sm:text-lg font-semibold text-foreground leading-relaxed mb-2 sm:mb-3">
             {response.question.question}
           </h3>
         </div>
@@ -66,7 +66,7 @@ function ResponseItem({
       </div>
 
       {/* Data da resposta */}
-      <div className="flex items-center gap-1 sm:gap-2 text-xs text-slate-500">
+      <div className="flex items-center gap-1 sm:gap-2 text-xs text-muted-foreground">
         <Calendar className="w-3 h-3" />
         <span className="hidden sm:inline">Respondido em: </span>
         <span className="sm:hidden">Em: </span>
@@ -84,7 +84,7 @@ function ResponseItem({
 
 // Skeleton Components
 const ResponseItemSkeleton = () => (
-  <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 p-4 sm:p-6 space-y-3 sm:space-y-4">
+  <div className="bg-background rounded-xl sm:rounded-2xl border border-border p-4 sm:p-6 space-y-3 sm:space-y-4">
     <div className="flex items-start justify-between">
       <div className="flex-1">
         <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
@@ -94,14 +94,14 @@ const ResponseItemSkeleton = () => (
         <Skeleton className="h-5 sm:h-6 w-full mb-2 sm:mb-3" />
         <Skeleton className="h-5 sm:h-6 w-3/4 mb-3 sm:mb-4" />
 
-        <div className="bg-slate-50 rounded-lg sm:rounded-xl p-3 sm:p-4">
+        <div className="bg-muted rounded-lg sm:rounded-xl p-3 sm:p-4">
           <Skeleton className="h-3 sm:h-4 w-full" />
           <Skeleton className="h-3 sm:h-4 w-2/3 mt-2" />
         </div>
       </div>
     </div>
 
-    <div className="flex items-center gap-1 sm:gap-2 text-sm text-slate-500 pt-2">
+    <div className="flex items-center gap-1 sm:gap-2 text-sm text-muted-foreground pt-2">
       <Skeleton className="w-3 h-3 sm:w-4 sm:h-4" />
       <Skeleton className="h-3 sm:h-4 w-24 sm:w-32" />
     </div>
@@ -191,7 +191,7 @@ export default function BlockReviewPage() {
     return (
       <Page title="Sem respostas">
         <div className="text-center py-12">
-          <div className="text-slate-600 text-lg mb-4">
+          <div className="text-muted-foreground text-lg mb-4">
             Nenhuma resposta encontrada para este bloco
           </div>
           <Button
@@ -229,16 +229,16 @@ export default function BlockReviewPage() {
         <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-emerald-200">
           <div className="flex items-start gap-3 sm:gap-4">
             <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg">
-              <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-primary-foreground" />
             </div>
             <div className="flex-1">
-              <h2 className="text-xl sm:text-2xl font-bold text-slate-800 mb-1 sm:mb-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground dark:text-muted mb-1 sm:mb-2">
                 {blockTitle}
               </h2>
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                 Suas respostas foram salvas com sucesso.
               </p>
-              <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-slate-500">
+              <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
                   ✅ {responses.userAnswers.length} respostas registradas
                 </span>
@@ -261,7 +261,7 @@ export default function BlockReviewPage() {
 
         {/* Lista de respostas */}
         <div className="space-y-4 sm:space-y-6">
-          <h3 className="text-base sm:text-lg font-semibold text-slate-700 flex items-center gap-2">
+          <h3 className="text-base sm:text-lg font-semibold text-foreground flex items-center gap-2">
             <div className="w-1.5 sm:w-2 h-5 sm:h-6 bg-gradient-to-b from-emerald-500 to-green-600 rounded-full"></div>
             Suas Respostas
           </h3>
@@ -278,13 +278,13 @@ export default function BlockReviewPage() {
         </div>
 
         {/* Ações finais */}
-        <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 p-4 sm:p-6">
+        <div className="bg-background rounded-xl sm:rounded-2xl border border-border p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
             <div className="text-center sm:text-left">
-              <h3 className="font-semibold text-slate-800 text-sm sm:text-base">
+              <h3 className="font-semibold text-foreground text-sm sm:text-base">
                 Resumo das suas respostas
               </h3>
-              <p className="text-xs sm:text-sm text-slate-600">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Você pode consultar suas respostas a qualquer momento ou
                 continuar com outros questionários.
               </p>
@@ -292,7 +292,7 @@ export default function BlockReviewPage() {
             <div>
               <Button
                 onClick={() => navigate("/questionnaire")}
-                className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white gap-2 text-sm sm:text-base h-9 sm:h-10 w-full sm:w-auto"
+                className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-primary-foreground gap-2 text-sm sm:text-base h-9 sm:h-10 w-full sm:w-auto"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span className="hidden sm:inline">

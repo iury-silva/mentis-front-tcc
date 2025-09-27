@@ -31,7 +31,7 @@ type QuestionnaireResponse = Questionnaire[];
 
 // Skeleton Components
 const QuestionnaireHeaderSkeleton = () => (
-  <div className="bg-gradient-to-r from-primary/15 to-red-50 rounded-2xl p-6 border border-primary/10">
+  <div className="bg-gradient-to-r from-primary/15 to-primary/10 dark:to-primary/5 rounded-2xl p-6 border border-primary/10">
     <div className="flex items-start gap-4">
       <Skeleton className="w-12 h-12 rounded-xl" />
       <div className="flex-1 space-y-3">
@@ -48,7 +48,7 @@ const QuestionnaireHeaderSkeleton = () => (
 );
 
 const BlockCardSkeleton = () => (
-  <Card className="bg-white rounded-2xl border-2 border-slate-200">
+  <Card className="bg-card rounded-2xl border-2 border-border">
     <div className="p-6 space-y-4">
       {/* Ícone hexagonal skeleton */}
       <div className="flex justify-center">
@@ -194,21 +194,21 @@ export default function QuestionnairePage() {
         <div className="space-y-8">
           {data?.map((questionnaire) => (
             <div key={questionnaire.id} className="space-y-6">
-              <div className="bg-gradient-to-r from-primary/15 to-red-50 rounded-2xl p-6 border border-primary/10">
+              <div className="bg-gradient-to-r from-primary/15 to-primary/10 dark:from-primary/10 dark:to-primary/5 rounded-2xl p-6 border border-primary/20">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-red-400 rounded-xl flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-lg">
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg">
+                    <span className="text-primary-foreground font-bold text-lg">
                       {questionnaire.title.charAt(0)}
                     </span>
                   </div>
                   <div className="flex-1">
-                    <h2 className="text-2xl font-bold text-slate-800 mb-2">
+                    <h2 className="text-2xl font-bold text-foreground mb-2">
                       {questionnaire.title}
                     </h2>
-                    <p className="text-slate-600 leading-relaxed">
+                    <p className="text-muted-foreground leading-relaxed">
                       {questionnaire.description}
                     </p>
-                    <div className="mt-4 flex items-center gap-4 text-sm text-slate-500">
+                    <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
                         📅 Criado em:{" "}
                         {new Date(questionnaire.createdAt).toLocaleDateString(
@@ -224,8 +224,8 @@ export default function QuestionnairePage() {
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-700 flex items-center gap-2">
-                  <div className="w-2 h-6 bg-gradient-to-b from-primary to-red-400 rounded-full"></div>
+                <h3 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                  <div className="w-2 h-6 bg-gradient-to-b from-primary to-primary/80 rounded-full"></div>
                   Blocos do Questionário
                 </h3>
 
@@ -236,9 +236,9 @@ export default function QuestionnairePage() {
                     return (
                       <div
                         key={block.id}
-                        className={`group relative bg-white rounded-2xl border-2 transition-all duration-300 hover:shadow-lg ${
+                        className={`group relative bg-background rounded-2xl border-2 transition-all duration-300 hover:shadow-lg ${
                           blockData.locked
-                            ? "border-slate-200 opacity-60"
+                            ? "border-border opacity-60"
                             : blockData.isCompleted
                             ? "border-emerald-200 bg-emerald-50/50 hover:border-emerald-300"
                             : "border-primary/50 hover:shadow-primary/10 cursor-pointer"
@@ -259,7 +259,7 @@ export default function QuestionnairePage() {
                                 blockData.isCompleted
                                   ? "bg-emerald-100 group-hover:bg-emerald-200"
                                   : blockData.locked
-                                  ? "bg-slate-100"
+                                  ? "bg-muted"
                                   : "bg-primary/15 group-hover:bg-primary/30"
                               }`}
                               style={{
@@ -284,7 +284,7 @@ export default function QuestionnairePage() {
                               ) : blockData.locked ? (
                                 <LockKeyhole
                                   size={24}
-                                  className="text-slate-400"
+                                  className="text-muted-foreground"
                                 />
                               ) : (
                                 <LockKeyholeOpen
@@ -300,8 +300,8 @@ export default function QuestionnairePage() {
                             <h4
                               className={`font-semibold text-lg leading-tight ${
                                 blockData.locked
-                                  ? "text-slate-400"
-                                  : "text-slate-700"
+                                  ? "text-muted-foreground"
+                                  : "text-foreground"
                               }`}
                             >
                               {block.title.split("– ")[0]}
@@ -313,8 +313,8 @@ export default function QuestionnairePage() {
                                 blockData.isCompleted
                                   ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
                                   : blockData.locked
-                                  ? "bg-slate-100 text-slate-500 border border-slate-200"
-                                  : "bg-primary/15 text-slate-700 border border-primary/50"
+                                  ? "bg-muted text-muted-foreground border border-border"
+                                  : "bg-primary/15 text-foreground border border-primary/50"
                               }`}
                             >
                               {blockData.isCompleted
@@ -334,10 +334,10 @@ export default function QuestionnairePage() {
                             <div
                               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                                 blockData.isCompleted
-                                  ? "bg-emerald-500 text-white"
+                                  ? "bg-emerald-500 text-primary-foreground"
                                   : blockData.locked
-                                  ? "bg-slate-300 text-slate-600"
-                                  : "bg-primary text-white"
+                                  ? "bg-muted/50 text-muted-foreground"
+                                  : "bg-primary text-primary-foreground"
                               }`}
                             >
                               {block.order}
@@ -353,7 +353,7 @@ export default function QuestionnairePage() {
                                 e.stopPropagation();
                                 handleViewResponses(block.id);
                               }}
-                              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+                              className="w-full bg-emerald-500 hover:bg-emerald-600 text-primary-foreground py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center gap-2"
                             >
                               <Eye className="w-4 h-4" />
                               Ver Respostas

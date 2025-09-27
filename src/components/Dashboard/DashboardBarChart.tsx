@@ -52,9 +52,9 @@ export function DashboardBarChart({
   }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg">
+        <div className="bg-background p-3 border rounded-lg shadow-lg">
           <p className="font-medium">{label}</p>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-muted-foreground">
             {payload[0].name}: {payload[0].value}
           </p>
         </div>
@@ -68,10 +68,10 @@ export function DashboardBarChart({
       className={`hover:shadow-lg transition-all duration-300 ${className}`}
     >
       <CardHeader className="pb-4">
-        <CardTitle className="text-lg font-semibold text-slate-800">
+        <CardTitle className="text-lg font-semibold text-foreground">
           {title}
         </CardTitle>
-        {description && <p className="text-sm text-slate-600">{description}</p>}
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </CardHeader>
       <CardContent>
         <div className="h-64">

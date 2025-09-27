@@ -59,7 +59,7 @@ export function NavMain({
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className="text-xs font-semibold text-slate-600 uppercase tracking-wider px-3 mb-2 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:mb-1">
+      <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-3 mb-2 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:mb-1">
         <span className="group-data-[collapsible=icon]:hidden">Menu</span>
       </SidebarGroupLabel>
       <SidebarMenu className="space-y-1">

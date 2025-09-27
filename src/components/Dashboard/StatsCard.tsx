@@ -23,14 +23,16 @@ export function StatsCard({
 }: StatsCardProps) {
   return (
     <Card
-      className={`hover:shadow-xl transition-all duration-500 hover:scale-[1.02] border-white/20 ${className}`}
+      className={`hover:shadow-xl transition-all duration-500 hover:scale-[1.02] border-border/50 ${className}`}
     >
       <CardContent className="p-6">
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <p className="text-sm font-medium text-slate-600 mb-1">{title}</p>
+            <p className="text-sm font-medium text-muted-foreground mb-1">
+              {title}
+            </p>
             <div className="flex items-baseline gap-2">
-              <h3 className="text-2xl font-bold text-slate-900">{value}</h3>
+              <h3 className="text-2xl font-bold text-foreground">{value}</h3>
               {trend && (
                 <span
                   className={`text-xs font-medium px-2 py-1 rounded-full transition-all duration-300 ${
@@ -45,11 +47,13 @@ export function StatsCard({
               )}
             </div>
             {description && (
-              <p className="text-xs text-slate-500 mt-1">{description}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {description}
+              </p>
             )}
           </div>
           <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-red-200 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-primary/30 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110">
               <Icon className="w-6 h-6 text-primary" />
             </div>
           </div>

@@ -46,9 +46,9 @@ export function DashboardPieChart({
     if (active && payload && payload.length) {
       const data = payload[0];
       return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg">
+        <div className="bg-background p-3 border rounded-lg shadow-lg">
           <p className="font-medium">{data.name}</p>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-muted-foreground">
             {data.value} (
             {((data.value / data.payload.total) * 100 || 0).toFixed(1)}%)
           </p>
@@ -82,13 +82,13 @@ export function DashboardPieChart({
 
   return (
     <Card
-      className={`hover:shadow-xl transition-all duration-500 hover:scale-[1.01] border-white/20 ${className}`}
+      className={`hover:shadow-xl transition-all duration-500 hover:scale-[1.01] border-border/50 ${className}`}
     >
       <CardHeader className="pb-4">
-        <CardTitle className="text-lg font-semibold text-slate-800">
+        <CardTitle className="text-lg font-semibold text-foreground">
           {title}
         </CardTitle>
-        {description && <p className="text-sm text-slate-600">{description}</p>}
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </CardHeader>
       <CardContent>
         <div className="h-64">

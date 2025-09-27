@@ -30,7 +30,7 @@ type QuestionsResponse = Question[];
 
 // Skeleton Component para perguntas
 const QuestionSkeleton = () => (
-  <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-6">
+  <div className="bg-background rounded-2xl border border-border p-6 space-y-6">
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3">
         <Skeleton className="w-8 h-8 rounded-full" />
@@ -271,12 +271,12 @@ export default function BlockDetailPage() {
             <div className="text-red-500 text-4xl">🔒</div>
           </div>
           <div>
-            <h2 className="text-xl font-semibold text-slate-800 mb-2">
+            <h2 className="text-xl font-semibold text-foreground mb-2">
               {accessData?.isCompleted
                 ? "Questionário Já Concluído"
                 : "Acesso Bloqueado"}
             </h2>
-            <p className="text-slate-600 max-w-md mx-auto">{message}</p>
+            <p className="text-muted-foreground max-w-md mx-auto">{message}</p>
           </div>
           <div className="space-y-3">
             <Button
@@ -320,7 +320,7 @@ export default function BlockDetailPage() {
     return (
       <Page title="Sem perguntas">
         <div className="text-center py-12">
-          <div className="text-slate-600 text-lg mb-4">
+          <div className="text-muted-foreground text-lg mb-4">
             Nenhuma pergunta encontrada neste bloco
           </div>
           <Button onClick={() => navigate("/questionnaire")} variant="outline">
@@ -351,7 +351,7 @@ export default function BlockDetailPage() {
       >
         <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
           {/* Banner de Bonificação */}
-          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-xl p-4">
+          <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950 dark:to-orange-950 border border-yellow-200 rounded-xl p-4">
             <div className="flex items-center gap-3">
               <div className="flex-shrink-0">
                 <Trophy className="w-6 h-6 text-yellow-600" />
@@ -380,7 +380,7 @@ export default function BlockDetailPage() {
           )}
 
           {/* Controles de navegação */}
-          <div className="bg-white rounded-xl border border-slate-200 p-4">
+          <div className="bg-background rounded-xl border border-border p-4">
             <div className="flex items-center justify-between gap-3">
               <Button
                 onClick={handlePrev}
@@ -394,7 +394,7 @@ export default function BlockDetailPage() {
 
               <div className="hidden sm:block text-center flex-1">
                 {isLastStep && (
-                  <p className="text-xs text-slate-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {allQuestionsAnswered ? (
                       <span className="text-emerald-600">
                         Todas respondidas!
@@ -416,8 +416,8 @@ export default function BlockDetailPage() {
                       }
                       className={`gap-2 flex-1 sm:flex-none ${
                         isLastStep
-                          ? "bg-emerald-500 hover:bg-emerald-600 disabled:bg-slate-300"
-                          : "bg-primary hover:bg-primary/90 disabled:bg-slate-300"
+                          ? "bg-emerald-500 hover:bg-emerald-600 disabled:bg-muted"
+                          : "bg-primary hover:bg-primary/90 disabled:bg-muted"
                       }`}
                     >
                       {isLastStep ? (
@@ -447,7 +447,7 @@ export default function BlockDetailPage() {
 
             {/* Status mobile */}
             <div className="sm:hidden mt-3 text-center">
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-muted-foreground">
                 {isCurrentAnswered ? (
                   <span className="text-emerald-600 font-medium">
                     ✓ Pergunta respondida
@@ -461,7 +461,7 @@ export default function BlockDetailPage() {
                 )}
               </p>
               {isLastStep && (
-                <p className="text-xs text-slate-400 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   {allQuestionsAnswered ? (
                     <span className="text-emerald-600">
                       Todas as perguntas respondidas!
