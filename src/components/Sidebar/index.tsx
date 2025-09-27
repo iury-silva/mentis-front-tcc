@@ -14,6 +14,7 @@ import {
   // Cog6ToothIcon,
   // UsersIcon,
   QuestionMarkCircleIcon,
+  QueueListIcon,
   HeartIcon,
 } from "@heroicons/react/24/outline";
 
@@ -33,6 +34,12 @@ export function AppSidebar() {
       title: "Dashboard",
       url: "/dashboard",
       icon: HomeIcon,
+      role: "admin", // só admin vê
+    },
+    {
+      title: "Questionários",
+      url: "/questionnaires",
+      icon: QueueListIcon,
       role: "admin", // só admin vê
     },
     {

@@ -7,7 +7,12 @@ import ScrollToTop from "@/utils/ScrollToTop";
 
 //routes
 import LoginPage from "@/pages/Auth/LoginPage";
-import DashboardAdminPage from "@/pages/Dashboard/DashboardAdminPage";
+
+//admin
+import DashboardAdminPage from "@/pages/Admin/Dashboard/DashboardAdminPage";
+import QuestionnaireAdminPage from "@/pages/Admin/Questionnaires/QuestionnaireAdminPage";
+
+//user
 import DashboardUserPage from "@/pages/Dashboard/DashboardUserPage";
 import { RegisterPage } from "@/pages/Auth/RegisterPage";
 import GoogleLoggedPage from "@/pages/Auth/GoogleLoggedPage";
@@ -43,6 +48,7 @@ const AppRoutes: React.FC = () => {
         <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
           <Route element={<AppLayout />}>
             <Route path="/dashboard" element={<DashboardAdminPage />} />
+            <Route path="/questionnaires" element={<QuestionnaireAdminPage />} />   
             {/* Add other protected app routes here, e.g., /dashboard, /profile */}
           </Route>
         </Route>
