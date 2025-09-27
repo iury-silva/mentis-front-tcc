@@ -122,7 +122,7 @@ export function TermsModal({
             <Button
               onClick={handleAccept}
               disabled={!agreed}
-              className="w-full sm:w-auto bg-gradient-to-r from-primary to-red-400 hover:from-primary/90 hover:to-red-500 order-1 sm:order-2"
+              className="w-full sm:w-auto order-1 sm:order-2"
             >
               Aceito e desejo continuar
             </Button>

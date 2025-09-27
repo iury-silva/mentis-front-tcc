@@ -135,6 +135,7 @@ export default function BlockDetailPage() {
     },
     enabled: !!blockId && !!user?.id,
     retry: false, // Não tentar novamente em caso de erro 403/401
+    refetchOnWindowFocus: false,
   });
 
   const query = useQuery<QuestionsResponse>({
