@@ -5,6 +5,14 @@ import { useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { LoginForm } from "@/components/Login/LoginForm";
 import { useAuth } from "@/auth/useAuth";
+import { MonitorIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,13 +23,11 @@ export default function LoginPage() {
         ? "/dashboard"
         : "/dashboard-user";
     }
-    // Verificar se foi redirecionado por sessão expirada
     if (searchParams.get("expired") === "true") {
       toast.error("Sessão expirada. Por favor, faça login novamente.", {
         icon: "⏰",
       });
 
-      // Limpar o parâmetro da URL para evitar reexibir o toast
       searchParams.delete("expired");
       setSearchParams(searchParams, { replace: true });
     }
@@ -40,6 +46,30 @@ export default function LoginPage() {
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover"
         />
+      </div>
+
+      {/* iframe do instatus no canto direito botao floating */}
+      <div className="hidden lg:block absolute bottom-10 left-4 opacity-90 z-50">
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="bg-background/20 rounded-full transition-all duration-200 transform hover:scale-110"
+            >
+              <MonitorIcon className="h-6 w-6 text-foreground" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-96 p-0 m-3 rounded-xl shadow-lg border border-border/50 bg-card/80 backdrop-blur-sm">
+            <DropdownMenuItem className="p-0 m-0">
+              <iframe
+                src="https://mentis.instatus.com/"
+                style={{ border: "none", width: "400px", height: "600px" }}
+                className="rounded-lg p-0"
+              ></iframe>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className="flex flex-col gap-2 p-6 md:p-10">
         <div className="flex justify-center">
