@@ -1,5 +1,6 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import { PageCustom } from "@/components/Layout/PageCustom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -172,449 +173,429 @@ const DashboardAdminPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-muted/50 dark:from-primary/10 dark:to-muted/20">
-        {/* Header Skeleton */}
-        <header className="bg-card/60 backdrop-blur-sm border-b border-border/50 sticky top-0 z-10 mt-4">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-4">
-                <Skeleton className="w-10 h-10 rounded-xl" />
-                <div className="space-y-1">
-                  <Skeleton className="h-5 w-32" />
-                  {!isMobile && <Skeleton className="h-4 w-48" />}
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Skeleton className="hidden sm:flex h-6 w-48 rounded-full" />
-                <Skeleton className="h-8 w-20 rounded" />
-              </div>
+      <PageCustom
+        title="Dashboard Administrativo"
+        subtitle="Carregando dados..."
+        icon={
+          <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg">
+            <BarChart3 className="w-5 h-5 text-white" />
+          </div>
+        }
+        actions={
+          <div className="flex items-center gap-3">
+            <Skeleton className="hidden sm:flex h-6 w-48 rounded-full" />
+            <Skeleton className="h-8 w-20 rounded" />
+          </div>
+        }
+      >
+        <div className="space-y-8">
+          {/* Stats Overview Skeleton */}
+          <section>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, index) => (
+                <StatsCardSkeleton key={index} />
+              ))}
             </div>
-          </div>
-        </header>
+          </section>
 
-        {/* Main Content Skeleton */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="space-y-8">
-            {/* Stats Overview Skeleton */}
-            <section>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[...Array(4)].map((_, index) => (
-                  <StatsCardSkeleton key={index} />
-                ))}
-              </div>
-            </section>
-
-            {/* Distribution Charts Skeleton */}
-            <section>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <ChartSkeleton />
-                <ChartSkeleton />
-              </div>
-            </section>
-
-            {/* Trend Charts Skeleton */}
-            <section>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <ChartSkeleton />
-                <ChartSkeleton />
-              </div>
-            </section>
-
-            {/* Block Analysis Skeleton */}
-            <section>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <ChartSkeleton />
-                <ChartSkeleton />
-              </div>
-            </section>
-
-            {/* Block Performance Skeleton */}
-            <section>
-              <BlockPerformanceSkeleton />
-            </section>
-
-            {/* Top Active Users Skeleton */}
-            <section>
-              <TopActiveUsersSkeleton />
-            </section>
-
-            {/* Response Evolution Skeleton */}
-            <section>
+          {/* Distribution Charts Skeleton */}
+          <section>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <ChartSkeleton />
-            </section>
+              <ChartSkeleton />
+            </div>
+          </section>
 
-            {/* System Summary Skeleton */}
-            <section>
-              <SystemSummarySkeleton />
-            </section>
-          </div>
-        </main>
-      </div>
+          {/* Trend Charts Skeleton */}
+          <section>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ChartSkeleton />
+              <ChartSkeleton />
+            </div>
+          </section>
+
+          {/* Block Analysis Skeleton */}
+          <section>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ChartSkeleton />
+              <ChartSkeleton />
+            </div>
+          </section>
+
+          {/* Block Performance Skeleton */}
+          <section>
+            <BlockPerformanceSkeleton />
+          </section>
+
+          {/* Top Active Users Skeleton */}
+          <section>
+            <TopActiveUsersSkeleton />
+          </section>
+
+          {/* Response Evolution Skeleton */}
+          <section>
+            <ChartSkeleton />
+          </section>
+
+          {/* System Summary Skeleton */}
+          <section>
+            <SystemSummarySkeleton />
+          </section>
+        </div>
+      </PageCustom>
     );
   }
 
   if (isError || !dashboardData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-muted/50 flex items-center justify-center dark:from-primary/10 dark:to-muted/20">
-        <Card className="w-full max-w-md">
-          <CardContent className="pt-6">
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto">
-                <XCircle className="w-8 h-8 text-red-500" />
+      <PageCustom
+        title="Dashboard Administrativo"
+        subtitle="Erro ao carregar dados"
+        icon={
+          <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
+            <BarChart3 className="w-5 h-5 text-red-500" />
+          </div>
+        }
+        actions={
+          <Button onClick={() => refetch()} variant="outline">
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Tentar novamente
+          </Button>
+        }
+      >
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Card className="w-full max-w-md">
+            <CardContent className="pt-6">
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto">
+                  <XCircle className="w-8 h-8 text-red-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl mb-2">
+                    Dados Indisponíveis
+                  </CardTitle>
+                  <CardDescription className="mb-4">
+                    Não foi possível carregar os dados do dashboard
+                    administrativo
+                  </CardDescription>
+                </div>
               </div>
-              <div>
-                <CardTitle className="text-xl mb-2">Erro ao Carregar</CardTitle>
-                <CardDescription className="mb-4">
-                  Não foi possível carregar os dados do dashboard
-                </CardDescription>
-                <Button onClick={() => refetch()} variant="outline">
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Tentar novamente
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
+      </PageCustom>
     );
   }
 
   const { summary, charts, trends } = dashboardData;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-muted/50 dark:from-primary/10 dark:to-muted/20">
-      {/* Header */}
-      <header className="bg-card/60 backdrop-blur-sm border-b border-border/50 pt-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg">
-                <BarChart3 className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground">
-                  Dashboard Admin
-                </h1>
-                {!isMobile && (
-                  <p className="text-sm text-muted-foreground">
-                    Análises e métricas do sistema
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Badge
-                variant="subtle"
-                className="hidden sm:flex items-center gap-2 border border-border"
-              >
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                Última atualização: {new Date().toLocaleTimeString("pt-BR")}
-              </Badge>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => refetch()}
-                disabled={isFetching}
-                className="bg-card/70 backdrop-blur-sm"
-              >
-                {isFetching ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                )}
-                Atualizar
-              </Button>
-            </div>
-          </div>
+    <PageCustom
+      title="Dashboard Admin"
+      subtitle={!isMobile ? "Análises e métricas do sistema" : undefined}
+      icon={
+        <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg">
+          <BarChart3 className="w-5 h-5 text-white" />
         </div>
-      </header>
+      }
+      badge={
+        <Badge
+          variant="outline"
+          className="hidden sm:flex items-center gap-2 border border-border"
+        >
+          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+          Última atualização: {new Date().toLocaleTimeString("pt-BR")}
+        </Badge>
+      }
+      actions={
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => refetch()}
+          disabled={isFetching}
+          className="bg-card/70 backdrop-blur-sm"
+        >
+          {isFetching ? (
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          ) : (
+            <RefreshCw className="w-4 h-4 mr-2" />
+          )}
+          Atualizar
+        </Button>
+      }
+    >
+      <div className="space-y-8">
+        {/* Stats Overview */}
+        <section>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <StatsCard
+              title="Total de Usuários"
+              value={dashboardService.formatNumber(summary.totalUsers)}
+              description={`${summary.usersAnswered} responderam questionários`}
+              icon={Users}
+              trend={{
+                value: Math.round(trends.weeklyGrowth.userGrowth * 100) / 100,
+                isPositive: trends.weeklyGrowth.userGrowth >= 0,
+              }}
+              className="bg-card/70 backdrop-blur-sm"
+            />
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-8">
-          {/* Stats Overview */}
-          <section>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <StatsCard
-                title="Total de Usuários"
-                value={dashboardService.formatNumber(summary.totalUsers)}
-                description={`${summary.usersAnswered} responderam questionários`}
-                icon={Users}
-                trend={{
-                  value: Math.round(trends.weeklyGrowth.userGrowth * 100) / 100,
-                  isPositive: trends.weeklyGrowth.userGrowth >= 0,
-                }}
-                className="bg-card/70 backdrop-blur-sm"
-              />
+            <StatsCard
+              title="Questionários"
+              value={dashboardService.formatNumber(summary.totalQuestionnaires)}
+              description={`${summary.totalBlocks} blocos no total`}
+              icon={FileText}
+              className="bg-card/70 backdrop-blur-sm"
+            />
 
-              <StatsCard
-                title="Questionários"
-                value={dashboardService.formatNumber(
-                  summary.totalQuestionnaires
-                )}
-                description={`${summary.totalBlocks} blocos no total`}
-                icon={FileText}
-                className="bg-card/70 backdrop-blur-sm"
-              />
+            <StatsCard
+              title="Blocos Ativos"
+              value={dashboardService.formatNumber(summary.totalBlocks)}
+              description="Blocos de perguntas disponíveis"
+              icon={Layers}
+              className="bg-card/70 backdrop-blur-sm"
+            />
 
-              <StatsCard
-                title="Blocos Ativos"
-                value={dashboardService.formatNumber(summary.totalBlocks)}
-                description="Blocos de perguntas disponíveis"
-                icon={Layers}
-                className="bg-card/70 backdrop-blur-sm"
-              />
+            <StatsCard
+              title="Taxa de Participação"
+              value={dashboardService.formatPercentage(summary.completionRate)}
+              description={`${summary.totalResponses} respostas coletadas`}
+              icon={CheckCircle}
+              trend={{
+                value:
+                  Math.round(trends.weeklyGrowth.responseGrowth * 100) / 100,
+                isPositive: trends.weeklyGrowth.responseGrowth >= 0,
+              }}
+              className="bg-card/70 backdrop-blur-sm"
+            />
+          </div>
+        </section>
 
-              <StatsCard
-                title="Taxa de Participação"
-                value={dashboardService.formatPercentage(
-                  summary.completionRate
-                )}
-                description={`${summary.totalResponses} respostas coletadas`}
-                icon={CheckCircle}
-                trend={{
-                  value:
-                    Math.round(trends.weeklyGrowth.responseGrowth * 100) / 100,
-                  isPositive: trends.weeklyGrowth.responseGrowth >= 0,
-                }}
-                className="bg-card/70 backdrop-blur-sm"
-              />
-            </div>
-          </section>
+        {/* Distribution Charts */}
+        <section>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <DashboardPieChart
+              title="Participação dos Usuários"
+              data={charts.userDistribution}
+              description="Usuários que responderam vs não responderam"
+              className="bg-card/70 backdrop-blur-sm"
+            />
 
-          {/* Distribution Charts */}
-          <section>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <DashboardPieChart
-                title="Participação dos Usuários"
-                data={charts.userDistribution}
-                description="Usuários que responderam vs não responderam"
-                className="bg-card/70 backdrop-blur-sm"
-              />
+            <DashboardPieChart
+              title="Usuários por Função"
+              data={charts.usersByRole}
+              description="Distribuição por tipo de usuário"
+              className="bg-card/70 backdrop-blur-sm"
+            />
+          </div>
+        </section>
 
-              <DashboardPieChart
-                title="Usuários por Função"
-                data={charts.usersByRole}
-                description="Distribuição por tipo de usuário"
-                className="bg-card/70 backdrop-blur-sm"
-              />
-            </div>
-          </section>
+        {/* Trend Charts */}
+        <section>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <DashboardBarChart
+              title="Cadastros por Mês"
+              data={charts.registrationsByMonth}
+              dataKey="registrations"
+              xAxisKey="month"
+              description="Novos usuários cadastrados nos últimos 6 meses"
+              color="#8884d8"
+              className="bg-card/70 backdrop-blur-sm"
+            />
 
-          {/* Trend Charts */}
-          <section>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <DashboardBarChart
-                title="Cadastros por Mês"
-                data={charts.registrationsByMonth}
-                dataKey="registrations"
-                xAxisKey="month"
-                description="Novos usuários cadastrados nos últimos 6 meses"
-                color="#8884d8"
-                className="bg-card/70 backdrop-blur-sm"
-              />
+            <DashboardLineChart
+              title="Atividade Diária"
+              data={trends.dailyActivity}
+              dataKey="responses"
+              xAxisKey="day"
+              description="Respostas coletadas nos últimos 7 dias"
+              color="#10b981"
+              className="bg-card/70 backdrop-blur-sm"
+            />
+          </div>
+        </section>
 
-              <DashboardLineChart
-                title="Atividade Diária"
-                data={trends.dailyActivity}
-                dataKey="responses"
-                xAxisKey="day"
-                description="Respostas coletadas nos últimos 7 dias"
-                color="#10b981"
-                className="bg-card/70 backdrop-blur-sm"
-              />
-            </div>
-          </section>
+        {/* Block Analysis */}
+        <section>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <DashboardBarChart
+              title="Respostas por Bloco"
+              data={charts.responsesByBlock}
+              dataKey="responses"
+              xAxisKey="block"
+              description="Total de respostas coletadas por bloco"
+              color="#f59e0b"
+              className="bg-card/70 backdrop-blur-sm"
+            />
 
-          {/* Block Analysis */}
-          <section>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <DashboardBarChart
-                title="Respostas por Bloco"
-                data={charts.responsesByBlock}
-                dataKey="responses"
-                xAxisKey="block"
-                description="Total de respostas coletadas por bloco"
-                color="#f59e0b"
-                className="bg-card/70 backdrop-blur-sm"
-              />
+            <DashboardPieChart
+              title="Tipos de Pergunta"
+              data={charts.questionTypeDistribution}
+              description="Distribuição por tipo de pergunta"
+              className="bg-card/70 backdrop-blur-sm"
+            />
+          </div>
+        </section>
 
-              <DashboardPieChart
-                title="Tipos de Pergunta"
-                data={charts.questionTypeDistribution}
-                description="Distribuição por tipo de pergunta"
-                className="bg-card/70 backdrop-blur-sm"
-              />
-            </div>
-          </section>
-
-          <section>
-            <Card className="bg-card/70 backdrop-blur-sm border-border/50 shadow-xl">
-              <CardHeader>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <CardTitle>Performance dos Blocos</CardTitle>
-                    <CardDescription>
-                      Taxa de conclusão por bloco de questionário
-                    </CardDescription>
-                  </div>
+        <section>
+          <Card className="bg-card/70 backdrop-blur-sm border-border/50 shadow-xl">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-4 h-4 text-primary-foreground" />
                 </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {charts.blockCompletionStats.map((block, index) => (
-                    <Card
-                      key={index}
-                      className="bg-card/80 border-border/30 hover:shadow-lg transition-all duration-300"
-                    >
-                      <CardContent className="p-4 sm:p-6">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                          <div className="flex-1 space-y-3 min-w-0">
-                            <div className="flex items-center gap-3">
-                              <Badge
-                                variant="secondary"
-                                className="w-6 h-6 p-0 flex items-center justify-center flex-shrink-0"
-                              >
-                                {index + 1}
-                              </Badge>
-                              <CardTitle className="text-sm sm:text-base truncate">
-                                {block.blockTitle}
-                              </CardTitle>
-                            </div>
-                            <CardDescription className="truncate">
-                              {block.questionnaire}
-                            </CardDescription>
-                            <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-                              <Badge
-                                variant="outline"
-                                className="gap-1 text-xs"
-                              >
-                                <div className="w-2 h-2 bg-blue-400 rounded-full" />
-                                <span className="hidden sm:inline">
-                                  {block.totalQuestions} perguntas
-                                </span>
-                                <span className="sm:hidden">
-                                  {block.totalQuestions}p
-                                </span>
-                              </Badge>
-                              <Badge
-                                variant="outline"
-                                className="gap-1 text-xs"
-                              >
-                                <div className="w-2 h-2 bg-green-400 rounded-full" />
-                                <span className="hidden sm:inline">
-                                  {block.completedUsers} concluído
-                                </span>
-                                <span className="sm:hidden">
-                                  {block.completedUsers}c
-                                </span>
-                              </Badge>
-                            </div>
+                <div>
+                  <CardTitle>Performance dos Blocos</CardTitle>
+                  <CardDescription>
+                    Taxa de conclusão por bloco de questionário
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {charts.blockCompletionStats.map((block, index) => (
+                  <Card
+                    key={index}
+                    className="bg-card/80 border-border/30 hover:shadow-lg transition-all duration-300"
+                  >
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div className="flex-1 space-y-3 min-w-0">
+                          <div className="flex items-center gap-3">
+                            <Badge
+                              variant="secondary"
+                              className="w-6 h-6 p-0 flex items-center justify-center flex-shrink-0"
+                            >
+                              {index + 1}
+                            </Badge>
+                            <CardTitle className="text-sm sm:text-base truncate">
+                              {block.blockTitle}
+                            </CardTitle>
                           </div>
-                          <div className="text-center sm:text-right flex-shrink-0">
-                            <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
-                              {dashboardService.formatPercentage(
-                                block.completionRate
-                              )}
-                            </div>
-                            <Badge variant="secondary" className="text-xs">
-                              taxa de conclusão
+                          <CardDescription className="truncate">
+                            {block.questionnaire}
+                          </CardDescription>
+                          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+                            <Badge variant="outline" className="gap-1 text-xs">
+                              <div className="w-2 h-2 bg-blue-400 rounded-full" />
+                              <span className="hidden sm:inline">
+                                {block.totalQuestions} perguntas
+                              </span>
+                              <span className="sm:hidden">
+                                {block.totalQuestions}p
+                              </span>
+                            </Badge>
+                            <Badge variant="outline" className="gap-1 text-xs">
+                              <div className="w-2 h-2 bg-green-400 rounded-full" />
+                              <span className="hidden sm:inline">
+                                {block.completedUsers} concluído
+                              </span>
+                              <span className="sm:hidden">
+                                {block.completedUsers}c
+                              </span>
                             </Badge>
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        <div className="text-center sm:text-right flex-shrink-0">
+                          <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+                            {dashboardService.formatPercentage(
+                              block.completionRate
+                            )}
+                          </div>
+                          <Badge variant="secondary" className="text-xs">
+                            taxa de conclusão
+                          </Badge>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Top Active Users */}
+        <section>
+          <TopActiveUsers
+            users={charts.topActiveUsers}
+            className="bg-card/70 backdrop-blur-sm"
+          />
+        </section>
+
+        {/* Response Evolution */}
+        <section>
+          <DashboardLineChart
+            title="Evolução de Respostas"
+            data={charts.responsesByMonth}
+            dataKey="responses"
+            xAxisKey="month"
+            description="Respostas coletadas ao longo dos meses"
+            color="#8b5cf6"
+            className="bg-card/70 backdrop-blur-sm"
+          />
+        </section>
+
+        {/* System Summary */}
+        <section>
+          <Card className="bg-gradient-to-r from-card/60 to-muted/80 backdrop-blur-sm border-border/50 shadow-xl">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Resumo do Sistema</CardTitle>
+                  <CardDescription>
+                    Métricas consolidadas do sistema
+                  </CardDescription>
                 </div>
-              </CardContent>
-            </Card>
-          </section>
-
-          {/* Top Active Users */}
-          <section>
-            <TopActiveUsers
-              users={charts.topActiveUsers}
-              className="bg-card/70 backdrop-blur-sm"
-            />
-          </section>
-
-          {/* Response Evolution */}
-          <section>
-            <DashboardLineChart
-              title="Evolução de Respostas"
-              data={charts.responsesByMonth}
-              dataKey="responses"
-              xAxisKey="month"
-              description="Respostas coletadas ao longo dos meses"
-              color="#8b5cf6"
-              className="bg-card/70 backdrop-blur-sm"
-            />
-          </section>
-
-          {/* System Summary */}
-          <section>
-            <Card className="bg-gradient-to-r from-card/60 to-muted/80 backdrop-blur-sm border-border/50 shadow-xl">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle>Resumo do Sistema</CardTitle>
+              </div>
+            </CardHeader>
+            <Separator />
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="bg-card/50">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-2xl font-bold text-foreground mb-1">
+                      {dashboardService.formatNumber(
+                        summary.averageResponsesPerUser,
+                        1
+                      )}
+                    </div>
                     <CardDescription>
-                      Métricas consolidadas do sistema
+                      Média de respostas por usuário
                     </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <Separator />
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <Card className="bg-card/50">
-                    <CardContent className="p-6 text-center">
-                      <div className="text-2xl font-bold text-foreground mb-1">
-                        {dashboardService.formatNumber(
-                          summary.averageResponsesPerUser,
-                          1
-                        )}
-                      </div>
-                      <CardDescription>
-                        Média de respostas por usuário
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
+                  </CardContent>
+                </Card>
 
-                  <Card className="bg-card/50">
-                    <CardContent className="p-6 text-center">
-                      <div className="text-2xl font-bold text-foreground mb-1">
-                        {dashboardService.formatNumber(
-                          trends.weeklyGrowth.currentWeekUsers
-                        )}
-                      </div>
-                      <CardDescription>
-                        Usuários ativos esta semana
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
+                <Card className="bg-card/50">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-2xl font-bold text-foreground mb-1">
+                      {dashboardService.formatNumber(
+                        trends.weeklyGrowth.currentWeekUsers
+                      )}
+                    </div>
+                    <CardDescription>
+                      Usuários ativos esta semana
+                    </CardDescription>
+                  </CardContent>
+                </Card>
 
-                  <Card className="bg-card/50">
-                    <CardContent className="p-6 text-center">
-                      <div className="text-2xl font-bold text-foreground mb-1">
-                        {dashboardService.formatNumber(
-                          trends.weeklyGrowth.currentWeekResponses
-                        )}
-                      </div>
-                      <CardDescription>Respostas esta semana</CardDescription>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-        </div>
-      </main>
-    </div>
+                <Card className="bg-card/50">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-2xl font-bold text-foreground mb-1">
+                      {dashboardService.formatNumber(
+                        trends.weeklyGrowth.currentWeekResponses
+                      )}
+                    </div>
+                    <CardDescription>Respostas esta semana</CardDescription>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+      </div>
+    </PageCustom>
   );
 };
 

@@ -27,7 +27,7 @@ export default function NotFoundPage() {
     <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-6">
       {/* Logo M */}
       <div className="absolute top-4 left-4 z-20">
-        <img src="/icone-mentisV2.png" alt="Logo M" className="w-10" />
+        <img src="/images/icone-mentisV2.png" alt="Logo M" className="w-10" />
       </div>
 
       <div className="text-center max-w-2xl mx-auto">

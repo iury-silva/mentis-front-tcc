@@ -3,6 +3,7 @@ import { useAuth } from "../../auth/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/api";
+import { PageCustom } from "@/components/Layout/PageCustom";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/useMobile";
 import {
@@ -276,250 +277,244 @@ const DashboardUserPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 dark:from-primary/10 dark:to-muted/20">
-        {/* Header Skeleton */}
-        <header className="border-b border-border/50 sticky top-0 z-10 mt-4">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center gap-4">
-                <Skeleton className="w-10 h-10 rounded-xl" />
-                <div className="space-y-1">
-                  <Skeleton className="h-5 w-40" />
-                  {!isMobile && <Skeleton className="h-4 w-60" />}
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <Skeleton className="hidden sm:flex h-6 w-48 rounded-full" />
-                <Skeleton className="h-8 w-20 rounded" />
-              </div>
+      <PageCustom
+        title="Carregando..."
+        subtitle="Aguarde enquanto carregamos seus dados"
+        icon={
+          <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg">
+            <User className="w-5 h-5 text-primary-foreground" />
+          </div>
+        }
+        actions={
+          <div className="flex items-center gap-3">
+            <Skeleton className="hidden sm:flex h-6 w-48 rounded-full" />
+            <Skeleton className="h-8 w-20 rounded" />
+          </div>
+        }
+      >
+        <div className="space-y-8">
+          {/* Stats Grid Skeleton */}
+          <section>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[...Array(3)].map((_, index) => (
+                <UserStatsCardSkeleton key={index} />
+              ))}
             </div>
-          </div>
-        </header>
+          </section>
 
-        {/* Main Content Skeleton */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="space-y-8">
-            {/* Stats Grid Skeleton */}
-            <section>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[...Array(3)].map((_, index) => (
-                  <UserStatsCardSkeleton key={index} />
-                ))}
-              </div>
-            </section>
+          {/* Actions and Activities Skeleton */}
+          <section>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <QuickActionsSkeleton />
+              <RecentActivitiesSkeleton />
+            </div>
+          </section>
 
-            {/* Actions and Activities Skeleton */}
-            <section>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <QuickActionsSkeleton />
-                <RecentActivitiesSkeleton />
-              </div>
-            </section>
+          {/* Progress Skeleton */}
+          <section>
+            <ProgressSkeleton />
+          </section>
 
-            {/* Progress Skeleton */}
-            <section>
-              <ProgressSkeleton />
-            </section>
-
-            {/* Weekly Summary Skeleton */}
-            <section>
-              <WeeklySummarySkeleton />
-            </section>
-          </div>
-        </main>
-      </div>
+          {/* Weekly Summary Skeleton */}
+          <section>
+            <WeeklySummarySkeleton />
+          </section>
+        </div>
+      </PageCustom>
     );
   }
 
   if (isError || !dashboardData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 flex items-center justify-center dark:from-primary/10 dark:to-muted/20">
-        <Card className="w-full max-w-md">
-          <CardContent className="pt-6">
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto">
-                <AlertCircle className="w-8 h-8 text-red-500" />
+      <PageCustom
+        title="Erro ao Carregar"
+        subtitle="Não foi possível carregar seus dados"
+        icon={
+          <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
+            <User className="w-5 h-5 text-red-500" />
+          </div>
+        }
+        actions={
+          <Button onClick={() => refetch()} variant="outline">
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Tentar novamente
+          </Button>
+        }
+      >
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Card className="w-full max-w-md">
+            <CardContent className="pt-6">
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto">
+                  <AlertCircle className="w-8 h-8 text-red-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl mb-2">
+                    Dados Indisponíveis
+                  </CardTitle>
+                  <CardDescription className="mb-4">
+                    Seus dados não puderam ser carregados no momento
+                  </CardDescription>
+                </div>
               </div>
-              <div>
-                <CardTitle className="text-xl mb-2">Erro ao Carregar</CardTitle>
-                <CardDescription className="mb-4">
-                  Não foi possível carregar seus dados
-                </CardDescription>
-                <Button onClick={() => refetch()} variant="outline">
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Tentar novamente
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
+      </PageCustom>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/30 dark:from-primary/10 dark:to-muted/20">
-      {/* Header */}
-      <header className="border-b border-border/50 pt-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg">
-                <User className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-foreground">
-                  Olá, {user?.name || "Usuário"}! 👋
-                </h1>
-                {!isMobile && (
-                  <p className="text-sm text-muted-foreground">
-                    Acompanhe seu progresso e cuide do seu bem-estar
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <Badge
-                variant="outline"
-                className="hidden sm:flex items-center gap-2 border border-border"
-              >
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                Última atualização: {new Date().toLocaleTimeString("pt-BR")}
-              </Badge>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => refetch()}
-                disabled={isFetching}
-                className="bg-card/70 backdrop-blur-sm"
-              >
-                {isFetching ? (
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                ) : (
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                )}
-                Atualizar
-              </Button>
-            </div>
-          </div>
+    <PageCustom
+      title={`Olá, ${user?.name || "Usuário"}! 👋`}
+      subtitle={
+        !isMobile
+          ? "Acompanhe seu progresso e cuide do seu bem-estar"
+          : undefined
+      }
+      icon={
+        <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-xl flex items-center justify-center shadow-lg">
+          <User className="w-5 h-5 text-primary-foreground" />
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-8">
-          {/* Stats Grid */}
-          <section>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {stats.map((stat, index) => (
-                <Card
-                  key={index}
-                  className="bg-card/70 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-2">
-                        <p className="text-sm text-muted-foreground">
-                          {stat.title}
-                        </p>
-                        <p className="text-3xl font-bold">{stat.value}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {stat.description}
-                        </p>
-                      </div>
-                      <div
-                        className={`p-3 rounded-full ${stat.bgColor} ${stat.color}`}
-                      >
-                        <stat.icon className="w-6 h-6" />
-                      </div>
-                    </div>
-                    <div className="mt-4 pt-4 border-t">
+      }
+      badge={
+        <Badge
+          variant="outline"
+          className="hidden sm:flex items-center gap-2 border border-border"
+        >
+          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+          Última atualização: {new Date().toLocaleTimeString("pt-BR")}
+        </Badge>
+      }
+      actions={
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => refetch()}
+          disabled={isFetching}
+          className="bg-card/70 backdrop-blur-sm"
+        >
+          {isFetching ? (
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          ) : (
+            <RefreshCw className="w-4 h-4 mr-2" />
+          )}
+          Atualizar
+        </Button>
+      }
+    >
+      <div className="space-y-8">
+        {/* Stats Grid */}
+        <section>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {stats.map((stat, index) => (
+              <Card
+                key={index}
+                className="bg-card/70 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-sm text-muted-foreground">
+                        {stat.title}
+                      </p>
+                      <p className="text-3xl font-bold">{stat.value}</p>
                       <p className="text-xs text-muted-foreground">
-                        {stat.trend}
+                        {stat.description}
                       </p>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </section>
-
-          {/* Quick Actions & Recent Activity */}
-          <section>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Quick Actions */}
-              <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="w-5 h-5" />
-                    Ações Rápidas
-                  </CardTitle>
-                  <CardDescription>
-                    Acesso direto às principais funcionalidades
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {quickActions.map((action, index) => (
-                    <Card
-                      key={index}
-                      className={`transition-all cursor-pointer hover:shadow-lg ${
-                        action.highlight
-                          ? "bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950"
-                          : "bg-muted hover:bg-accent"
-                      }`}
-                      onClick={action.action}
+                    <div
+                      className={`p-3 rounded-full ${stat.bgColor} ${stat.color}`}
                     >
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3">
-                          <div
-                            className={`p-2 rounded-lg bg-gradient-to-r ${action.color} text-primary-foreground`}
-                          >
-                            <action.icon className="w-4 h-4" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <h4 className="font-medium text-sm">
-                                {action.title}
-                              </h4>
-                              {action.count && action.count > 0 && (
-                                <Badge
-                                  variant="destructive"
-                                  className="text-xs h-5"
-                                >
-                                  {action.count}
-                                </Badge>
-                              )}
-                              {action.highlight && (
-                                <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-primary-foreground text-xs h-5">
-                                  Novo!
-                                </Badge>
-                              )}
-                            </div>
-                            <p className="text-xs text-muted-foreground">
-                              {action.description}
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                      <stat.icon className="w-6 h-6" />
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t">
+                    <p className="text-xs text-muted-foreground">
+                      {stat.trend}
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
+            ))}
+          </div>
+        </section>
 
-              {/* Recent Activity */}
-              <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Clock className="w-5 h-5" />
-                    Atividade Recente
-                  </CardTitle>
-                  <CardDescription>
-                    Suas últimas interações no sistema
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* {recentActivities.map((activity, index) => (
+        {/* Quick Actions & Recent Activity */}
+        <section>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Quick Actions */}
+            <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BookOpen className="w-5 h-5" />
+                  Ações Rápidas
+                </CardTitle>
+                <CardDescription>
+                  Acesso direto às principais funcionalidades
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {quickActions.map((action, index) => (
+                  <Card
+                    key={index}
+                    className={`transition-all cursor-pointer hover:shadow-lg ${
+                      action.highlight
+                        ? "bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950"
+                        : "bg-muted hover:bg-accent"
+                    }`}
+                    onClick={action.action}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`p-2 rounded-lg bg-gradient-to-r ${action.color} text-primary-foreground`}
+                        >
+                          <action.icon className="w-4 h-4" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-medium text-sm">
+                              {action.title}
+                            </h4>
+                            {action.count && action.count > 0 && (
+                              <Badge
+                                variant="destructive"
+                                className="text-xs h-5"
+                              >
+                                {action.count}
+                              </Badge>
+                            )}
+                            {action.highlight && (
+                              <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-primary-foreground text-xs h-5">
+                                Novo!
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            {action.description}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Recent Activity */}
+            <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="w-5 h-5" />
+                  Atividade Recente
+                </CardTitle>
+                <CardDescription>
+                  Suas últimas interações no sistema
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* {recentActivities.map((activity, index) => (
                     <div
                       key={index}
                       className="flex items-center gap-3 p-3 rounded-lg bg-muted"
@@ -546,169 +541,158 @@ const DashboardUserPage: React.FC = () => {
                       </Badge>
                     </div>
                   ))} */}
-                  {/* em breve */}
-                  <div className="text-center text-sm text-muted-foreground">
-                    <AlertCircle className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
-                    Em breve, você poderá ver suas atividades recentes aqui!
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          {/* Progress Section */}
-          <section>
-            <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target className="w-5 h-5" />
-                  Seu Progresso
-                </CardTitle>
-                <CardDescription>
-                  Acompanhe sua participação nos questionários
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">
-                        Perguntas Respondidas
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        {dashboardData?.answeredQuestions || 0} de{" "}
-                        {dashboardData?.totalQuestions || 0}
-                      </span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-3">
-                      <div
-                        className="bg-gradient-to-r from-emerald-500 to-green-500 h-3 rounded-full transition-all duration-500"
-                        style={{
-                          width: `${dashboardData?.completionRate || 0}%`,
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">
-                        Questionários Concluídos
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        {dashboardData?.completedQuestionnaires || 0} de{" "}
-                        {dashboardData?.totalQuestionnaires || 0}
-                      </span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-3">
-                      <div
-                        className="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full transition-all duration-500"
-                        style={{
-                          width: `${
-                            dashboardData?.totalQuestionnaires
-                              ? (dashboardData.completedQuestionnaires /
-                                  dashboardData.totalQuestionnaires) *
-                                100
-                              : 0
-                          }%`,
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  <Separator />
-
-                  <div className="grid grid-cols-2 gap-4 text-center">
-                    <div>
-                      <p className="text-2xl font-bold text-emerald-600">
-                        {dashboardData?.answeredQuestions || 0}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Respostas Enviadas
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-2xl font-bold text-blue-600">
-                        {dashboardData?.completionRate || 0}%
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Taxa de Conclusão
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Motivational Message */}
-                  {(dashboardData?.completionRate || 0) < 50 && (
-                    <Alert>
-                      <Sparkles className="h-4 w-4" />
-                      <AlertDescription>
-                        Continue respondendo os questionários para desbloquear
-                        insights sobre seu bem-estar!
-                      </AlertDescription>
-                    </Alert>
-                  )}
+                {/* em breve */}
+                <div className="text-center text-sm text-muted-foreground">
+                  <AlertCircle className="w-6 h-6 mx-auto mb-2 text-muted-foreground" />
+                  Em breve, você poderá ver suas atividades recentes aqui!
                 </div>
               </CardContent>
             </Card>
-          </section>
+          </div>
+        </section>
 
-          {/* Weekly Summary */}
-          <section>
-            <Card className="bg-gradient-to-r from-card/60 to-muted/80 backdrop-blur-sm border-border/50 shadow-xl">
-              <CardHeader>
-                <div className="flex items-center justify-between">
+        {/* Progress Section */}
+        <section>
+          <Card className="bg-card/70 backdrop-blur-sm shadow-xl">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="w-5 h-5" />
+                Seu Progresso
+              </CardTitle>
+              <CardDescription>
+                Acompanhe sua participação nos questionários
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      Perguntas Respondidas
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {dashboardData?.answeredQuestions || 0} de{" "}
+                      {dashboardData?.totalQuestions || 0}
+                    </span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-3">
+                    <div
+                      className="bg-gradient-to-r from-emerald-500 to-green-500 h-3 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${dashboardData?.completionRate || 0}%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      Questionários Concluídos
+                    </span>
+                    <span className="text-sm text-muted-foreground">
+                      {dashboardData?.completedQuestionnaires || 0} de{" "}
+                      {dashboardData?.totalQuestionnaires || 0}
+                    </span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-3">
+                    <div
+                      className="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${
+                          dashboardData?.totalQuestionnaires
+                            ? (dashboardData.completedQuestionnaires /
+                                dashboardData.totalQuestionnaires) *
+                              100
+                            : 0
+                        }%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div className="grid grid-cols-2 gap-4 text-center">
                   <div>
-                    <CardTitle>Resumo da Semana</CardTitle>
-                    <CardDescription>
-                      Suas conquistas e progresso
-                    </CardDescription>
+                    <p className="text-2xl font-bold text-emerald-600">
+                      {dashboardData?.answeredQuestions || 0}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Respostas Enviadas
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold text-blue-600">
+                      {dashboardData?.completionRate || 0}%
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      Taxa de Conclusão
+                    </p>
                   </div>
                 </div>
-              </CardHeader>
-              <Separator />
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <Card className="bg-card/50">
-                    <CardContent className="p-6 text-center">
-                      <div className="text-2xl font-bold text-foreground mb-1">
-                        {Math.round(
-                          (dashboardData?.answeredQuestions || 0) / 7
-                        )}
-                      </div>
-                      <CardDescription>
-                        Média diária de respostas
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
 
-                  <Card className="bg-card/50">
-                    <CardContent className="p-6 text-center">
-                      <div className="text-2xl font-bold text-foreground mb-1">
-                        {dashboardData?.totalQuestionnaires || 0}
-                      </div>
-                      <CardDescription>
-                        Questionários disponíveis
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
+                {/* Motivational Message */}
+                {(dashboardData?.completionRate || 0) < 50 && (
+                  <Alert>
+                    <Sparkles className="h-4 w-4" />
+                    <AlertDescription>
+                      Continue respondendo os questionários para desbloquear
+                      insights sobre seu bem-estar!
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </section>
 
-                  <Card className="bg-card/50">
-                    <CardContent className="p-6 text-center">
-                      <div className="text-2xl font-bold text-foreground mb-1">
-                        {dashboardData?.completedQuestionnaires || 0}
-                      </div>
-                      <CardDescription>
-                        Questionários finalizados
-                      </CardDescription>
-                    </CardContent>
-                  </Card>
+        {/* Weekly Summary */}
+        <section>
+          <Card className="bg-gradient-to-r from-card/60 to-muted/80 backdrop-blur-sm border-border/50 shadow-xl">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Resumo da Semana</CardTitle>
+                  <CardDescription>Suas conquistas e progresso</CardDescription>
                 </div>
-              </CardContent>
-            </Card>
-          </section>
-        </div>
-      </main>
-    </div>
+              </div>
+            </CardHeader>
+            <Separator />
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="bg-card/50">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-2xl font-bold text-foreground mb-1">
+                      {Math.round((dashboardData?.answeredQuestions || 0) / 7)}
+                    </div>
+                    <CardDescription>Média diária de respostas</CardDescription>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card/50">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-2xl font-bold text-foreground mb-1">
+                      {dashboardData?.totalQuestionnaires || 0}
+                    </div>
+                    <CardDescription>Questionários disponíveis</CardDescription>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card/50">
+                  <CardContent className="p-6 text-center">
+                    <div className="text-2xl font-bold text-foreground mb-1">
+                      {dashboardData?.completedQuestionnaires || 0}
+                    </div>
+                    <CardDescription>Questionários finalizados</CardDescription>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+      </div>
+    </PageCustom>
   );
 };
 

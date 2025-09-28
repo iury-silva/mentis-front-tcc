@@ -1,6 +1,6 @@
 import React, { type ReactNode } from "react";
 
-interface AppLayoutProps {
+interface PageCustomProps {
   title: string;
   subtitle?: string;
   icon?: ReactNode;
@@ -9,7 +9,7 @@ interface AppLayoutProps {
   children: ReactNode;
 }
 
-export const AppLayout: React.FC<AppLayoutProps> = ({
+export const PageCustom: React.FC<PageCustomProps> = ({
   title,
   subtitle,
   icon,
@@ -20,7 +20,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-muted/50 dark:from-primary/10 dark:to-muted/20">
       {/* Header */}
-      <header className="bg-card/60 backdrop-blur-sm border-b border-border/50 pt-4 sticky top-0 z-10">
+      <header className="bg-card/60 backdrop-blur-sm border-b border-border/50 pt-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-4">

@@ -24,6 +24,7 @@ import BlockReviewPage from "@/pages/Questionnaire/Blocks/BlockReviewPage";
 import MoodTracker from "@/pages/MoodTracker/MoodTracker";
 import SettingsPage from "@/pages/Settings/SettingsPage";
 import HomeRedirect from "@/utils/HomeRedirect";
+import MapsNearby from "@/pages/Maps/MapsNearby";
 
 //Layouts
 import AuthLayout from "@/layouts/AuthLayout";
@@ -68,6 +69,7 @@ const AppRoutes: React.FC = () => {
               element={<BlockReviewPage />}
             />
             <Route path="/mood-tracker" element={<MoodTracker />} />
+            <Route path="/maps-nearby" element={<MapsNearby />} />
           </Route>
         </Route>
 
