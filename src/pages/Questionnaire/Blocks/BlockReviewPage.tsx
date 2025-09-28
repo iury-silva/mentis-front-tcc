@@ -2,10 +2,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { api } from "@/api";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Page } from "@/components/Layout/Page";
+import { PageCustom } from "@/components/Layout/PageCustom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/auth/useAuth";
-import { ArrowLeft, CheckCircle, Calendar } from "lucide-react";
+import { ArrowLeft, CheckCircle, Calendar, ClipboardList } from "lucide-react";
 
 interface UserAnswerResponse {
   id: string;
@@ -109,7 +109,14 @@ const ResponseItemSkeleton = () => (
 );
 
 const BlockReviewPageSkeleton = () => (
-  <Page title="Carregando...">
+  <PageCustom
+    title="Carregando..."
+    icon={
+      <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+        <ClipboardList className="w-5 h-5 text-white" />
+      </div>
+    }
+  >
     <div className="space-y-6">
       {/* Header Skeleton */}
       <div className="flex items-center justify-between">
@@ -144,7 +151,7 @@ const BlockReviewPageSkeleton = () => (
         <Skeleton className="h-12 w-48 rounded-lg" />
       </div>
     </div>
-  </Page>
+  </PageCustom>
 );
 
 export default function BlockReviewPage() {
@@ -173,7 +180,14 @@ export default function BlockReviewPage() {
 
   if (isError) {
     return (
-      <Page title="Erro">
+      <PageCustom
+        title="Erro"
+        icon={
+          <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
+            <ClipboardList className="w-5 h-5 text-red-500" />
+          </div>
+        }
+      >
         <div className="text-center py-12">
           <div className="text-red-500 text-lg mb-4">
             Erro ao carregar suas respostas
@@ -183,13 +197,20 @@ export default function BlockReviewPage() {
             Voltar aos questionários
           </Button>
         </div>
-      </Page>
+      </PageCustom>
     );
   }
 
   if (!responses?.userAnswers || responses.userAnswers.length === 0) {
     return (
-      <Page title="Sem respostas">
+      <PageCustom
+        title="Sem respostas"
+        icon={
+          <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
+            <ClipboardList className="w-5 h-5 text-gray-500" />
+          </div>
+        }
+      >
         <div className="text-center py-12">
           <div className="text-muted-foreground text-lg mb-4">
             Nenhuma resposta encontrada para este bloco
@@ -201,7 +222,7 @@ export default function BlockReviewPage() {
             Responder questionário
           </Button>
         </div>
-      </Page>
+      </PageCustom>
     );
   }
 
@@ -210,9 +231,14 @@ export default function BlockReviewPage() {
     : "Revisão de Respostas";
 
   return (
-    <Page
+    <PageCustom
       title="Revisão de Respostas"
-      description="Revise e edite suas respostas do questionário"
+      subtitle="Revise e edite suas respostas do questionário"
+      icon={
+        <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg">
+          <ClipboardList className="w-5 h-5 text-white" />
+        </div>
+      }
       actions={
         <Button
           onClick={() => navigate("/questionnaire")}
@@ -304,6 +330,6 @@ export default function BlockReviewPage() {
           </div>
         </div>
       </div>
-    </Page>
+    </PageCustom>
   );
 }

@@ -3,11 +3,11 @@ import { api } from "@/api";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Page } from "@/components/Layout/Page";
+import { PageCustom } from "@/components/Layout/PageCustom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/auth/useAuth";
 import toast from "react-hot-toast";
-import { ArrowLeft, Eye } from "lucide-react";
+import { ArrowLeft, Eye, FileQuestion } from "lucide-react";
 import { ReviewModal } from "@/components/Questionnaire/ReviewModal";
 import { QuestionStep } from "@/components/Questionnaire/QuestionStep";
 import { BonificationModal } from "@/components/Questionnaire/BonificationModal";
@@ -53,7 +53,14 @@ const QuestionSkeleton = () => (
 );
 
 const BlockDetailPageSkeleton = () => (
-  <Page title="Carregando...">
+  <PageCustom
+    title="Carregando..."
+    icon={
+      <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">
+        <FileQuestion className="w-5 h-5 text-white" />
+      </div>
+    }
+  >
     <div className="space-y-6">
       {/* Header Skeleton */}
       <div className="flex items-center justify-between">
@@ -89,7 +96,7 @@ const BlockDetailPageSkeleton = () => (
         <Skeleton className="h-12 w-40 rounded-lg" />
       </div>
     </div>
-  </Page>
+  </PageCustom>
 );
 
 export default function BlockDetailPage() {
@@ -265,7 +272,14 @@ export default function BlockDetailPage() {
       : "Você não tem permissão para acessar este bloco";
 
     return (
-      <Page title="Acesso Negado">
+      <PageCustom
+        title="Acesso Negado"
+        icon={
+          <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
+            <FileQuestion className="w-5 h-5 text-red-500" />
+          </div>
+        }
+      >
         <div className="text-center py-12 space-y-6">
           <div className="mx-auto w-24 h-24 bg-red-50 rounded-full flex items-center justify-center">
             <div className="text-red-500 text-4xl">🔒</div>
@@ -296,13 +310,20 @@ export default function BlockDetailPage() {
             )}
           </div>
         </div>
-      </Page>
+      </PageCustom>
     );
   }
 
   if (isError) {
     return (
-      <Page title="Erro">
+      <PageCustom
+        title="Erro"
+        icon={
+          <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center">
+            <FileQuestion className="w-5 h-5 text-red-500" />
+          </div>
+        }
+      >
         <div className="text-center py-12">
           <div className="text-red-500 text-lg mb-4">
             Erro ao carregar o bloco
@@ -312,13 +333,20 @@ export default function BlockDetailPage() {
             Voltar aos questionários
           </Button>
         </div>
-      </Page>
+      </PageCustom>
     );
   }
 
   if (!questions.length) {
     return (
-      <Page title="Sem perguntas">
+      <PageCustom
+        title="Sem perguntas"
+        icon={
+          <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
+            <FileQuestion className="w-5 h-5 text-gray-500" />
+          </div>
+        }
+      >
         <div className="text-center py-12">
           <div className="text-muted-foreground text-lg mb-4">
             Nenhuma pergunta encontrada neste bloco
@@ -328,15 +356,20 @@ export default function BlockDetailPage() {
             Voltar aos questionários
           </Button>
         </div>
-      </Page>
+      </PageCustom>
     );
   }
 
   return (
     <>
-      <Page
+      <PageCustom
         title="Questionário"
-        description={accessData?.blockTitle}
+        subtitle={accessData?.blockTitle}
+        icon={
+          <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg">
+            <FileQuestion className="w-5 h-5 text-white" />
+          </div>
+        }
         actions={
           <Button
             onClick={() => navigate("/questionnaire")}
@@ -476,7 +509,7 @@ export default function BlockDetailPage() {
             </div>
           </div>
         </div>
-      </Page>
+      </PageCustom>
 
       {/* Modal de Revisão */}
       <ReviewModal

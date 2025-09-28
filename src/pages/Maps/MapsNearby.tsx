@@ -37,6 +37,15 @@ export default function MapsNearby() {
   const [location, setLocation] = useState<LatLngTuple | null>(null);
   const [refusedLocation, setRefusedLocation] = useState(false);
 
+// Ajusta o caminho das imagens
+  // delete L.Icon.Default.prototype._options.iconUrl;
+
+  const iconOptions = new L.Icon({
+    iconRetinaUrl: "/leaflet/marker-icon-2x.png",
+    iconUrl: "/leaflet/marker-icon.png",
+    shadowUrl: "/leaflet/marker-shadow.png",
+  });
+
   const customIcon = new L.Icon({
     iconUrl: "/images/icone-mentisV2.png",
     iconSize: [25, 31],
@@ -128,7 +137,7 @@ export default function MapsNearby() {
               </Marker>
               {data &&
                 data.map((place: Place) => (
-                  <Marker key={place.id} position={[place.lat, place.lon]}>
+                  <Marker key={place.id} position={[place.lat, place.lon]} icon={iconOptions}>
                     <Popup>
                       <strong>{place.name || "Nome não disponível"}</strong>
                       <br />

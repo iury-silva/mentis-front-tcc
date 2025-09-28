@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/api";
 import { useAuth } from "@/auth/useAuth";
-import { Page } from "@/components/Layout/Page";
+import { PageCustom } from "@/components/Layout/PageCustom";
 import {
   Card,
   CardContent,
@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Trash2, Shield, User, Mail, Calendar } from "lucide-react";
+import { Trash2, Shield, User, Mail, Calendar, Settings } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -66,9 +66,14 @@ const SettingsPage: React.FC = () => {
     .slice(0, 2);
 
   return (
-    <Page
+    <PageCustom
       title="Configurações"
-      description="Gerencie suas preferências e configurações da conta"
+      subtitle="Gerencie suas preferências e configurações da conta"
+      icon={
+        <div className="w-10 h-10 bg-gradient-to-r from-gray-500 to-slate-600 rounded-xl flex items-center justify-center shadow-lg">
+          <Settings className="w-5 h-5 text-white" />
+        </div>
+      }
     >
       <div className="max-w-4xl mx-auto space-y-8">
         {/* Informações do Perfil */}
@@ -237,7 +242,7 @@ const SettingsPage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-    </Page>
+    </PageCustom>
   );
 };
 

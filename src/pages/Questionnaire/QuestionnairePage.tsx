@@ -3,10 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/api";
 import { useAuth } from "@/auth/useAuth";
-import { Page } from "@/components/Layout/Page";
+import { PageCustom } from "@/components/Layout/PageCustom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
-import { LockKeyhole, LockKeyholeOpen, Eye } from "lucide-react";
+import { LockKeyhole, LockKeyholeOpen, Eye, FileText } from "lucide-react";
 import { TermsModal } from "@/components/Questionnaire/TermsModal";
 import { Button } from "@/components/ui/button";
 
@@ -176,20 +176,30 @@ export default function QuestionnairePage() {
 
   if (isLoading) {
     return (
-      <Page
+      <PageCustom
         title="Questionários"
-        description="Complete os questionários para acompanhar seu progresso"
+        subtitle="Complete os questionários para acompanhar seu progresso"
+        icon={
+          <div className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg">
+            <FileText className="w-5 h-5 text-white" />
+          </div>
+        }
       >
         <QuestionnaireListSkeleton />
-      </Page>
+      </PageCustom>
     );
   }
 
   return (
     <>
-      <Page
+      <PageCustom
         title="Questionários"
-        description="Complete os questionários para acompanhar seu progresso"
+        subtitle="Complete os questionários para acompanhar seu progresso"
+        icon={
+          <div className="w-10 h-10 bg-gradient-to-r from-primary to-red-500 rounded-xl flex items-center justify-center shadow-lg">
+            <FileText className="w-5 h-5 text-white" />
+          </div>
+        }
       >
         <div className="space-y-8">
           {data?.map((questionnaire) => (
@@ -368,7 +378,7 @@ export default function QuestionnairePage() {
             </div>
           ))}
         </div>
-      </Page>
+      </PageCustom>
 
       {/* Modal de Termos de Consentimento */}
       {showTermsModal && currentQuestionnaire && (
