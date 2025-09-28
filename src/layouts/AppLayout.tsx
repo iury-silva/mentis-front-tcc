@@ -24,7 +24,7 @@ export const AppLayout: React.FC = () => {
       <div className="flex flex-col min-h-screen">
         <header className="flex h-12 shrink-0 items-center gap-2 px-4 bg-background border-b border-border/50 sticky top-0 z-20">
           <Link to={user?.role === "admin" ? "/dashboard" : "/dashboard-user"}>
-            <img src="/images/logo-mentisV2.png" alt="Logo" className="w-24" />
+            <img src="/images/logo-mentisV2.png" alt="Logo" className="w-28" />
           </Link>
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <div className="flex-1 min-w-0">

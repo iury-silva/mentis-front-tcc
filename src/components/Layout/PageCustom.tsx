@@ -5,7 +5,7 @@ interface PageCustomProps {
   subtitle?: string;
   icon?: ReactNode;
   actions?: ReactNode; // Botões, loaders, etc
-  badge?: ReactNode;   // Badge customizado
+  badge?: ReactNode; // Badge customizado
   children: ReactNode;
 }
 
@@ -30,7 +30,9 @@ export const PageCustom: React.FC<PageCustomProps> = ({
                 </div>
               )}
               <div>
-                <h1 className="text-xl font-bold text-foreground">{title}</h1>
+                <h1 className="sm:text-sm font-bold text-foreground md:text-xl">
+                  {title}
+                </h1>
                 {subtitle && (
                   <p className="text-sm text-muted-foreground">{subtitle}</p>
                 )}
