@@ -152,7 +152,7 @@ export default function CompleteProfile() {
           />
           <div className="text-xl text-start mb-6 flex flex-col items-center">
             <img
-              src="/public/images/logo-mentisV2.png"
+              src="/images/logo-mentisV2.png"
               alt="logoMentis"
               className="mb-6 h-12"
             />
