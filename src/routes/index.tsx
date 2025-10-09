@@ -2,93 +2,112 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-//components
+// Utils
 import ScrollToTop from "@/utils/ScrollToTop";
+import HomeRedirect from "@/utils/HomeRedirect";
 
-//routes
+// Layouts
+import AuthLayout from "@/layouts/AuthLayout";
+import { AppLayout } from "@/layouts/AppLayout";
+
+// Auth Pages
 import LoginPage from "@/pages/Auth/LoginPage";
+import { RegisterPage } from "@/pages/Auth/RegisterPage";
+import GoogleLoggedPage from "@/pages/Auth/GoogleLoggedPage";
+import CompleteProfile from "@/pages/Auth/CompleteProfile";
 
-//admin
+// Admin Pages
 import DashboardAdminPage from "@/pages/Admin/Dashboard/DashboardAdminPage";
 import QuestionnaireAdminPage from "@/pages/Admin/Questionnaires/QuestionnaireAdminPage";
 
-//user
+// User Pages
 import DashboardUserPage from "@/pages/Dashboard/DashboardUserPage";
-import { RegisterPage } from "@/pages/Auth/RegisterPage";
-import GoogleLoggedPage from "@/pages/Auth/GoogleLoggedPage";
-import NotFoundPage from "@/pages/NotFound/NotFoundPage";
-import ProtectedRoute from "@/routes/ProtectedRoute";
 import QuestionnairePage from "@/pages/Questionnaire/QuestionnairePage";
 import BlockDetailPage from "@/pages/Questionnaire/Blocks/BlockDetailPage";
 import BlockReviewPage from "@/pages/Questionnaire/Blocks/BlockReviewPage";
 import MoodTracker from "@/pages/MoodTracker/MoodTracker";
-import SettingsPage from "@/pages/Settings/SettingsPage";
-import HomeRedirect from "@/utils/HomeRedirect";
 import MapsNearby from "@/pages/Maps/MapsNearby";
 
-//Layouts
-import AuthLayout from "@/layouts/AuthLayout";
-import { AppLayout } from "@/layouts/AppLayout";
+// Common Pages
+import SettingsPage from "@/pages/Settings/SettingsPage";
+import NotFoundPage from "@/pages/NotFound/NotFoundPage";
+
+// Route protection
+import ProtectedRoute from "@/routes/ProtectedRoute";
+
+// ✅ Configuração declarativa de rotas
+const routesConfig = [
+  {
+    role: ["admin"],
+    children: [
+      { path: "/dashboard", element: <DashboardAdminPage /> },
+      { path: "/questionnaires", element: <QuestionnaireAdminPage /> },
+    ],
+  },
+  {
+    role: ["user"],
+    children: [
+      { path: "/dashboard-user", element: <DashboardUserPage /> },
+      { path: "/questionnaire", element: <QuestionnairePage /> },
+      {
+        path: "/questionnaire/blocks/:blockId",
+        element: <BlockDetailPage />,
+      },
+      {
+        path: "/questionnaire/responses/:blockId",
+        element: <BlockReviewPage />,
+      },
+      { path: "/mood-tracker", element: <MoodTracker /> },
+      { path: "/maps-nearby", element: <MapsNearby /> },
+    ],
+  },
+  {
+    role: ["admin", "user"],
+    children: [{ path: "/settings", element: <SettingsPage /> }],
+  },
+];
 
 const AppRoutes: React.FC = () => {
   return (
     <>
       <ScrollToTop />
       <Routes>
-        {/* Routes for authentication (e.g., login, signup) */}
+        {/* Public Routes */}
         <Route path="/" element={<HomeRedirect />} />
-
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/google/callback" element={<GoogleLoggedPage />} />
-          {/* Add other auth routes like /register here */}
         </Route>
 
-        {/* Protected routes for the main application - Admin only */}
-        <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-          <Route element={<AppLayout />}>
-            <Route path="/dashboard" element={<DashboardAdminPage />} />
-            <Route path="/questionnaires" element={<QuestionnaireAdminPage />} />   
-            {/* Add other protected app routes here, e.g., /dashboard, /profile */}
+        {/* Complete Profile (permite perfil incompleto) */}
+        <Route element={<ProtectedRoute requireCompleteProfile={false} />}>
+          <Route path="/complete-profile" element={<CompleteProfile />} />
+        </Route>
+
+        {/* Protected Routes (Admin / User / Shared) */}
+        {routesConfig.map(({ role, children }) => (
+          <Route
+            key={role.join("-")}
+            element={<ProtectedRoute allowedRoles={role} />}
+          >
+            <Route element={<AppLayout />}>
+              {children.map(({ path, element }) => (
+                <Route key={path} path={path} element={element} />
+              ))}
+            </Route>
           </Route>
-        </Route>
+        ))}
 
-        {/* Protected routes for the main application - User only */}
-        <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
-          <Route element={<AppLayout />}>
-            {/* Add other protected app routes here, e.g., /dashboard, /profile */}
-            <Route path="/dashboard-user" element={<DashboardUserPage />} />
-            <Route path="/questionnaire" element={<QuestionnairePage />} />
-            <Route
-              path="/questionnaire/blocks/:blockId"
-              element={<BlockDetailPage />}
-            />
-            <Route
-              path="/questionnaire/responses/:blockId"
-              element={<BlockReviewPage />}
-            />
-            <Route path="/mood-tracker" element={<MoodTracker />} />
-            <Route path="/maps-nearby" element={<MapsNearby />} />
-          </Route>
-        </Route>
-
-        {/* Protected routes for the main application - All roles */}
-        <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
-          <Route element={<AppLayout />}>
-            {/* Add other protected app routes here, e.g., /dashboard, /profile */}
-            <Route path="/settings" element={<SettingsPage />} />
-          </Route>
-        </Route>
-
+        {/* 🚫 Unauthorized & 404 */}
         <Route
           path="/unauthorized"
           element={
-            <div className="p-6 text-center text-red-600">Acesso negado!</div>
+            <div className="p-6 text-center text-red-600 font-semibold">
+              Acesso negado!
+            </div>
           }
         />
-
-        {/* You can add other top-level routes here if needed, e.g., a 404 page */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

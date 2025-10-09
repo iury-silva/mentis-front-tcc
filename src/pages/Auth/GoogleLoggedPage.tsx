@@ -40,7 +40,17 @@ export default function GoogleLogged() {
 
         toast.success("Login com Google realizado!");
 
-        // Navega baseado no role
+        // Verifica se precisa completar perfil (Google OAuth sem dados necessários)
+        const needsProfileCompletion =
+          userResponse.type_login === "oauth" &&
+          (!userResponse.city || !userResponse.state || !userResponse.phone);
+
+        if (needsProfileCompletion) {
+          navigate("/complete-profile");
+          return;
+        }
+
+        // Navega baseado no role se perfil já está completo
         const redirectPath = userResponse.role.includes("admin")
           ? "/dashboard"
           : "/dashboard-user";
@@ -49,6 +59,7 @@ export default function GoogleLogged() {
       } catch (err) {
         console.error("Erro na autenticação Google:", err);
         toast.error("Erro ao autenticar com Google");
+        localStorage.removeItem("authToken");
         navigate("/login");
       }
     }

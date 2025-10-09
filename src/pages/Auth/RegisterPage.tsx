@@ -14,15 +14,35 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { api } from "@/api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CheckCircle } from "lucide-react";
 import toast from "react-hot-toast";
+import { brasilApiService } from "@/services/brasil.api.service";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  SelectGroup,
+  SelectLabel,
+} from "@/components/ui/select";
+
+import { formatPhone } from "@/utils/format/phoneFormat";
 
 // Schema de validação Zod para registro
 const registerSchema = z
   .object({
     name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-    email: z.string().email("Email inválido"),
+    email: z.email("Email inválido"),
+    state: z.string().nonempty("Estado é obrigatório"),
+    city: z.string().nonempty("Cidade é obrigatória"),
+    phone: z
+      .string()
+      .nonempty("Telefone é obrigatório")
+      .refine((val) => !val || /^\(\d{2}\)\s\d{4,5}-\d{4}$/.test(val), {
+        message: "Telefone inválido",
+      }),
     password: z.string().min(6, "Senha deve ter no mínimo 6 caracteres"),
     confirmPassword: z.string(),
   })
@@ -36,6 +56,44 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 export function RegisterPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [states, setStates] = useState<
+    Array<{ nome: string; sigla: string; id: number }>
+  >([]);
+  const [cities, setCities] = useState<
+    Array<{ nome: string; codigo_ibge: number }>
+  >([]);
+  const [selectedState, setSelectedState] = useState<string>("");
+
+  // Carrega os estados ao montar o componente
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        const data = await brasilApiService.getStates();
+        console.log(data);
+        setStates(data);
+      } catch (error) {
+        console.error("Erro ao buscar estados:", error);
+      }
+    };
+    fetchStates();
+  }, []);
+
+  // Carrega as cidades quando o estado selecionado mudar
+  useEffect(() => {
+    if (selectedState) {
+      const fetchCities = async () => {
+        try {
+          const data = await brasilApiService.getCities(selectedState);
+          setCities(data);
+        } catch (error) {
+          console.error("Erro ao buscar cidades:", error);
+        }
+      };
+      fetchCities();
+    } else {
+      setCities([]);
+    }
+  }, [selectedState]);
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -44,6 +102,9 @@ export function RegisterPage() {
       email: "",
       password: "",
       confirmPassword: "",
+      state: "",
+      city: "",
+      phone: "",
     },
   });
 
@@ -54,6 +115,9 @@ export function RegisterPage() {
         name: data.name,
         email: data.email,
         password: data.password,
+        phone: data.phone,
+        state: data.state,
+        city: data.city,
       });
       toast.success(
         "Cadastro realizado com sucesso! Faça login para continuar."
@@ -77,16 +141,6 @@ export function RegisterPage() {
       <div className="absolute top-4 left-4 hidden lg:block z-20">
         <img src="/images/icone-mentisV2.png" alt="Logo M" className="w-10" />
       </div>
-
-      {/* Ondas decorativas no topo direito (apenas desktop) */}
-      {/* <div className="absolute -top-18 -right-96 hidden lg:block z-10 pointer-events-none">
-        <img
-          src="/images/layered-waves-haikei.svg"
-          alt=""
-          className="transform rotate-140 translate-x-16 -translate-y-8"
-        />
-      </div> */}
-
       {/* Left side - Avatar grande + textos + lista */}
       <div className="hidden lg:flex relative items-center justify-center p-6">
         <div className="relative flex items-center gap-10">
@@ -100,7 +154,9 @@ export function RegisterPage() {
           </div>
 
           <div className="flex flex-col gap-4 max-w-xs">
-            <h2 className="text-3xl font-bold text-center">Bem-vindo ao Mentis!</h2>
+            <h2 className="text-3xl font-bold text-center">
+              Bem-vindo ao Mentis!
+            </h2>
             <p className="text-sm text-muted-foreground text-center">
               Organize e otimize suas tarefas diárias de forma prática:
             </p>
@@ -191,6 +247,99 @@ export function RegisterPage() {
 
                 <FormField
                   control={form.control}
+                  name="state"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Estado</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            setSelectedState(value);
+                          }}
+                          value={field.value || ""}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Selecione seu estado" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Estados</SelectLabel>
+                              {states.map((estado) => (
+                                <SelectItem
+                                  key={estado.id}
+                                  value={estado.sigla}
+                                >
+                                  {estado.nome}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="city"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Cidade</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value || ""}
+                          disabled={cities.length === 0}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Selecione sua cidade" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              <SelectLabel>Cidades</SelectLabel>
+                              {cities.map((city) => (
+                                <SelectItem
+                                  key={city.codigo_ibge}
+                                  value={city.nome}
+                                >
+                                  {city.nome.charAt(0).toUpperCase() +
+                                    city.nome.slice(1).toLowerCase()}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Telefone</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Seu telefone"
+                          {...field}
+                          onChange={(e) => {
+                            field.onChange(formatPhone(e.target.value));
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
                   name="password"
                   render={({ field }) => (
                     <FormItem>
@@ -231,7 +380,7 @@ export function RegisterPage() {
               </form>
             </Form>
 
-            <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+            <div className="relative text-center text-sm">
               <span className="relative z-10 px-2 text-muted-foreground">
                 Ou continue com
               </span>

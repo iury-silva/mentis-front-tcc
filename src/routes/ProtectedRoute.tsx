@@ -1,33 +1,59 @@
 // src/routes/ProtectedRoute.tsx
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '@/auth/useAuth'; // Using the @/ path alias
+import React from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "@/auth/useAuth";
 
 interface ProtectedRouteProps {
-  allowedRoles?: string[]; // Roles permitidas
+  allowedRoles?: string[];
+  requireCompleteProfile?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles }) => {
-  const { isAuthenticated, loading, user } = useAuth(); // Added loading
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  allowedRoles,
+  requireCompleteProfile = true,
+}) => {
+  const { isAuthenticated, loading, user, profileCompleted } = useAuth();
+  const location = useLocation();
 
-  if (loading) {
-    // You can render a more sophisticated loading spinner or component here
-    return <div>Loading...</div>;
+  if (loading && !isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
-    // User is not authenticated, redirect to login page
     return <Navigate to="/login" replace />;
   }
 
-  if (allowedRoles && user) {
-    const hasAccess = allowedRoles.some((role) => user.role.includes(role));
+  // Perfil incompleto
+  if (
+    requireCompleteProfile &&
+    !profileCompleted &&
+    location.pathname !== "/complete-profile"
+  ) {
+    return <Navigate to="/complete-profile" replace />;
+  }
+
+  // Redireciona se perfil já completo
+  if (location.pathname === "/complete-profile" && profileCompleted) {
+    const redirectPath = user?.role?.includes("admin")
+      ? "/dashboard"
+      : "/dashboard-user";
+    return <Navigate to={redirectPath} replace />;
+  }
+
+  // Checa role permitida
+  if (allowedRoles && user?.role) {
+    const hasAccess = allowedRoles.some((role) =>
+      user.role.includes(role)
+    );
     if (!hasAccess) {
       return <Navigate to="/unauthorized" replace />;
     }
   }
 
-  // User is authenticated, render the child routes
   return <Outlet />;
 };
 

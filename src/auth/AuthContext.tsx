@@ -1,5 +1,5 @@
 // src/auth/AuthContext.tsx
-import { createContext } from 'react';
+import { createContext } from "react";
 
 export interface User {
   id: string;
@@ -9,7 +9,11 @@ export interface User {
   avatar: string;
   createdAt: string;
   updatedAt: string;
-  // Add other user properties here if needed in the future
+  type_login: "normal" | "oauth";
+  city?: string;
+  state?: string;
+  phone?: string;
+  profileCompleted?: boolean;
 }
 
 export interface AuthResponse {
@@ -19,10 +23,14 @@ export interface AuthResponse {
 
 export interface AuthContextType {
   isAuthenticated: boolean;
+  profileCompleted: boolean;
   user: User | null;
   login: (userData: AuthResponse) => void;
   logout: () => void;
+  refreshUser: () => Promise<void>;
   loading: boolean; // New property
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);

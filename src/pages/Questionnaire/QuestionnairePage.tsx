@@ -10,7 +10,7 @@ import { LockKeyhole, LockKeyholeOpen, Eye, FileText } from "lucide-react";
 import { TermsModal } from "@/components/Questionnaire/TermsModal";
 import { Button } from "@/components/ui/button";
 
-interface Block {
+export interface Block {
   id: string;
   title: string;
   order: number;
@@ -18,7 +18,7 @@ interface Block {
   locked?: boolean;
 }
 
-interface Questionnaire {
+export interface Questionnaire {
   id: string;
   title: string;
   description: string;
