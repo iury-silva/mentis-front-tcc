@@ -29,6 +29,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Perfil incompleto
   if (
+    user &&
     requireCompleteProfile &&
     !profileCompleted &&
     location.pathname !== "/complete-profile"
