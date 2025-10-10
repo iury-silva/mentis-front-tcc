@@ -20,13 +20,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const completeProfile = useCallback((user: User) => {
-    console.log("Verificando perfil completo para:", {
-      type_login: user.type_login,
-      hasCity: !!user.city,
-      hasState: !!user.state,
-      hasPhone: !!user.phone,
-    });
-
     // Login normal sempre tem perfil completo
     if (user.type_login === "normal") {
       console.log("Login normal - perfil sempre completo");
@@ -42,8 +35,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return;
     }
 
-    // Fallback - assumir completo
-    console.log("Tipo de login desconhecido - assumindo completo");
     setProfileCompleted(true);
   }, []);
 
@@ -55,7 +46,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (storedToken && storedUser) {
       try {
         const parsedUser: User = JSON.parse(storedUser);
-        console.log("Carregando usuário do localStorage:", parsedUser);
 
         setUser(parsedUser);
         setIsAuthenticated(true);
@@ -74,8 +64,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [completeProfile]);
 
   const login = (userData: AuthResponse) => {
-    console.log("Login realizado para usuário:", userData.user);
-
     setIsAuthenticated(true);
     setUser(userData.user);
 
@@ -93,8 +81,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const response = await api.get(`/users/get-profile/${user?.id}`);
       const updatedUser = response;
 
-      console.log("Dados atualizados do response:", updatedUser);
-
       setUser(updatedUser);
       completeProfile(updatedUser);
 
@@ -107,8 +93,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [user, completeProfile]);
 
   const logout = () => {
-    console.log("Logout realizado - limpando todos os estados");
-
     setIsAuthenticated(false);
     setProfileCompleted(true); // IMPORTANTE: Reset para true
     setUser(null);
