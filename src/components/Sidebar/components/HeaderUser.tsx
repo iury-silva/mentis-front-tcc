@@ -38,7 +38,7 @@ export function HeaderUser({ user, onLogout }: HeaderUserProps) {
           className="relative h-8 w-8 rounded-full border-2 border-transparent flex items-center justify-center"
         >
           <Avatar className="h-8 w-8">
-            <AvatarImage src={user.avatar} alt={user.name} />
+            <AvatarImage src={user?.avatar} alt={user.name} />
             <AvatarFallback className="text-sm bg-primary text-primary-foreground">
               {userInitials}
             </AvatarFallback>
