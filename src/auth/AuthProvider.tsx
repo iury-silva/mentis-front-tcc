@@ -1,4 +1,3 @@
-// src/auth/AuthProvider.tsx
 import React, { useCallback, useState, useEffect, type ReactNode } from "react";
 import {
   AuthContext,
@@ -47,17 +46,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setProfileCompleted(true);
   }, []);
 
-  /**
-   * MUDANÇA PRINCIPAL: useEffect agora só executa UMA vez no mount
-   * 
-   * ANTES: Tinha 'completeProfile' nas dependências, causando re-renders
-   * AGORA: Array vazio [] garante execução única
-   * 
-   * Este effect é responsável por:
-   * 1. Restaurar a sessão do usuário do localStorage (se existir)
-   * 2. Validar os dados armazenados
-   * 3. Inicializar o estado de autenticação
-   */
   useEffect(() => {
     console.log("🔄 AuthProvider: Inicializando (executa só 1x)");
 
@@ -74,7 +62,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(parsedUser);
         setIsAuthenticated(true);
 
-        // MUDANÇA: Calcular status do perfil inline ao invés de chamar função
         // Isso evita dependências desnecessárias no useEffect
         if (parsedUser.type_login === "normal") {
           setProfileCompleted(true);
@@ -99,24 +86,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setProfileCompleted(true);
       }
     } else {
-      console.log("ℹ️ Nenhuma sessão encontrada no localStorage");
+      console.log("Nenhuma sessão encontrada no localStorage");
     }
 
     // Marcar carregamento como finalizado
     setLoading(false);
-  }, []); // ⚠️ IMPORTANTE: Array vazio = executa apenas no mount
+  }, []); // IMPORTANTE: Array vazio = executa apenas no mount
 
-  /**
-   * Função chamada após login bem-sucedido
-   * 
-   * MUDANÇA: Agora não causa re-render do useEffect
-   * O useEffect só roda no mount, então fazer login não dispara ele novamente
-   * 
-   * Fluxo:
-   * 1. Atualiza estados da aplicação
-   * 2. Calcula status do perfil
-   * 3. Persiste dados no localStorage
-   */
   const login = (userData: AuthResponse) => {
     console.log("🔐 Login realizado:", userData.user.email);
 
@@ -141,15 +117,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
    * Útil após o usuário completar o perfil ou atualizar informações
    */
   const refreshUser = useCallback(async () => {
-    // Validar se existe um usuário logado
-    if (!user?.id) {
-      console.warn("⚠️ Tentativa de refresh sem usuário logado");
-      return;
-    }
-
     try {
       console.log("🔄 Atualizando dados do usuário...");
-
+      if (!user?.id) {
+        console.warn("⚠️ Usuário não autenticado - não é possível atualizar");
+        return;
+      }
       // Buscar dados atualizados do backend
       const response = await api.get(`/users/get-profile/${user.id}`);
       const updatedUser = response;
@@ -180,7 +153,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     // Resetar todos os estados para valores iniciais
     setIsAuthenticated(false);
-    setProfileCompleted(true); // ⚠️ IMPORTANTE: Reset para true (estado inicial)
+    setProfileCompleted(true); // IMPORTANTE: Reset para true (estado inicial)
     setUser(null);
 
     // Limpar dados do localStorage
@@ -203,30 +176,3 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
-
-/**
- * RESUMO DAS MUDANÇAS:
- * 
- * 1. ✅ useEffect agora tem array vazio [] nas dependências
- *    - Executa APENAS uma vez no mount
- *    - Não re-executa quando outros estados mudam
- * 
- * 2. ✅ Lógica de verificação de perfil inline no useEffect
- *    - Evita dependência da função completeProfile
- *    - Reduz re-renders desnecessários
- * 
- * 3. ✅ Comentários detalhados em todo o código
- *    - Explica o propósito de cada função
- *    - Documenta as mudanças realizadas
- *    - Facilita manutenção futura
- * 
- * 4. ✅ Console.logs informativos
- *    - Ajuda a debugar o fluxo de autenticação
- *    - Mostra quando cada função é executada
- * 
- * RESULTADO:
- * - Não haverá mais "refresh" visual ao fazer login
- * - O payload do login será visível no console
- * - Performance melhorada (menos re-renders)
- * - Código mais fácil de entender e manter
- */
