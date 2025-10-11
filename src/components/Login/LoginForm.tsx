@@ -63,9 +63,6 @@ export function LoginForm({
     onSuccess: (data) => {
       toast.success("Login realizado com sucesso!");
       login(data);
-      navigate(
-        data.user.role.includes("admin") ? "/dashboard" : "/dashboard-user"
-      );
     },
     onError: (error: any) => {
       console.error("Mutation error:", error);

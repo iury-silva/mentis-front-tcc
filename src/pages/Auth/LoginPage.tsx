@@ -18,11 +18,6 @@ export default function LoginPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { isAuthenticated, user } = useAuth();
   useEffect(() => {
-    if (isAuthenticated) {
-      window.location.href = user?.role.includes("admin")
-        ? "/dashboard"
-        : "/dashboard-user";
-    }
     if (searchParams.get("expired") === "true") {
       toast.error("Sessão expirada. Por favor, faça login novamente.", {
         icon: "⏰",
