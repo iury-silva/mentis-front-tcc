@@ -14,6 +14,7 @@ export interface User {
   state?: string;
   phone?: string;
   profileCompleted?: boolean;
+  first_access?: boolean;
 }
 
 export interface AuthResponse {

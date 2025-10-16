@@ -21,7 +21,7 @@ import DashboardAdminPage from "@/pages/Admin/Dashboard/DashboardAdminPage";
 import QuestionnaireAdminPage from "@/pages/Admin/Questionnaires/QuestionnaireAdminPage";
 
 // User Pages
-import DashboardUserPage from "@/pages/Dashboard/DashboardUserPage";
+import DashboardUserWithOnboarding from "@/pages/Dashboard/DashboardUserWithOnboarding";
 import QuestionnairePage from "@/pages/Questionnaire/QuestionnairePage";
 import BlockDetailPage from "@/pages/Questionnaire/Blocks/BlockDetailPage";
 import BlockReviewPage from "@/pages/Questionnaire/Blocks/BlockReviewPage";
@@ -48,7 +48,7 @@ const routesConfig = [
   {
     role: ["user"],
     children: [
-      { path: "/dashboard-user", element: <DashboardUserPage /> },
+      { path: "/dashboard-user", element: <DashboardUserWithOnboarding /> },
       { path: "/questionnaire", element: <QuestionnairePage /> },
       {
         path: "/questionnaire/blocks/:blockId",
