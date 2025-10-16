@@ -6,7 +6,13 @@ import { useAuth } from "@/auth/useAuth";
 import { PageCustom } from "@/components/Layout/PageCustom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
-import { LockKeyhole, LockKeyholeOpen, Eye, FileText } from "lucide-react";
+import {
+  LockKeyhole,
+  LockKeyholeOpen,
+  Eye,
+  FileText,
+  StarIcon,
+} from "lucide-react";
 import { TermsModal } from "@/components/Questionnaire/TermsModal";
 import { Button } from "@/components/ui/button";
 
@@ -155,6 +161,10 @@ export default function QuestionnairePage() {
     }
   };
 
+  const handleViewBonus = (blockId: string) => {
+    navigate(`/questionnaire/blocks/${blockId}/bonus`);
+  };
+
   const handleAcceptTerms = () => {
     setShowTermsModal(false);
     if (pendingBlock) {
@@ -250,7 +260,7 @@ export default function QuestionnairePage() {
                           blockData.locked
                             ? "border-border opacity-60"
                             : blockData.isCompleted
-                            ? "border-emerald-200 bg-emerald-50/50 hover:border-emerald-300"
+                            ? "border-emerald-200 bg-emerald-100/20 hover:border-emerald-300"
                             : "border-primary/50 hover:shadow-primary/10 cursor-pointer"
                         }`}
                       >
@@ -363,10 +373,20 @@ export default function QuestionnairePage() {
                                 e.stopPropagation();
                                 handleViewResponses(block.id);
                               }}
-                              className="w-full bg-emerald-500 hover:bg-emerald-600 text-primary-foreground py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+                              className="w-full bg-emerald-500 hover:bg-emerald-600 text-primary-foreground py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center gap-2 mb-2"
                             >
                               <Eye className="w-4 h-4" />
                               Ver Respostas
+                            </Button>
+                            <Button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleViewBonus(block.id);
+                              }}
+                              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:bg-gradient-to-r hover:from-yellow-600 hover:to-orange-600 text-primary-foreground py-2 px-4 rounded-lg text-sm font-medium flex items-center justify-center gap-2 transition-all ease-in duration-200"
+                            >
+                              <StarIcon className="w-4 h-4" />
+                              Ver Bonificação
                             </Button>
                           </div>
                         )}

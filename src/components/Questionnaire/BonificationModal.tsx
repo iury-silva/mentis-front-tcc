@@ -5,13 +5,16 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Gift, Mail, CheckCircle, FileText, Download } from "lucide-react";
-import { useAuth } from "@/auth/useAuth";
+// import { Gift, Mail, CheckCircle, FileText, Download } from "lucide-react";
+import { Gift, CheckCircle, FileText } from "lucide-react";
+// import { useAuth } from "@/auth/useAuth";
+import { useNavigate } from "react-router-dom";
 
 interface BonificationModalProps {
   isOpen: boolean;
   onClose: () => void;
   blockTitle?: string;
+  blockId?: string;
   benefitType?: string;
 }
 
@@ -19,9 +22,16 @@ function BonificationModal({
   isOpen,
   onClose,
   blockTitle,
+  blockId,
   benefitType = "Benefício Especial",
 }: BonificationModalProps) {
-  const { user } = useAuth();
+  // const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    onClose();
+    navigate(`/questionnaire/blocks/${blockId}/bonus`);
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -69,7 +79,7 @@ function BonificationModal({
           </div>
 
           {/* Seção principal - envio por email */}
-          <div className="w-full p-3 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border border-green-200 rounded-xl">
+          {/* <div className="w-full p-3 sm:p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border border-green-200 rounded-xl">
             <div className="flex items-start gap-2 sm:gap-3">
               <div className="p-1.5 sm:p-2 rounded-lg bg-green-100 shadow-sm flex-shrink-0">
                 <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
@@ -102,24 +112,24 @@ function BonificationModal({
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Dica importante */}
-          <div className="w-full p-2 sm:p-3 bg-amber-50 border border-amber-200 rounded-lg">
+          {/* <div className="w-full p-2 sm:p-3 bg-amber-50 border border-amber-200 rounded-lg">
             <p className="text-xs text-amber-700 text-center leading-relaxed">
               💡 <span className="font-medium">Importante:</span> Verifique
               também a pasta de spam ou lixo eletrônico
             </p>
-          </div>
+          </div> */}
 
           {/* Botão de ação */}
           <div className="flex gap-3 w-full pt-2">
             <Button
-              onClick={onClose}
+              onClick={handleClose}
               className="flex-1 bg-emerald-500 hover:bg-emerald-600 text-primary-foreground shadow-lg text-sm sm:text-base py-2 sm:py-3 px-4 sm:px-6"
             >
               <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
-              <span className="truncate">Entendi, vou verificar!</span>
+              <span className="truncate">Verificar Benefício!</span>
             </Button>
           </div>
 

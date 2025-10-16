@@ -525,6 +525,7 @@ export default function BlockDetailPage() {
       <BonificationModal
         isOpen={showBonificationModal}
         onClose={() => finishBlock()}
+        blockId={blockId || ""} // Passando blockId para navegacao
       />
     </>
   );

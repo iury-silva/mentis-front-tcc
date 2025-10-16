@@ -142,7 +142,7 @@ export function RegisterPage() {
         <img src="/images/icone-mentisV2.png" alt="Logo M" className="w-10" />
       </div>
       {/* Left side - Avatar grande + textos + lista */}
-      <div className="hidden lg:flex relative items-center justify-center p-6">
+      <div className="hidden lg:flex relative items-start justify-center md:p-10 p-6">
         <div className="relative flex items-center gap-10">
           {/* Avatar maior, com destaque */}
           <div className="relative w-60 h-60 flex-shrink-0">

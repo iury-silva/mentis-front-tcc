@@ -25,6 +25,7 @@ import DashboardUserPage from "@/pages/Dashboard/DashboardUserPage";
 import QuestionnairePage from "@/pages/Questionnaire/QuestionnairePage";
 import BlockDetailPage from "@/pages/Questionnaire/Blocks/BlockDetailPage";
 import BlockReviewPage from "@/pages/Questionnaire/Blocks/BlockReviewPage";
+import BlockBonusPage from "@/pages/Questionnaire/Blocks/BlockBonusPage";
 import MoodTracker from "@/pages/MoodTracker/MoodTracker";
 import MapsNearby from "@/pages/Maps/MapsNearby";
 
@@ -56,6 +57,10 @@ const routesConfig = [
       {
         path: "/questionnaire/responses/:blockId",
         element: <BlockReviewPage />,
+      },
+      {
+        path: "/questionnaire/blocks/:blockId/bonus",
+        element: <BlockBonusPage />,
       },
       { path: "/mood-tracker", element: <MoodTracker /> },
       { path: "/maps-nearby", element: <MapsNearby /> },
