@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/select";
 
 import { formatPhone } from "@/utils/format/phoneFormat";
+import { Checkbox } from "@/components/ui/checkbox";
+import { TermsModal } from "@/components/Terms/TermsModal";
 
 // Schema de validação Zod para registro
 const registerSchema = z
@@ -45,6 +47,12 @@ const registerSchema = z
       }),
     password: z.string().min(6, "Senha deve ter no mínimo 6 caracteres"),
     confirmPassword: z.string(),
+    acceptTerms: z.boolean().refine((val) => val === true, {
+      message: "Você deve aceitar os Termos de Uso",
+    }),
+    acceptPrivacy: z.boolean().refine((val) => val === true, {
+      message: "Você deve aceitar a Política de Privacidade",
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "As senhas não coincidem",
@@ -56,6 +64,7 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 export function RegisterPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
   const [states, setStates] = useState<
     Array<{ nome: string; sigla: string; id: number }>
   >([]);
@@ -105,6 +114,8 @@ export function RegisterPage() {
       state: "",
       city: "",
       phone: "",
+      acceptTerms: false,
+      acceptPrivacy: false,
     },
   });
 
@@ -374,11 +385,74 @@ export function RegisterPage() {
                   )}
                 />
 
+                <div className="space-y-4 pt-2">
+                  <FormField
+                    control={form.control}
+                    name="acceptTerms"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-sm font-normal">
+                            Aceito os{" "}
+                            <button
+                              type="button"
+                              onClick={() => setShowTermsModal(true)}
+                              className="text-primary hover:underline font-medium"
+                            >
+                              Termos de Uso
+                            </button>
+                          </FormLabel>
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="acceptPrivacy"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-sm font-normal">
+                            Aceito a{" "}
+                            <button
+                              type="button"
+                              onClick={() => setShowTermsModal(true)}
+                              className="text-primary hover:underline font-medium"
+                            >
+                              Política de Privacidade
+                            </button>
+                          </FormLabel>
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? "Criando conta..." : "Criar conta"}
                 </Button>
               </form>
             </Form>
+
+            <TermsModal
+              open={showTermsModal}
+              onOpenChange={setShowTermsModal}
+            />
 
             <div className="relative text-center text-sm">
               <span className="relative z-10 px-2 text-muted-foreground">

@@ -5,7 +5,7 @@ import {
   Settings,
   TrendingUp,
 } from "lucide-react";
-import { OnboardingStep } from "./OnboardingModal";
+import type { OnboardingStep } from "./OnboardingModal";
 import { Card, CardContent } from "@/components/ui/card";
 
 export const adminOnboardingSteps: OnboardingStep[] = [

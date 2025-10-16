@@ -30,6 +30,8 @@ import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { ArrowLeft } from "lucide-react";
 import { ArrowDesign, ArtDesign } from "../../assets/svgs";
+import { Checkbox } from "@/components/ui/checkbox";
+import { TermsModal } from "@/components/Terms/TermsModal";
 
 const completeProfileSchema = z.object({
   state: z.string().nonempty("Estado é obrigatório"),
@@ -40,12 +42,25 @@ const completeProfileSchema = z.object({
     .refine((val) => !val || /^\(\d{2}\)\s\d{4,5}-\d{4}$/.test(val), {
       message: "Telefone inválido",
     }),
+  acceptTerms: z.boolean().refine((val) => val === true, {
+    message: "Você deve aceitar os Termos de Uso",
+  }),
+  acceptPrivacy: z.boolean().refine((val) => val === true, {
+    message: "Você deve aceitar a Política de Privacidade",
+  }),
 });
 
 type CompleteProfileFormData = z.infer<typeof completeProfileSchema>;
 
+type CompleteProfileApiData = {
+  state: string;
+  city: string;
+  phone: string;
+}
+
 export default function CompleteProfile() {
   const { profileCompleted, user, refreshUser, logout } = useAuth();
+  const [showTermsModal, setShowTermsModal] = useState(false);
   const [states, setStates] = useState<
     { id: number; nome: string; sigla: string }[]
   >([]);
@@ -56,7 +71,7 @@ export default function CompleteProfile() {
   const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: async (data: CompleteProfileFormData) => {
+    mutationFn: async (data: CompleteProfileApiData) => {
       await api.put(`/users/complete-profile/${user?.id}`, data);
       toast.success("Perfil atualizado com sucesso!");
       return data;
@@ -114,12 +129,18 @@ export default function CompleteProfile() {
       state: "",
       city: "",
       phone: "",
+      acceptTerms: false,
+      acceptPrivacy: false,
     },
   });
 
-  const onSubmit = async (data: CompleteProfileFormData) => {
+  const onSubmit = async (data: CompleteProfileApiData) => {
     try {
-      mutation.mutate(data);
+      mutation.mutate({
+        state: data.state,
+        city: data.city,
+        phone: data.phone,
+      });
     } catch (error) {
       console.error("Erro ao atualizar perfil:", error);
       toast.error("Erro ao atualizar perfil. Tente novamente.");
@@ -259,11 +280,76 @@ export default function CompleteProfile() {
                     </FormItem>
                   )}
                 />
+
+                <div className="space-y-4 pt-2">
+                  <FormField
+                    control={form.control}
+                    name="acceptTerms"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-sm font-normal">
+                            Aceito os{" "}
+                            <button
+                              type="button"
+                              onClick={() => setShowTermsModal(true)}
+                              className="text-primary hover:underline font-medium"
+                            >
+                              Termos de Uso
+                            </button>
+                          </FormLabel>
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="acceptPrivacy"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-sm font-normal">
+                            Aceito a{" "}
+                            <button
+                              type="button"
+                              onClick={() => setShowTermsModal(true)}
+                              className="text-primary hover:underline font-medium"
+                            >
+                              Política de Privacidade
+                            </button>
+                          </FormLabel>
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
                 <Button type="submit" className="w-full">
                   Concluir
                 </Button>
               </form>
             </Form>
+
+            <TermsModal
+              open={showTermsModal}
+              onOpenChange={setShowTermsModal}
+            />
+
             <Button
               variant="outline"
               className="w-full mt-4"

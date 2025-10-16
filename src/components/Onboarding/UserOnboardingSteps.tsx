@@ -6,7 +6,7 @@ import {
   Sparkles,
   CheckCircle2,
 } from "lucide-react";
-import { OnboardingStep } from "./OnboardingModal";
+import type { OnboardingStep } from "./OnboardingModal";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
