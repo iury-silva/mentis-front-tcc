@@ -78,7 +78,6 @@ export function RegisterPage() {
     const fetchStates = async () => {
       try {
         const data = await brasilApiService.getStates();
-        console.log(data);
         setStates(data);
       } catch (error) {
         console.error("Erro ao buscar estados:", error);
@@ -147,60 +146,14 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="relative grid min-h-svh lg:grid-cols-2 overflow-hidden dark:from-primary/10 dark:to-muted/20 dark:bg-gradient-to-br">
+    <div className="relative grid min-h-sreen lg:grid-cols-2 dark:from-primary/10 dark:to-muted/20 dark:bg-gradient-to-br overflow-hidden">
       {/* Logo M no canto esquerdo (desktop) */}
       <div className="absolute top-4 left-4 hidden lg:block z-20">
         <img src="/images/icone-mentisV2.png" alt="Logo M" className="w-10" />
       </div>
-      {/* Left side - Avatar grande + textos + lista */}
-      <div className="hidden lg:flex relative items-start justify-center md:p-10 p-6">
-        <div className="relative flex items-center gap-10">
-          {/* Avatar maior, com destaque */}
-          <div className="relative w-60 h-60 flex-shrink-0">
-            <img
-              src="/images/avatar-register.png"
-              alt="Mentis Ilustração"
-              className="w-full h-full object-contain absolute top-0 left-0"
-            />
-          </div>
-
-          <div className="flex flex-col gap-4 max-w-xs">
-            <h2 className="text-3xl font-bold text-center">
-              Bem-vindo ao Mentis!
-            </h2>
-            <p className="text-sm text-muted-foreground text-center">
-              Organize e otimize suas tarefas diárias de forma prática:
-            </p>
-            <div className="space-y-4">
-              <ul className="space-y-3">
-                <li className="flex items-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span>Análise de voz com IA para insights emocionais</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span>Registro emocional diário personalizado</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span>Dashboard intuitivo com histórico de bem-estar</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span>Sugestões de autocuidado com IA</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                  <span>Privacidade e segurança de dados garantidas</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Right side - Form */}
-      <div className="flex flex-col gap-4 p-6 md:p-10">
+      <div className="flex flex-col gap-4 p-6 md:p-10 overflow-y-auto h-screen">
         {/* Logo extenso apenas mobile */}
         <div className="flex justify-center mb-6 lg:hidden">
           <img
@@ -503,6 +456,43 @@ export function RegisterPage() {
               </button>
             </div>
           </div>
+        </div>
+      </div>
+      {/* Left side - Avatar grande + textos + lista */}
+      <div className="hidden lg:flex overflow-hidden h-screen relative ">
+        <div className="flex flex-col items-center justify-start p-10 bg-gradient-to-b from-primary/10 to-muted/20 dark:from-primary/20 dark:to-muted text-center w-full">
+          {/* Avatar maior, com destaque */}
+          <img
+            src="/images/register.png"
+            alt="Mentis Ilustração"
+            className="drop-shadow-xl border-6 border-black rounded-xl absolute -bottom-2 -right-12"
+          />
+          <h2 className="mt-2 text-3xl font-bold">Bem-vindo ao Mentis!</h2>
+          <p className="mt-2 text-lg text-muted-foreground">
+            Sua jornada para uma mente mais saudável começa aqui.
+          </p>
+          <ul className="mt-6 space-y-2 text-left">
+            <li className="flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+              <span>Análise de voz com IA para insights emocionais</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+              <span>Registro emocional diário personalizado</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+              <span>Dashboard intuitivo com histórico de bem-estar</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+              <span>Sugestões de autocuidado com IA</span>
+            </li>
+            <li className="flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+              <span>Privacidade e segurança de dados garantidas</span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
