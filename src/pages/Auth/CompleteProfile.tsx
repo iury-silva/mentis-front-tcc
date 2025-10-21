@@ -56,7 +56,7 @@ type CompleteProfileApiData = {
   state: string;
   city: string;
   phone: string;
-}
+};
 
 export default function CompleteProfile() {
   const { profileCompleted, user, refreshUser, logout } = useAuth();
@@ -94,6 +94,9 @@ export default function CompleteProfile() {
     async function fetchStates() {
       try {
         const data = await brasilApiService.getStates();
+        data.sort((a: { nome: string }, b: { nome: string }) =>
+          a.nome.localeCompare(b.nome)
+        );
         setStates(data);
       } catch (error) {
         console.error("Erro ao buscar estados:", error);

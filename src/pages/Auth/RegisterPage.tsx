@@ -78,6 +78,9 @@ export function RegisterPage() {
     const fetchStates = async () => {
       try {
         const data = await brasilApiService.getStates();
+        data.sort((a: { nome: string }, b: { nome: string }) =>
+          a.nome.localeCompare(b.nome)
+        );
         setStates(data);
       } catch (error) {
         console.error("Erro ao buscar estados:", error);
@@ -146,14 +149,14 @@ export function RegisterPage() {
   };
 
   return (
-    <div className="relative grid min-h-sreen lg:grid-cols-2 dark:from-primary/10 dark:to-muted/20 dark:bg-gradient-to-br overflow-hidden">
+    <div className="relative grid min-h-sreen lg:grid-cols-2 dark:from-primary/10 dark:to-muted/20 dark:bg-gradient-to-br">
       {/* Logo M no canto esquerdo (desktop) */}
       <div className="absolute top-4 left-4 hidden lg:block z-20">
         <img src="/images/icone-mentisV2.png" alt="Logo M" className="w-10" />
       </div>
 
       {/* Right side - Form */}
-      <div className="flex flex-col gap-4 p-6 md:p-10 overflow-y-auto h-screen">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
         {/* Logo extenso apenas mobile */}
         <div className="flex justify-center mb-6 lg:hidden">
           <img
@@ -459,7 +462,7 @@ export function RegisterPage() {
         </div>
       </div>
       {/* Left side - Avatar grande + textos + lista */}
-      <div className="hidden lg:flex overflow-hidden h-screen relative ">
+      <div className="hidden lg:flex overflow-hidden h-screen sticky top-0">
         <div className="flex flex-col items-center justify-start p-10 bg-gradient-to-b from-primary/10 to-muted/20 dark:from-primary/20 dark:to-muted text-center w-full">
           {/* Avatar maior, com destaque */}
           <img
