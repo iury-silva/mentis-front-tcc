@@ -15,6 +15,7 @@ import LoginPage from "@/pages/Auth/LoginPage";
 import { RegisterPage } from "@/pages/Auth/RegisterPage";
 import GoogleLoggedPage from "@/pages/Auth/GoogleLoggedPage";
 import CompleteProfile from "@/pages/Auth/CompleteProfile";
+import VerifyEmail from "@/pages/VerifyEmail";
 
 // Admin Pages
 import DashboardAdminPage from "@/pages/Admin/Dashboard/DashboardAdminPage";
@@ -83,6 +84,7 @@ const AppRoutes: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/google/callback" element={<GoogleLoggedPage />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
         </Route>
 
         {/* Complete Profile (permite perfil incompleto) */}

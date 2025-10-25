@@ -15,7 +15,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { api } from "@/api";
 import { useState, useEffect } from "react";
-import { CheckCircle } from "lucide-react";
+import { ArrowLeftIcon, CheckCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import { brasilApiService } from "@/services/brasil.api.service";
 import {
@@ -27,6 +27,14 @@ import {
   SelectGroup,
   SelectLabel,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 import { formatPhone } from "@/utils/format/phoneFormat";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -65,6 +73,7 @@ export function RegisterPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showVerifyEmailModal, setShowVerifyEmailModal] = useState(false);
   const [states, setStates] = useState<
     Array<{ nome: string; sigla: string; id: number }>
   >([]);
@@ -135,13 +144,19 @@ export function RegisterPage() {
       toast.success(
         "Cadastro realizado com sucesso! Faça login para continuar."
       );
-      navigate("/login");
+      setShowVerifyEmailModal(true);
+      // navigate("/login");
     } catch (error) {
       console.error("Erro ao cadastrar:", error);
       toast.error("Erro ao cadastrar. Tente novamente.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCloseVerifyEmailModal = () => {
+    setShowVerifyEmailModal(false);
+    navigate("/login");
   };
 
   const handleGoogleRegister = () => {
@@ -498,6 +513,27 @@ export function RegisterPage() {
           </ul>
         </div>
       </div>
+      <Dialog
+        open={showVerifyEmailModal}
+        onOpenChange={handleCloseVerifyEmailModal}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Verifique seu Email</DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            Um email de verificação foi enviado para o seu endereço de email.
+            Por favor, verifique sua caixa de entrada e clique no link para
+            ativar sua conta.
+          </DialogDescription>
+          <DialogFooter>
+            <Button onClick={handleCloseVerifyEmailModal}>
+              <ArrowLeftIcon className="w-4 h-4" />
+              Ir para Login
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
