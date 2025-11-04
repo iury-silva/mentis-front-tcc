@@ -22,8 +22,21 @@ import {
 interface Question {
   id: string;
   question: string;
-  type: "text" | "multiple_choice";
+  type:
+    | "text"
+    | "single_choice"
+    | "single_choice_with_text"
+    | "multiple_choice"
+    | "multiple_choice_with_text"
+    | "city_state";
   options?: string[] | null;
+}
+
+interface Answer {
+  answer: string | string[]; // string para single/text/city_state, array para multiple
+  additionalText?: string; // Para *_with_text
+  state?: string; // Para city_state
+  city?: string; // Para city_state
 }
 
 type QuestionsResponse = Question[];
@@ -104,9 +117,7 @@ export default function BlockDetailPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const [answers, setAnswers] = useState<Record<string, { answer: string }>>(
-    {}
-  );
+  const [answers, setAnswers] = useState<Record<string, Answer>>({});
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [showBonificationModal, setShowBonificationModal] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -188,26 +199,89 @@ export default function BlockDetailPage() {
     isError: isAccessError,
   } = blockAccessQuery;
 
-  const handleAnswer = useCallback((questionId: string, value: string) => {
+  const handleAnswer = useCallback((questionId: string, answerData: Answer) => {
     setAnswers((prev) => ({
       ...prev,
-      [questionId]: { answer: value },
+      [questionId]: answerData,
     }));
   }, []);
 
   const currentQuestion = questions[currentStep];
-  const currentAnswer = currentQuestion
-    ? answers[currentQuestion.id]?.answer
-    : "";
-  // Validação mais rigorosa: resposta deve existir e não ser apenas espaços em branco
-  const isCurrentAnswered = currentAnswer && currentAnswer.trim().length > 0;
+  const currentAnswerData = currentQuestion
+    ? answers[currentQuestion.id]
+    : undefined;
+
+  // Função para validar se a resposta está completa
+  const isAnswerValid = (
+    answer: Answer | undefined,
+    question: Question
+  ): boolean => {
+    if (!answer) return false;
+
+    switch (question.type) {
+      case "text":
+        return (
+          typeof answer.answer === "string" && answer.answer.trim().length > 0
+        );
+
+      case "single_choice":
+        return (
+          typeof answer.answer === "string" && answer.answer.trim().length > 0
+        );
+
+      case "single_choice_with_text": {
+        const singleAnswer = answer.answer as string;
+        if (!singleAnswer || singleAnswer.trim().length === 0) return false;
+        // Se escolheu "Outro/Outros", precisa ter texto adicional
+        if (singleAnswer === "Outro" || singleAnswer === "Outros") {
+          return (
+            !!answer.additionalText && answer.additionalText.trim().length > 0
+          );
+        }
+        return true;
+      }
+
+      case "multiple_choice":
+        return Array.isArray(answer.answer) && answer.answer.length > 0;
+
+      case "multiple_choice_with_text": {
+        if (!Array.isArray(answer.answer) || answer.answer.length === 0)
+          return false;
+        // Se "Outro/Outros" está selecionado, precisa ter texto adicional
+        const hasOther = answer.answer.some(
+          (opt) => opt === "Outro" || opt === "Outros"
+        );
+        if (hasOther) {
+          return (
+            !!answer.additionalText && answer.additionalText.trim().length > 0
+          );
+        }
+        return true;
+      }
+
+      case "city_state":
+        return (
+          !!answer.state &&
+          !!answer.city &&
+          answer.state.trim().length > 0 &&
+          answer.city.trim().length > 0
+        );
+
+      default:
+        return false;
+    }
+  };
+
+  const isCurrentAnswered = currentQuestion
+    ? isAnswerValid(currentAnswerData, currentQuestion)
+    : false;
 
   const canGoNext = isCurrentAnswered;
   const canGoPrev = currentStep > 0;
   const isLastStep = currentStep === questions.length - 1;
 
-  const answeredCount = Object.values(answers).filter(
-    (a) => a.answer && a.answer.trim().length > 0
+  const answeredCount = questions.filter((q) =>
+    isAnswerValid(answers[q.id], q)
   ).length;
   const allQuestionsAnswered = answeredCount === questions.length;
   // const progressPercentage =
@@ -244,12 +318,44 @@ export default function BlockDetailPage() {
   const handleConfirmSubmit = () => {
     if (!user?.id || !blockId) return;
 
-    const responses = Object.entries(answers)
-      .filter(([, answerData]) => answerData.answer.trim() !== "")
-      .map(([questionId, answerData]) => ({
-        questionId,
-        value: answerData.answer,
-      }));
+    const responses = questions
+      .filter((q) => isAnswerValid(answers[q.id], q))
+      .map((question) => {
+        const answerData = answers[question.id];
+        let value: string;
+
+        // Serializar resposta baseado no tipo
+        switch (question.type) {
+          case "text":
+          case "single_choice":
+          case "single_choice_with_text":
+            value = answerData.answer as string;
+            if (answerData.additionalText) {
+              value += ` | Especificação: ${answerData.additionalText}`;
+            }
+            break;
+
+          case "multiple_choice":
+          case "multiple_choice_with_text":
+            value = (answerData.answer as string[]).join("; ");
+            if (answerData.additionalText) {
+              value += ` | Especificação: ${answerData.additionalText}`;
+            }
+            break;
+
+          case "city_state":
+            value = `${answerData.city} - ${answerData.state}`;
+            break;
+
+          default:
+            value = String(answerData.answer);
+        }
+
+        return {
+          questionId: question.id,
+          value,
+        };
+      });
 
     saveResponsesMutation.mutate({
       userId: user.id,
@@ -405,8 +511,10 @@ export default function BlockDetailPage() {
           {currentQuestion && (
             <QuestionStep
               question={currentQuestion}
-              answer={currentAnswer}
-              onAnswer={(value) => handleAnswer(currentQuestion.id, value)}
+              answer={currentAnswerData}
+              onAnswer={(answerData) =>
+                handleAnswer(currentQuestion.id, answerData)
+              }
               questionNumber={currentStep + 1}
               totalQuestions={questions.length}
             />

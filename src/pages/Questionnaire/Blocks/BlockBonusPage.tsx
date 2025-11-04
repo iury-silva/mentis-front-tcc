@@ -3,12 +3,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   Gift,
-  Download,
   ExternalLink,
-  FileText,
   Sparkles,
   ArrowLeft,
   CheckCircle2,
+  Link as LinkIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +19,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import {PageCustom} from "@/components/Layout/PageCustom";
+import { PageCustom } from "@/components/Layout/PageCustom";
 
 interface BlockBonusPageProps {
   link?: string;
@@ -76,7 +75,7 @@ export default function BlockBonusPage() {
         <Card className="max-w-2xl mx-auto border-destructive/50">
           <CardContent className="pt-6 text-center space-y-4">
             <div className="mx-auto w-16 h-16 bg-destructive/10 rounded-full flex items-center justify-center">
-              <FileText className="w-8 h-8 text-destructive" />
+              <LinkIcon className="w-8 h-8 text-destructive" />
             </div>
             <p className="text-destructive font-medium">
               Erro ao carregar os dados da bonificação.
@@ -109,10 +108,10 @@ export default function BlockBonusPage() {
         <Card className="max-w-2xl mx-auto">
           <CardContent className="pt-6 text-center space-y-4">
             <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center">
-              <FileText className="w-8 h-8 text-muted-foreground" />
+              <LinkIcon className="w-8 h-8 text-muted-foreground" />
             </div>
             <p className="text-muted-foreground">
-              Nenhum PDF de bonificação foi encontrado para este bloco.
+              Nenhuma bonificação foi encontrada para este bloco.
             </p>
             <Button
               variant="outline"
@@ -164,16 +163,16 @@ export default function BlockBonusPage() {
                   <Sparkles className="w-5 h-5 text-yellow-500" />
                 </h3>
                 <p className="text-muted-foreground">
-                  Você completou as atividades necessárias e ganhou acesso ao
-                  material de bonificação. Este conteúdo exclusivo foi preparado
-                  especialmente para você.
+                  Você completou as atividades necessárias e ganhou acesso a um
+                  benefício exclusivo. Este conteúdo foi preparado especialmente
+                  para você.
                 </p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Card Principal do PDF */}
+        {/* Card Principal */}
         <Card className="overflow-hidden pt-0">
           <div className="bg-gradient-to-br from-yellow-500 via-orange-500 to-orange-400 p-1">
             <div className="bg-background rounded-t-lg">
@@ -182,13 +181,13 @@ export default function BlockBonusPage() {
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full blur-lg opacity-50 animate-pulse"></div>
                     <div className="relative w-20 h-20 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full flex items-center justify-center">
-                      <FileText className="w-10 h-10 text-white" />
+                      <Gift className="w-10 h-10 text-white" />
                     </div>
                   </div>
                 </div>
-                <CardTitle className="text-2xl">Material Exclusivo</CardTitle>
+                <CardTitle className="text-2xl">Benefício Exclusivo</CardTitle>
                 <CardDescription className="text-base">
-                  Seu PDF de bonificação está pronto para ser acessado
+                  Sua recompensa está pronta para ser acessada
                 </CardDescription>
               </CardHeader>
             </div>
@@ -198,16 +197,12 @@ export default function BlockBonusPage() {
             {/* Badges de Informação */}
             <div className="flex flex-wrap justify-center gap-2">
               <Badge variant="secondary" className="gap-1">
-                <FileText className="w-3 h-3" />
-                Formato PDF
+                <LinkIcon className="w-3 h-3" />
+                Acesso Online
               </Badge>
               <Badge variant="secondary" className="gap-1">
                 <Sparkles className="w-3 h-3" />
                 Conteúdo Exclusivo
-              </Badge>
-              <Badge variant="secondary" className="gap-1">
-                <Download className="w-3 h-3" />
-                Download Disponível
               </Badge>
             </div>
 
@@ -216,8 +211,7 @@ export default function BlockBonusPage() {
             {/* Descrição */}
             <div className="text-center space-y-2">
               <p className="text-sm text-muted-foreground">
-                Clique no botão abaixo para abrir seu material de bonificação. O
-                PDF será aberto em uma nova aba.
+                Clique no botão abaixo para acessar seu benefício exclusivo.
               </p>
             </div>
 
@@ -235,7 +229,7 @@ export default function BlockBonusPage() {
                   className="flex items-center gap-2"
                 >
                   <ExternalLink className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                  Abrir Material
+                  Acessar Benefício
                 </a>
               </Button>
             </div>
@@ -243,7 +237,7 @@ export default function BlockBonusPage() {
             {/* Nota de Rodapé */}
             <div className="pt-4 text-center">
               <p className="text-xs text-muted-foreground">
-                💡 Dica: Salve este material para consultas futuras
+                💡 Dica: Salve este link para acesso futuro
               </p>
             </div>
           </CardContent>
@@ -261,8 +255,8 @@ export default function BlockBonusPage() {
               <div className="space-y-1">
                 <p className="font-medium">Continue progredindo!</p>
                 <p className="text-muted-foreground">
-                  Complete mais questionários para desbloquear novos conteúdos e
-                  bonificações exclusivas.
+                  Complete mais questionários para desbloquear novos benefícios
+                  exclusivos.
                 </p>
               </div>
             </div>

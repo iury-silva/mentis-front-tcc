@@ -12,28 +12,77 @@ import { CheckCircle, Eye, Edit3, Clock } from "lucide-react";
 interface Question {
   id: string;
   question: string;
-  type: "text" | "multiple_choice";
+  type:
+    | "text"
+    | "single_choice"
+    | "single_choice_with_text"
+    | "multiple_choice"
+    | "multiple_choice_with_text"
+    | "city_state";
   options?: string[] | null;
+}
+
+interface Answer {
+  answer: string | string[];
+  additionalText?: string;
+  state?: string;
+  city?: string;
 }
 
 interface ReviewModalProps {
   isOpen: boolean;
   onClose: () => void;
   questions: Question[];
-  answers: Record<string, { answer: string }>;
+  answers: Record<string, Answer>;
   onConfirm: () => void;
   isLoading: boolean;
 }
 
 function ReviewModalItem({
   question,
-  answer,
+  answerData,
   index,
 }: {
   question: Question;
-  answer: string;
+  answerData: Answer | undefined;
   index: number;
 }) {
+  // Formatar a resposta para exibição
+  const formatAnswer = (): string => {
+    if (!answerData) return "Não respondida";
+
+    switch (question.type) {
+      case "text":
+      case "single_choice":
+        return answerData.answer as string;
+
+      case "single_choice_with_text": {
+        const singleAnswer = answerData.answer as string;
+        return answerData.additionalText
+          ? `${singleAnswer} | Especificação: ${answerData.additionalText}`
+          : singleAnswer;
+      }
+
+      case "multiple_choice":
+        return (answerData.answer as string[]).join("; ");
+
+      case "multiple_choice_with_text": {
+        const multiAnswer = (answerData.answer as string[]).join("; ");
+        return answerData.additionalText
+          ? `${multiAnswer} | Especificação: ${answerData.additionalText}`
+          : multiAnswer;
+      }
+
+      case "city_state":
+        return `${answerData.city} - ${answerData.state}`;
+
+      default:
+        return String(answerData.answer);
+    }
+  };
+
+  const formattedAnswer = formatAnswer();
+
   return (
     <div className="bg-muted rounded-lg sm:rounded-xl border border-border p-3 sm:p-4 space-y-2 sm:space-y-3">
       <div className="flex items-start gap-2 sm:gap-3">
@@ -49,7 +98,7 @@ function ReviewModalItem({
               Sua resposta:
             </p>
             <p className="text-emerald-800 dark:text-emerald-200 font-semibold break-words text-sm sm:text-base">
-              {answer || "Não respondida"}
+              {formattedAnswer}
             </p>
           </div>
         </div>
@@ -90,12 +139,12 @@ export function ReviewModal({
         <ScrollArea className="flex-1 max-h-[50vh] sm:max-h-[60vh] p-3 sm:p-6">
           <div className="space-y-3 sm:space-y-4 pr-2 sm:pr-4">
             {questions.map((question, index) => {
-              const answer = answers[question.id]?.answer || "";
+              const answerData = answers[question.id];
               return (
                 <ReviewModalItem
                   key={question.id}
                   question={question}
-                  answer={answer}
+                  answerData={answerData}
                   index={index}
                 />
               );

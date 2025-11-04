@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/api";
 import { useAuth } from "@/auth/useAuth";
@@ -31,6 +31,7 @@ export interface Questionnaire {
   terms: string;
   createdAt: string;
   blocks: Block[];
+  hasAcceptedTerms?: boolean;
 }
 
 type QuestionnaireResponse = Questionnaire[];
@@ -103,6 +104,7 @@ const QuestionnaireListSkeleton = () => (
 export default function QuestionnairePage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [blocks, setBlocks] = useState<Block[]>([]);
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [pendingBlock, setPendingBlock] = useState<Block | null>(null);
@@ -146,17 +148,17 @@ export default function QuestionnairePage() {
 
     if (!questionnaire) return;
 
-    // Se é o primeiro bloco (order = 1) e tem termos, mostrar o modal
+    // Se tem termos E o usuário ainda não aceitou, mostrar o modal
     if (
-      block.order === 1 &&
       questionnaire.terms &&
-      questionnaire.terms.trim() !== ""
+      questionnaire.terms.trim() !== "" &&
+      !questionnaire.hasAcceptedTerms
     ) {
       setCurrentQuestionnaire(questionnaire);
       setPendingBlock(block);
       setShowTermsModal(true);
     } else {
-      // Navegar diretamente para blocos que não são o primeiro ou não têm termos
+      // Navegar diretamente se já aceitou os termos ou não há termos
       navigate(`/questionnaire/blocks/${block.id}`);
     }
   };
@@ -167,6 +169,10 @@ export default function QuestionnairePage() {
 
   const handleAcceptTerms = () => {
     setShowTermsModal(false);
+
+    // Invalidar query para recarregar dados com hasAcceptedTerms atualizado
+    queryClient.invalidateQueries({ queryKey: ["questionnaire", user?.id] });
+
     if (pendingBlock) {
       navigate(`/questionnaire/blocks/${pendingBlock.id}`);
     }
@@ -341,9 +347,9 @@ export default function QuestionnairePage() {
                                 ? "✓ Concluído"
                                 : blockData.locked
                                 ? "🔒 Bloqueado"
-                                : block.order === 1 &&
-                                  questionnaire.terms &&
-                                  questionnaire.terms.trim() !== ""
+                                : questionnaire.terms &&
+                                  questionnaire.terms.trim() !== "" &&
+                                  !questionnaire.hasAcceptedTerms
                                 ? "📄 Requer consentimento"
                                 : "📝 Disponível"}
                             </div>
