@@ -137,28 +137,11 @@ export function LoginForm({
             className="w-full flex items-center gap-2"
             onClick={handleGoogleLogin}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 533.5 544.3"
+            <img
+              src="/images/google-color.svg"
+              alt="Google Logo"
               className="h-4 w-4"
-            >
-              <path
-                fill="#EA4335"
-                d="M533.5 278.4c0-18.5-1.5-37-4.7-55H272v104h147.3c-6.4 34.8-26 64.3-55.5 84.1v69.8h89.4c52.4-48.2 80.3-119.3 80.3-202.9z"
-              />
-              <path
-                fill="#34A853"
-                d="M272 544.3c74.7 0 137.3-24.7 183.1-66.9l-89.4-69.8c-24.8 16.7-56.6 26.5-93.7 26.5-71.9 0-132.8-48.6-154.6-113.9H25.4v71.6c45.2 89.1 138 152.5 246.6 152.5z"
-              />
-              <path
-                fill="#4A90E2"
-                d="M117.4 320.2c-10.4-30.9-10.4-64 0-94.9V153.7H25.4c-34.9 69.5-34.9 152 0 221.5l92-55z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M272 107.7c39.5-.6 77.2 14 105.9 40.8l79.1-79.1C409.3 24.3 346.7-.4 272 0 163.4 0 70.6 63.4 25.4 152.5l92 71.6C139.2 156.3 200.1 107.7 272 107.7z"
-              />
-            </svg>
+            />
             Entrar com Google
           </Button>
         </div>

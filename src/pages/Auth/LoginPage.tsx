@@ -81,15 +81,13 @@ export default function LoginPage() {
         <div className="mt-auto pt-8 pb-4">
           <div className="flex items-center justify-center">
             <div className="h-16 overflow-hidden flex items-center">
-              <img
-                src="/images/Logo da UNISC.png"
-                alt="UNISC"
-                className="h-20 object-cover opacity-70 hover:opacity-100 transition-opacity"
-                style={{ objectPosition: "center" }}
-                href="https://www.unisc.br"
-                target="_blank"
-                rel="noopener noreferrer"
-              />
+              <a href="https://www.unisc.br" target="_blank" rel="noreferrer">
+                <img
+                  src="/images/Logo da UNISC.png"
+                  alt="UNISC"
+                  className="h-20 object-cover opacity-80 hover:opacity-100 transition-opacity"
+                />
+              </a>
             </div>
           </div>
         </div>
