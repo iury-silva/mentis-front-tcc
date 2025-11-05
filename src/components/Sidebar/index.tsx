@@ -14,6 +14,7 @@ import {
   QueueListIcon,
   HeartIcon,
   MapIcon,
+  SparklesIcon,
 } from "@heroicons/react/24/outline";
 
 export function AppSidebar() {
@@ -56,7 +57,13 @@ export function AppSidebar() {
       url: "/maps-nearby",
       icon: MapIcon,
       role: "user", // só user vê
-    }
+    },
+    {
+      title: "Créditos",
+      url: "/credits",
+      icon: SparklesIcon,
+      role: "shared", // ambos veem
+    },
     // {
     //   title: "Perfil",
     //   url: "/profile",
@@ -82,7 +89,11 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="flex flex-row items-center justify-start px-2 py-4">
         <div className="flex items-center justify-center group-data-[collapsible=icon]:justify-center h-12 w-12 rounded-lg font-bold text-lg bg-primary/10 text-primary shrink-0 ">
-          <img src="/images/icone-mentisV2.png" alt="Logo" className="w-8 shrink-0" />
+          <img
+            src="/images/icone-mentisV2.png"
+            alt="Logo"
+            className="w-8 shrink-0"
+          />
         </div>
         <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
           <span className="truncate font-bold text-foreground">Mentis</span>

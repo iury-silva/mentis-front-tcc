@@ -14,6 +14,7 @@ import {
   UserIcon as UserIconSolid,
   EllipsisHorizontalIcon as EllipsisHorizontalIconSolid,
   MapIcon as MapIconSolid,
+  SparklesIcon,
 } from "@heroicons/react/24/solid";
 import { cn } from "@/lib/utils";
 import {
@@ -74,6 +75,13 @@ export function BottomNavigation() {
       iconSolid: UserIconSolid,
       priority: 4,
     },
+    {
+      title: "Créditos",
+      url: "/credits",
+      icon: SparklesIcon,
+      iconSolid: SparklesIcon,
+      priority: 5,
+    }
     // Exemplo de rotas adicionais que iriam para o menu "Mais"
     // {
     //   title: "Relatórios",
@@ -141,7 +149,7 @@ export function BottomNavigation() {
               )}
             >
               <Icon className="w-6 h-6 mb-1 flex-shrink-0" />
-              <span className="text-xs font-medium truncate">{item.title}</span>
+              {/* <span className="text-xs font-medium truncate">{item.title}</span> */}
             </Link>
           );
         })}

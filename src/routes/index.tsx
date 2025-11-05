@@ -33,6 +33,7 @@ import MapsNearby from "@/pages/Maps/MapsNearby";
 // Common Pages
 import SettingsPage from "@/pages/Settings/SettingsPage";
 import NotFoundPage from "@/pages/NotFound/NotFoundPage";
+import { CreditsPage } from "@/pages/About/CreditsPage";
 
 // Route protection
 import ProtectedRoute from "@/routes/ProtectedRoute";
@@ -69,7 +70,10 @@ const routesConfig = [
   },
   {
     role: ["admin", "user"],
-    children: [{ path: "/settings", element: <SettingsPage /> }],
+    children: [
+      { path: "/settings", element: <SettingsPage /> },
+      { path: "/credits", element: <CreditsPage /> },
+    ],
   },
 ];
 

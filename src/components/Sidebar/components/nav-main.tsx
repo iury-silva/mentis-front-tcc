@@ -54,6 +54,7 @@ export function NavMain({
   // Filtrar itens baseado no role do usuário
   const filteredItems = items.filter((item) => {
     if (!item.role) return true;
+    if (item.role === "shared") return true; // shared para ambos
     return item.role === userRole;
   });
 

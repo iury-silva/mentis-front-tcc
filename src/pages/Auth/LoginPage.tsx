@@ -77,38 +77,20 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Logos Institucionais */}
-        <div className="mt-auto pt-8">
-          <div className="text-center mb-4">
-            <p className="text-xs text-muted-foreground font-medium">
-              Apoio Institucional
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-6 px-4">
+        {/* Logo UNISC */}
+        <div className="mt-auto pt-8 pb-4">
+          <div className="flex items-center justify-center">
             <div className="h-16 overflow-hidden flex items-center">
               <img
                 src="/images/Logo da UNISC.png"
                 alt="UNISC"
-                className="h-20 object-cover opacity-70 hover:opacity-100 transition-opacity -mr-28"
+                className="h-20 object-cover opacity-70 hover:opacity-100 transition-opacity"
                 style={{ objectPosition: "center" }}
+                href="https://www.unisc.br"
+                target="_blank"
+                rel="noopener noreferrer"
               />
             </div>
-            <img
-              src="/images/Logo - Mestrado_Profissional_em_Psicologia.png"
-              alt="Mestrado Profissional em Psicologia"
-              className="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity"
-            />
-            <img
-              src="/images/1.png"
-              alt="Parceiro Institucional"
-              className="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity"
-            />
-
-            <img
-              src="/images/Logo - PPGSPI.png"
-              alt="PPGSPI"
-              className="h-10 object-contain opacity-90 hover:opacity-100 transition-opacity"
-            />
           </div>
         </div>
       </div>
