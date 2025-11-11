@@ -175,7 +175,12 @@ export function QuestionStep({
   if (question.type === "single_choice_with_text") {
     const currentAnswer = (answer?.answer as string) || "";
     const hasOtherSelected =
-      currentAnswer === "Outro" || currentAnswer === "Outros" || currentAnswer === "Conte-nos um pouco:" || currentAnswer === "Quais:" || currentAnswer === "Por quê?" || currentAnswer === "Como tem lidado com isso?";
+      currentAnswer === "Outro" ||
+      currentAnswer === "Outros" ||
+      currentAnswer === "Conte-nos um pouco:" ||
+      currentAnswer === "Quais:" ||
+      currentAnswer === "Por quê?" ||
+      currentAnswer === "Como tem lidado com isso?";
 
     return (
       <div className="question-container bg-background rounded-xl sm:rounded-2xl border border-border p-4 sm:p-6 space-y-4 sm:space-y-6">
@@ -307,7 +312,8 @@ export function QuestionStep({
   if (question.type === "multiple_choice_with_text") {
     const selectedOptions = (answer?.answer as string[]) || [];
     const hasOther = selectedOptions.some(
-      (opt) => opt === "Outro" || opt === "Outros" || "Conte-nos um pouco:"
+      (opt) =>
+        opt === "Outro" || opt === "Outros" || opt === "Conte-nos um pouco:"
     );
 
     const toggleOption = (option: string) => {
@@ -318,7 +324,8 @@ export function QuestionStep({
       onAnswer({
         answer: newSelection,
         additionalText: newSelection.some(
-          (opt) => opt === "Outro" || opt === "Outros"
+          (opt) =>
+            opt === "Outro" || opt === "Outros" || opt === "Conte-nos um pouco:"
         )
           ? answer?.additionalText
           : undefined,
