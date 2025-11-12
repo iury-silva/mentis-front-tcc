@@ -105,7 +105,15 @@ export function LoginForm({
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Senha</FormLabel>
+                <div className="flex items-center justify-between">
+                  <FormLabel>Senha</FormLabel>
+                  <a
+                    href="/forgot-password"
+                    className="text-xs text-muted-foreground hover:text-primary transition-colors underline underline-offset-4"
+                  >
+                    Esqueceu sua senha?
+                  </a>
+                </div>
                 <FormControl>
                   <Input type="password" showPasswordToggle={true} {...field} />
                 </FormControl>
