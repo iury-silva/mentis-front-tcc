@@ -45,6 +45,31 @@ interface QuestionStepProps {
   totalQuestions: number;
 }
 
+// Palavras-chave que indicam que a opção deve ser um campo de texto
+const TEXT_FIELD_KEYWORDS = [
+  "Caso afirmativo, qual?",
+  "Conte-nos um pouco:",
+  "Como tem lidado com isso?",
+  "Quais:",
+  "Por quê?",
+];
+
+// Função para verificar se uma opção deve ser campo de texto
+const shouldBeTextField = (option: string): boolean => {
+  return TEXT_FIELD_KEYWORDS.some((keyword) =>
+    option.trim().toLowerCase().includes(keyword.toLowerCase())
+  );
+};
+
+// Palavras que indicam campo "Outro/Outros"
+const OTHER_KEYWORDS = ["Outro", "Outros", "Outra", "Outras"];
+
+const isOtherOption = (option: string): boolean => {
+  return OTHER_KEYWORDS.some(
+    (keyword) => option.trim().toLowerCase() === keyword.toLowerCase()
+  );
+};
+
 export function QuestionStep({
   question,
   answer,
@@ -129,6 +154,13 @@ export function QuestionStep({
 
   // SINGLE_CHOICE
   if (question.type === "single_choice") {
+    // Verificar se a última opção deve ser campo de texto
+    const lastOption = question.options?.[question.options.length - 1];
+    const hasTextFieldOption = lastOption && shouldBeTextField(lastOption);
+    const normalOptions = hasTextFieldOption
+      ? question.options?.slice(0, -1)
+      : question.options;
+
     return (
       <div className="question-container bg-background rounded-xl sm:rounded-2xl border border-border p-4 sm:p-6 space-y-4 sm:space-y-6">
         <QuestionHeader
@@ -141,7 +173,7 @@ export function QuestionStep({
           onValueChange={(value) => onAnswer({ answer: value })}
           className="space-y-3"
         >
-          {question.options?.map((option, index) => (
+          {normalOptions?.map((option, index) => (
             <div key={index}>
               <Label
                 htmlFor={`${question.id}-${index}`}
@@ -167,6 +199,27 @@ export function QuestionStep({
             </div>
           ))}
         </RadioGroup>
+
+        {/* Campo de texto para última opção especial */}
+        {hasTextFieldOption && (
+          <div className="space-y-2 mt-4">
+            <Label
+              htmlFor={`${question.id}-text-field`}
+              className="text-sm font-medium"
+            >
+              {lastOption}
+              <span className="text-destructive ml-1">*</span>
+            </Label>
+            <Textarea
+              id={`${question.id}-text-field`}
+              value={(answer?.answer as string) || ""}
+              onChange={(e) => onAnswer({ answer: e.target.value })}
+              placeholder="Digite sua resposta aqui..."
+              className="min-h-[100px] resize-none"
+              rows={4}
+            />
+          </div>
+        )}
       </div>
     );
   }
@@ -174,13 +227,14 @@ export function QuestionStep({
   // SINGLE_CHOICE_WITH_TEXT
   if (question.type === "single_choice_with_text") {
     const currentAnswer = (answer?.answer as string) || "";
-    const hasOtherSelected =
-      currentAnswer === "Outro" ||
-      currentAnswer === "Outros" ||
-      currentAnswer === "Conte-nos um pouco:" ||
-      currentAnswer === "Quais:" ||
-      currentAnswer === "Por quê?" ||
-      currentAnswer === "Como tem lidado com isso?";
+    const hasOtherSelected = isOtherOption(currentAnswer);
+
+    // Verificar se a última opção deve ser campo de texto
+    const lastOption = question.options?.[question.options.length - 1];
+    const hasTextFieldOption = lastOption && shouldBeTextField(lastOption);
+    const normalOptions = hasTextFieldOption
+      ? question.options?.slice(0, -1)
+      : question.options;
 
     return (
       <div className="question-container bg-background rounded-xl sm:rounded-2xl border border-border p-4 sm:p-6 space-y-4 sm:space-y-6">
@@ -195,15 +249,14 @@ export function QuestionStep({
             onValueChange={(value) => {
               onAnswer({
                 answer: value,
-                additionalText:
-                  value === "Outro" || value === "Outros"
-                    ? answer?.additionalText
-                    : undefined,
+                additionalText: isOtherOption(value)
+                  ? answer?.additionalText
+                  : undefined,
               });
             }}
             className="space-y-3"
           >
-            {question.options?.map((option, index) => (
+            {normalOptions?.map((option, index) => (
               <div key={index}>
                 <Label
                   htmlFor={`${question.id}-${index}`}
@@ -230,10 +283,15 @@ export function QuestionStep({
             ))}
           </RadioGroup>
 
+          {/* Campo de texto para opção "Outro" */}
           {hasOtherSelected && (
             <div className="mt-4 animate-in slide-in-from-top-2 space-y-2">
-              <Label htmlFor={`${question.id}-other-text`} className="text-sm">
-                Por favor, especifique:
+              <Label
+                htmlFor={`${question.id}-other-text`}
+                className="text-sm font-medium"
+              >
+                Especifique "Outro":
+                <span className="text-destructive ml-1">*</span>
               </Label>
               <Input
                 id={`${question.id}-other-text`}
@@ -249,6 +307,27 @@ export function QuestionStep({
               />
             </div>
           )}
+
+          {/* Campo de texto para última opção especial */}
+          {hasTextFieldOption && (
+            <div className="space-y-2">
+              <Label
+                htmlFor={`${question.id}-text-field`}
+                className="text-sm font-medium"
+              >
+                {lastOption}
+                <span className="text-destructive ml-1">*</span>
+              </Label>
+              <Textarea
+                id={`${question.id}-text-field`}
+                value={(answer?.answer as string) || ""}
+                onChange={(e) => onAnswer({ answer: e.target.value })}
+                placeholder="Digite sua resposta aqui..."
+                className="min-h-[100px] resize-none"
+                rows={4}
+              />
+            </div>
+          )}
         </div>
       </div>
     );
@@ -257,6 +336,13 @@ export function QuestionStep({
   // MULTIPLE_CHOICE
   if (question.type === "multiple_choice") {
     const selectedOptions = (answer?.answer as string[]) || [];
+
+    // Verificar se a última opção deve ser campo de texto
+    const lastOption = question.options?.[question.options.length - 1];
+    const hasTextFieldOption = lastOption && shouldBeTextField(lastOption);
+    const normalOptions = hasTextFieldOption
+      ? question.options?.slice(0, -1)
+      : question.options;
 
     const toggleOption = (option: string) => {
       const newSelection = selectedOptions.includes(option)
@@ -278,7 +364,7 @@ export function QuestionStep({
             Selecione todas as opções que se aplicam
           </p>
           <div className="space-y-3">
-            {question.options?.map((option, index) => (
+            {normalOptions?.map((option, index) => (
               <div
                 key={index}
                 onClick={() => toggleOption(option)}
@@ -303,6 +389,32 @@ export function QuestionStep({
               </div>
             ))}
           </div>
+
+          {/* Campo de texto para última opção especial */}
+          {hasTextFieldOption && (
+            <div className="space-y-2 mt-4">
+              <Label
+                htmlFor={`${question.id}-text-field`}
+                className="text-sm font-medium"
+              >
+                {lastOption}
+                <span className="text-destructive ml-1">*</span>
+              </Label>
+              <Textarea
+                id={`${question.id}-text-field`}
+                value={answer?.additionalText || ""}
+                onChange={(e) =>
+                  onAnswer({
+                    answer: selectedOptions,
+                    additionalText: e.target.value,
+                  })
+                }
+                placeholder="Digite sua resposta aqui..."
+                className="min-h-[100px] resize-none"
+                rows={4}
+              />
+            </div>
+          )}
         </div>
       </div>
     );
@@ -311,10 +423,14 @@ export function QuestionStep({
   // MULTIPLE_CHOICE_WITH_TEXT
   if (question.type === "multiple_choice_with_text") {
     const selectedOptions = (answer?.answer as string[]) || [];
-    const hasOther = selectedOptions.some(
-      (opt) =>
-        opt === "Outro" || opt === "Outros" || opt === "Conte-nos um pouco:"
-    );
+    const hasOther = selectedOptions.some((opt) => isOtherOption(opt));
+
+    // Verificar se a última opção deve ser campo de texto
+    const lastOption = question.options?.[question.options.length - 1];
+    const hasTextFieldOption = lastOption && shouldBeTextField(lastOption);
+    const normalOptions = hasTextFieldOption
+      ? question.options?.slice(0, -1)
+      : question.options;
 
     const toggleOption = (option: string) => {
       const newSelection = selectedOptions.includes(option)
@@ -323,10 +439,7 @@ export function QuestionStep({
 
       onAnswer({
         answer: newSelection,
-        additionalText: newSelection.some(
-          (opt) =>
-            opt === "Outro" || opt === "Outros" || opt === "Conte-nos um pouco:"
-        )
+        additionalText: newSelection.some((opt) => isOtherOption(opt))
           ? answer?.additionalText
           : undefined,
       });
@@ -344,7 +457,7 @@ export function QuestionStep({
             Selecione todas as opções que se aplicam
           </p>
           <div className="space-y-3">
-            {question.options?.map((option, index) => (
+            {normalOptions?.map((option, index) => (
               <div
                 key={index}
                 onClick={() => toggleOption(option)}
@@ -370,10 +483,15 @@ export function QuestionStep({
             ))}
           </div>
 
+          {/* Campo de texto para opção "Outro" */}
           {hasOther && (
             <div className="mt-4 animate-in slide-in-from-top-2 space-y-2">
-              <Label htmlFor={`${question.id}-other-text`} className="text-sm">
-                Por favor, especifique "Outro":
+              <Label
+                htmlFor={`${question.id}-other-text`}
+                className="text-sm font-medium"
+              >
+                Especifique "Outro":
+                <span className="text-destructive ml-1">*</span>
               </Label>
               <Input
                 id={`${question.id}-other-text`}
@@ -386,6 +504,32 @@ export function QuestionStep({
                 }
                 placeholder="Digite aqui..."
                 className="w-full"
+              />
+            </div>
+          )}
+
+          {/* Campo de texto para última opção especial */}
+          {hasTextFieldOption && (
+            <div className="space-y-2">
+              <Label
+                htmlFor={`${question.id}-text-field`}
+                className="text-sm font-medium"
+              >
+                {lastOption}
+                <span className="text-destructive ml-1">*</span>
+              </Label>
+              <Textarea
+                id={`${question.id}-text-field`}
+                value={answer?.additionalText || ""}
+                onChange={(e) =>
+                  onAnswer({
+                    answer: selectedOptions,
+                    additionalText: e.target.value,
+                  })
+                }
+                placeholder="Digite sua resposta aqui..."
+                className="min-h-[100px] resize-none"
+                rows={4}
               />
             </div>
           )}

@@ -17,12 +17,62 @@ interface MoodSlidersProps {
   onSuccess?: (data: AnalyzeMoodTextResponse) => void;
 }
 
-const emojis = {
+// 🎯 Emojis específicos para cada métrica
+const moodEmojis = {
   1: "😢",
   2: "😟",
   3: "😐",
   4: "🙂",
   5: "😊",
+};
+
+const anxietyEmojis = {
+  1: "😌", // Muito calmo
+  2: "🙂", // Calmo
+  3: "😐", // Neutro
+  4: "😰", // Ansioso
+  5: "😱", // Muito ansioso
+};
+
+const energyEmojis = {
+  1: "😴",
+  2: "😪",
+  3: "😐",
+  4: "⚡",
+  5: "🔥",
+};
+
+const sleepEmojis = {
+  1: "😫",
+  2: "😴",
+  3: "😐",
+  4: "😌",
+  5: "😴✨",
+};
+
+const stressEmojis = {
+  1: "😎", // Zero estresse
+  2: "🙂", // Pouco estresse
+  3: "😐", // Moderado
+  4: "😓", // Muito estressado
+  5: "🤯", // Extremamente estressado
+};
+
+// 🎯 Labels explicativos para ansiedade e estresse
+const anxietyLabels = {
+  1: "Muito calmo",
+  2: "Calmo",
+  3: "Neutro",
+  4: "Ansioso",
+  5: "Muito ansioso",
+};
+
+const stressLabels = {
+  1: "Zero estresse",
+  2: "Pouco estresse",
+  3: "Moderado",
+  4: "Muito estressado",
+  5: "Extremamente estressado",
 };
 
 export const MoodSliders: React.FC<MoodSlidersProps> = ({ onSuccess }) => {
@@ -63,6 +113,29 @@ export const MoodSliders: React.FC<MoodSlidersProps> = ({ onSuccess }) => {
     });
   };
 
+  // 🎯 Função para pegar emoji correto
+  const getEmoji = (key: keyof MoodScores, value: number) => {
+    const emojiMap = {
+      score_mood: moodEmojis,
+      score_anxiety: anxietyEmojis,
+      score_energy: energyEmojis,
+      score_sleep: sleepEmojis,
+      score_stress: stressEmojis,
+    };
+    return emojiMap[key][value as 1 | 2 | 3 | 4 | 5];
+  };
+
+  // 🎯 Função para pegar label explicativo (só para ansiedade e estresse)
+  const getLabel = (key: keyof MoodScores, value: number) => {
+    if (key === "score_anxiety") {
+      return anxietyLabels[value as 1 | 2 | 3 | 4 | 5];
+    }
+    if (key === "score_stress") {
+      return stressLabels[value as 1 | 2 | 3 | 4 | 5];
+    }
+    return null;
+  };
+
   const sliders = [
     {
       key: "score_mood" as keyof MoodScores,
@@ -76,7 +149,7 @@ export const MoodSliders: React.FC<MoodSlidersProps> = ({ onSuccess }) => {
       label: "Ansiedade",
       icon: AlertTriangle,
       color: "text-yellow-600",
-      description: "Nível de ansiedade",
+      description: "1 = Muito calmo • 5 = Muito ansioso", // ✨ Deixa claro!
     },
     {
       key: "score_energy" as keyof MoodScores,
@@ -97,41 +170,57 @@ export const MoodSliders: React.FC<MoodSlidersProps> = ({ onSuccess }) => {
       label: "Estresse",
       icon: Heart,
       color: "text-red-600",
-      description: "Nível de estresse",
+      description: "1 = Zero estresse • 5 = Muito estressado", // ✨ Deixa claro!
     },
   ];
 
   return (
     <div className="space-y-6">
-      {sliders.map(({ key, label, icon: Icon, color, description }) => (
-        <Card key={key} className="p-4">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Icon className={`w-5 h-5 ${color}`} />
-                <Label className="font-semibold">{label}</Label>
+      {sliders.map(({ key, label, icon: Icon, color, description }) => {
+        const currentValue = scores[key];
+        const emoji = getEmoji(key, currentValue);
+        const labelText = getLabel(key, currentValue);
+
+        return (
+          <Card key={key} className="p-4">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Icon className={`w-5 h-5 ${color}`} />
+                  <Label className="font-semibold">{label}</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">{emoji}</span>
+                  <span className="text-sm font-medium">
+                    {currentValue}/5
+                  </span>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">
-                  {emojis[scores[key] as 1 | 2 | 3 | 4 | 5]}
-                </span>
-                <span className="text-sm font-medium">{scores[key]}/5</span>
-              </div>
+              
+              {/* 🎯 Descrição com hint de escala */}
+              <p className="text-xs text-muted-foreground">{description}</p>
+              
+              {/* 🎯 Label explicativo (só aparece para ansiedade e estresse) */}
+              {labelText && (
+                <p className="text-sm font-medium text-center py-1 px-3 bg-muted rounded-md">
+                  {labelText}
+                </p>
+              )}
+
+              <Slider
+                value={[currentValue]}
+                onValueChange={(value) =>
+                  setScores((prev) => ({ ...prev, [key]: value[0] }))
+                }
+                min={1}
+                max={5}
+                step={1}
+                className="cursor-pointer"
+              />
             </div>
-            <p className="text-xs text-muted-foreground">{description}</p>
-            <Slider
-              value={[scores[key]]}
-              onValueChange={(value) =>
-                setScores((prev) => ({ ...prev, [key]: value[0] }))
-              }
-              min={1}
-              max={5}
-              step={1}
-              className="cursor-pointer"
-            />
-          </div>
-        </Card>
-      ))}
+          </Card>
+        );
+      })}
 
       {/* Notas obrigatórias */}
       <Card className="p-4">

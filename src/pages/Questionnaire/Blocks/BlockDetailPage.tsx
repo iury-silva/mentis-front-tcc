@@ -211,12 +211,38 @@ export default function BlockDetailPage() {
     ? answers[currentQuestion.id]
     : undefined;
 
+  // Palavras-chave que indicam campo "Outro"
+  const OTHER_KEYWORDS = ["Outro", "Outros", "Outra", "Outras"];
+  const isOtherOption = (option: string): boolean => {
+    return OTHER_KEYWORDS.some(
+      (keyword) => option.trim().toLowerCase() === keyword.toLowerCase()
+    );
+  };
+
+  // Palavras-chave que indicam campo de texto obrigatório
+  const TEXT_FIELD_KEYWORDS = [
+    "Caso afirmativo, qual?",
+    "Conte-nos um pouco:",
+    "Como tem lidado com isso?",
+    "Quais:",
+    "Por quê?",
+  ];
+  const shouldBeTextField = (option: string): boolean => {
+    return TEXT_FIELD_KEYWORDS.some((keyword) =>
+      option.trim().toLowerCase().includes(keyword.toLowerCase())
+    );
+  };
+
   // Função para validar se a resposta está completa
   const isAnswerValid = (
     answer: Answer | undefined,
     question: Question
   ): boolean => {
     if (!answer) return false;
+
+    // Verificar se a última opção é um campo de texto especial
+    const lastOption = question.options?.[question.options.length - 1];
+    const hasTextFieldOption = lastOption && shouldBeTextField(lastOption);
 
     switch (question.type) {
       case "text":
@@ -225,15 +251,28 @@ export default function BlockDetailPage() {
         );
 
       case "single_choice":
+        // Se tem campo de texto especial, validar o texto
+        if (hasTextFieldOption) {
+          return (
+            typeof answer.answer === "string" && answer.answer.trim().length > 0
+          );
+        }
         return (
           typeof answer.answer === "string" && answer.answer.trim().length > 0
         );
 
       case "single_choice_with_text": {
+        // Se tem campo de texto especial na última opção, validar additionalText
+        if (hasTextFieldOption) {
+          return (
+            typeof answer.answer === "string" && answer.answer.trim().length > 0
+          );
+        }
+
         const singleAnswer = answer.answer as string;
         if (!singleAnswer || singleAnswer.trim().length === 0) return false;
         // Se escolheu "Outro/Outros", precisa ter texto adicional
-        if (singleAnswer === "Outro" || singleAnswer === "Outros") {
+        if (isOtherOption(singleAnswer)) {
           return (
             !!answer.additionalText && answer.additionalText.trim().length > 0
           );
@@ -242,15 +281,32 @@ export default function BlockDetailPage() {
       }
 
       case "multiple_choice":
+        // Se tem campo de texto especial, validar additionalText
+        if (hasTextFieldOption) {
+          const hasOptions =
+            Array.isArray(answer.answer) && answer.answer.length > 0;
+          const hasText =
+            !!answer.additionalText && answer.additionalText.trim().length > 0;
+          // Precisa ter pelo menos opções selecionadas OU texto preenchido
+          return hasOptions || hasText;
+        }
         return Array.isArray(answer.answer) && answer.answer.length > 0;
 
       case "multiple_choice_with_text": {
+        // Se tem campo de texto especial, validar additionalText
+        if (hasTextFieldOption) {
+          const hasOptions =
+            Array.isArray(answer.answer) && answer.answer.length > 0;
+          const hasText =
+            !!answer.additionalText && answer.additionalText.trim().length > 0;
+          // Precisa ter pelo menos opções selecionadas OU texto preenchido
+          return hasOptions || hasText;
+        }
+
         if (!Array.isArray(answer.answer) || answer.answer.length === 0)
           return false;
         // Se "Outro/Outros" está selecionado, precisa ter texto adicional
-        const hasOther = answer.answer.some(
-          (opt) => opt === "Outro" || opt === "Outros"
-        );
+        const hasOther = answer.answer.some((opt) => isOtherOption(opt));
         if (hasOther) {
           return (
             !!answer.additionalText && answer.additionalText.trim().length > 0
@@ -331,7 +387,8 @@ export default function BlockDetailPage() {
           case "single_choice_with_text":
             value = answerData.answer as string;
             if (answerData.additionalText) {
-              value += ` | Especificação: ${answerData.additionalText}`;
+              // Formato melhorado para facilitar busca: [ESPECIFICAÇÃO: texto]
+              value += ` [ESPECIFICAÇÃO: ${answerData.additionalText}]`;
             }
             break;
 
@@ -339,7 +396,8 @@ export default function BlockDetailPage() {
           case "multiple_choice_with_text":
             value = (answerData.answer as string[]).join("; ");
             if (answerData.additionalText) {
-              value += ` | Especificação: ${answerData.additionalText}`;
+              // Formato melhorado para facilitar busca: [ESPECIFICAÇÃO: texto]
+              value += ` [ESPECIFICAÇÃO: ${answerData.additionalText}]`;
             }
             break;
 

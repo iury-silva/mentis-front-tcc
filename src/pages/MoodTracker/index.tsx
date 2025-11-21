@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { PageCustom } from "@/components/Layout/PageCustom";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Heart, History, Plus, Wrench } from "lucide-react";
+import { Heart, History, Plus, Wrench, BarChart3 } from "lucide-react";
 import { useIsMobile } from "@/hooks/useMobile";
 import MoodTracker from "./MoodTracker";
 import MoodRecordPage from "./MoodRecordPage";
+import MoodStatsPage from "./MoodStatsPage";
 
 const MoodTrackerIndex: React.FC = () => {
   const isMobile = useIsMobile();
-  const [activeTab, setActiveTab] = useState<"history" | "new">("new");
+  const [activeTab, setActiveTab] = useState<"history" | "new" | "stats">(
+    "new"
+  );
 
   return (
     <PageCustom
@@ -29,19 +32,27 @@ const MoodTrackerIndex: React.FC = () => {
     >
       <Tabs
         value={activeTab}
-        onValueChange={(value) => setActiveTab(value as "history" | "new")}
+        onValueChange={(value) =>
+          setActiveTab(value as "history" | "new" | "stats")
+        }
         className="w-full"
       >
-        <TabsList className="grid w-full grid-cols-2 mb-6">
-          <TabsTrigger value="new" className="gap-2">
-            <Plus className="w-4 h-4" />
-            Novo Registro
-          </TabsTrigger>
-          <TabsTrigger value="history" className="gap-2">
-            <History className="w-4 h-4" />
-            Histórico
-          </TabsTrigger>
-        </TabsList>
+        <div className="pb-6 -mx-6 px-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="new" className="gap-2">
+              <Plus className="w-4 h-4" />
+              {!isMobile && "Novo"}
+            </TabsTrigger>
+            <TabsTrigger value="history" className="gap-2">
+              <History className="w-4 h-4" />
+              {!isMobile && "Histórico"}
+            </TabsTrigger>
+            <TabsTrigger value="stats" className="gap-2">
+              <BarChart3 className="w-4 h-4" />
+              {!isMobile && "Estatísticas"}
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="new" className="mt-0">
           <MoodRecordPage onSuccess={() => setActiveTab("history")} />
@@ -49,6 +60,10 @@ const MoodTrackerIndex: React.FC = () => {
 
         <TabsContent value="history" className="mt-0">
           <MoodTracker />
+        </TabsContent>
+
+        <TabsContent value="stats" className="mt-0">
+          <MoodStatsPage />
         </TabsContent>
       </Tabs>
     </PageCustom>
