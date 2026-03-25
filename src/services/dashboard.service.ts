@@ -1,5 +1,9 @@
 import { api } from "@/api";
-import type { DashboardData, QuestionAnalysisResponse } from "@/types/dashboard.types";
+import type {
+  DashboardData,
+  QuestionAnalysisResponse,
+  DemographicsData,
+} from "@/types/dashboard.types";
 
 export const dashboardService = {
   // Busca todos os dados do dashboard
@@ -15,15 +19,28 @@ export const dashboardService = {
 
   // Busca análise específica de uma pergunta
   async getQuestionAnalysis(
-    questionId: string
+    questionId: string,
   ): Promise<QuestionAnalysisResponse> {
     try {
       const data = (await api.get(
-        `/dashboard/question/${questionId}/analysis`
+        `/dashboard/question/${questionId}/analysis`,
       )) as QuestionAnalysisResponse;
       return data;
     } catch (error) {
       console.error("Erro ao buscar análise da pergunta:", error);
+      throw error;
+    }
+  },
+
+  // Busca os dados demográficos (cidade e estado)
+  async getDemographics(): Promise<DemographicsData[]> {
+    try {
+      const data = (await api.get(
+        "/questionnaire/demographics",
+      )) as DemographicsData[];
+      return data;
+    } catch (error) {
+      console.error("Erro ao buscar demografia:", error);
       throw error;
     }
   },

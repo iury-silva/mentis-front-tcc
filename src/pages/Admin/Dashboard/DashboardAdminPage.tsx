@@ -171,7 +171,16 @@ const DashboardAdminPage: React.FC = () => {
     staleTime: 10000,
   });
 
-  if (isLoading) {
+  const { data: demographicsData, isLoading: isLoadingDemographics } = useQuery(
+    {
+      queryKey: ["demographics"],
+      queryFn: dashboardService.getDemographics,
+      refetchInterval: 30000,
+      staleTime: 10000,
+    },
+  );
+
+  if (isLoading || isLoadingDemographics) {
     return (
       <PageCustom
         title="Dashboard Administrativo"
@@ -390,6 +399,19 @@ const DashboardAdminPage: React.FC = () => {
           </div>
         </section>
 
+        {/* Demographics Area */}
+        <section>
+          <DashboardBarChart
+            title="Demografia (Cidade e Estado)"
+            data={demographicsData || []}
+            dataKey="count"
+            xAxisKey="cityState"
+            description="Distribuição das respostas do questionário sociodemográfico"
+            color="#0ea5e9"
+            className="bg-card/70 backdrop-blur-sm"
+          />
+        </section>
+
         {/* Trend Charts */}
         <section>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -500,7 +522,7 @@ const DashboardAdminPage: React.FC = () => {
                         <div className="text-center sm:text-right flex-shrink-0">
                           <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
                             {dashboardService.formatPercentage(
-                              block.completionRate
+                              block.completionRate,
                             )}
                           </div>
                           <Badge variant="secondary" className="text-xs">
@@ -558,7 +580,7 @@ const DashboardAdminPage: React.FC = () => {
                     <div className="text-2xl font-bold text-foreground mb-1">
                       {dashboardService.formatNumber(
                         summary.averageResponsesPerUser,
-                        1
+                        1,
                       )}
                     </div>
                     <CardDescription>
@@ -571,7 +593,7 @@ const DashboardAdminPage: React.FC = () => {
                   <CardContent className="p-6 text-center">
                     <div className="text-2xl font-bold text-foreground mb-1">
                       {dashboardService.formatNumber(
-                        trends.weeklyGrowth.currentWeekUsers
+                        trends.weeklyGrowth.currentWeekUsers,
                       )}
                     </div>
                     <CardDescription>
@@ -584,7 +606,7 @@ const DashboardAdminPage: React.FC = () => {
                   <CardContent className="p-6 text-center">
                     <div className="text-2xl font-bold text-foreground mb-1">
                       {dashboardService.formatNumber(
-                        trends.weeklyGrowth.currentWeekResponses
+                        trends.weeklyGrowth.currentWeekResponses,
                       )}
                     </div>
                     <CardDescription>Respostas esta semana</CardDescription>

@@ -116,3 +116,9 @@ export interface QuestionAnalysisResponse {
     userRole: string;
   }>;
 }
+
+export interface DemographicsData {
+  cityState: string;
+  count: number;
+  [key: string]: string | number;
+}
