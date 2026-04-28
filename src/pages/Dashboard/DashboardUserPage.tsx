@@ -25,7 +25,6 @@ import {
   TrendingUp,
   BookOpen,
   BarChart3,
-  Heart,
   Sparkles,
   Target,
   AlertCircle,
@@ -451,11 +450,7 @@ const DashboardUserPage: React.FC = () => {
                 {quickActions.map((action, index) => (
                   <Card
                     key={index}
-                    className={`transition-all cursor-pointer hover:shadow-lg ${
-                      action.highlight
-                        ? "bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950"
-                        : "bg-muted hover:bg-accent"
-                    }`}
+                    className="transition-all cursor-pointer hover:shadow-lg bg-muted hover:bg-accent"
                     onClick={action.action}
                   >
                     <CardContent className="p-4">
@@ -478,11 +473,7 @@ const DashboardUserPage: React.FC = () => {
                                 {action.count}
                               </Badge>
                             )}
-                            {action.highlight && (
-                              <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-primary-foreground text-xs h-5">
-                                Novo!
-                              </Badge>
-                            )}
+
                           </div>
                           <p className="text-xs text-muted-foreground">
                             {action.description}
