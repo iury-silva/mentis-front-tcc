@@ -82,9 +82,7 @@ export function SearchCommand() {
                 >
                   <span>Questionários</span>
                 </CommandItem>
-                <CommandItem onSelect={() => handleNavigation("/mood-tracker")}>
-                  <span>Mood Tracker</span>
-                </CommandItem>
+
               </>
             )}
             <CommandItem onSelect={() => handleNavigation("/settings")}>

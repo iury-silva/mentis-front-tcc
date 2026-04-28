@@ -29,8 +29,6 @@ import QuestionnairePage from "@/pages/Questionnaire/QuestionnairePage";
 import BlockDetailPage from "@/pages/Questionnaire/Blocks/BlockDetailPage";
 import BlockReviewPage from "@/pages/Questionnaire/Blocks/BlockReviewPage";
 import BlockBonusPage from "@/pages/Questionnaire/Blocks/BlockBonusPage";
-import MoodTrackerIndex from "@/pages/MoodTracker";
-import MapsNearby from "@/pages/Maps/MapsNearby";
 
 // Common Pages
 import SettingsPage from "@/pages/Settings/SettingsPage";
@@ -66,8 +64,6 @@ const routesConfig = [
         path: "/questionnaire/blocks/:blockId/bonus",
         element: <BlockBonusPage />,
       },
-      { path: "/mood-tracker", element: <MoodTrackerIndex /> },
-      { path: "/maps-nearby", element: <MapsNearby /> },
     ],
   },
   {

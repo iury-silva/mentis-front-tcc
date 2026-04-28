@@ -6,17 +6,25 @@ export function PrivacyPolicy() {
       </h1>
 
       <p className="text-muted-foreground">
-        <strong>Última atualização:</strong> 16 de outubro de 2025
+        <strong>Última atualização:</strong> 08 de abril de 2026
       </p>
 
       <section>
         <h2 className="text-xl font-semibold mt-6 mb-3">1. Introdução</h2>
+        <div className="mt-2 p-4 bg-muted rounded-lg mb-4">
+          <p className="text-sm">
+            Ao marcar a caixa de aceitação desta Política de Privacidade, você
+            declara que leu, compreendeu e concorda com todos os termos de
+            tratamento de dados pessoais estabelecidos neste documento, nos
+            termos da LGPD.
+          </p>
+        </div>
         <p>
-          A Mentis ("nós", "nosso" ou "plataforma") respeita a sua privacidade e
-          está comprometida em proteger seus dados pessoais. Esta Política de
-          Privacidade descreve como coletamos, usamos, armazenamos e protegemos
-          suas informações, em conformidade com a Lei Geral de Proteção de Dados
-          (LGPD - Lei 13.709/2018).
+          A Mentis respeita a sua privacidade e está comprometida em proteger os
+          seus dados pessoais. Esta Política de Privacidade descreve como
+          coletamos, usamos, armazenamos e protegemos suas informações, em
+          conformidade com a Lei Geral de Proteção de Dados (LGPD - Lei
+          13.709/2018).
         </p>
       </section>
 
@@ -49,20 +57,8 @@ export function PrivacyPolicy() {
         <h3 className="text-lg font-semibold mt-4 mb-2">2.2 Dados de Uso</h3>
         <ul className="list-disc pl-6 space-y-2">
           <li>
-            <strong>Registros emocionais:</strong> Humor diário, emoções
-            relatadas
-          </li>
-          <li>
-            <strong>Análises de voz:</strong> Gravações de áudio para análise
-            emocional (opcional)
-          </li>
-          <li>
             <strong>Respostas de questionários:</strong> Dados de bem-estar e
-            autocuidado
-          </li>
-          <li>
-            <strong>Histórico de atividades:</strong> Data e hora de acessos à
-            plataforma
+            qualidade de vida
           </li>
         </ul>
 
@@ -83,24 +79,12 @@ export function PrivacyPolicy() {
         <p>Utilizamos seus dados para:</p>
         <ul className="list-disc pl-6 space-y-2">
           <li>
-            <strong>Fornecimento do serviço:</strong> Operar e manter a
-            plataforma
+            Produção científica sobre a situação sociodemográfica da população
+            LGBTQIAPN+ no contexto brasileiro
           </li>
           <li>
-            <strong>Personalização:</strong> Adaptar a experiência às suas
-            necessidades
-          </li>
-          <li>
-            <strong>Análise de IA:</strong> Gerar insights sobre bem-estar
-            emocional
-          </li>
-          <li>
-            <strong>Melhorias:</strong> Aprimorar funcionalidades e desenvolver
-            novos recursos
-          </li>
-          <li>
-            <strong>Comunicação:</strong> Enviar notificações, atualizações e
-            suporte
+            Produção de evidência sobre as condições e envelhecimento dessa
+            população para fomento das políticas públicas
           </li>
           <li>
             <strong>Segurança:</strong> Prevenir fraudes e proteger a plataforma
@@ -126,16 +110,8 @@ export function PrivacyPolicy() {
             expressamente ao aceitar esta política
           </li>
           <li>
-            <strong>Execução de contrato (Art. 7º, V):</strong> Para fornecer os
-            serviços contratados
-          </li>
-          <li>
             <strong>Legítimo interesse (Art. 7º, IX):</strong> Para melhorias e
             segurança da plataforma
-          </li>
-          <li>
-            <strong>Proteção da vida (Art. 7º, VII):</strong> Em situações de
-            risco à saúde ou vida
           </li>
         </ul>
       </section>
@@ -159,20 +135,12 @@ export function PrivacyPolicy() {
         <p>Podemos compartilhar dados apenas nas seguintes situações:</p>
         <ul className="list-disc pl-6 space-y-2">
           <li>
-            <strong>Provedores de serviço:</strong> Empresas que nos auxiliam na
-            operação (hospedagem, análise, etc.)
-          </li>
-          <li>
             <strong>Obrigação legal:</strong> Quando exigido por lei ou ordem
             judicial
           </li>
           <li>
             <strong>Proteção de direitos:</strong> Para proteger nossos direitos
             legais
-          </li>
-          <li>
-            <strong>Emergências:</strong> Em situações de risco iminente à vida
-            ou saúde
           </li>
         </ul>
       </section>
@@ -232,20 +200,8 @@ export function PrivacyPolicy() {
             seus dados sejam anonimizados, bloqueados ou excluídos
           </li>
           <li>
-            <strong>Portabilidade:</strong> Receber seus dados em formato
-            estruturado
-          </li>
-          <li>
             <strong>Revogação do consentimento:</strong> Retirar seu
             consentimento a qualquer momento
-          </li>
-          <li>
-            <strong>Oposição:</strong> Se opor ao tratamento em determinadas
-            situações
-          </li>
-          <li>
-            <strong>Revisão de decisões automatizadas:</strong> Solicitar
-            revisão de decisões tomadas por IA
           </li>
         </ul>
       </section>
@@ -268,10 +224,8 @@ export function PrivacyPolicy() {
       <section>
         <h2 className="text-xl font-semibold mt-6 mb-3">9. Menores de Idade</h2>
         <p>
-          Nossa plataforma é destinada a maiores de 18 anos. Se você tem entre
-          13 e 18 anos, precisa do consentimento dos seus pais ou responsáveis
-          legais para usar o Mentis. Não coletamos intencionalmente dados de
-          menores de 13 anos.
+          Nossa plataforma é destinada a maiores de 18 anos. Não coletamos
+          intencionalmente dados de menores de 18 anos.
         </p>
       </section>
 
@@ -292,7 +246,7 @@ export function PrivacyPolicy() {
         </h2>
         <p>
           Podemos atualizar esta Política de Privacidade periodicamente.
-          Notificaremos sobre alterações significativas através do email
+          Notificaremos sobre alterações significativas através do e-mail
           cadastrado ou por aviso na plataforma. Recomendamos revisar esta
           política regularmente.
         </p>
@@ -315,15 +269,6 @@ export function PrivacyPolicy() {
           </li>
         </ul>
       </section>
-
-      <div className="mt-8 p-4 bg-muted rounded-lg">
-        <p className="text-sm">
-          <strong>Declaração:</strong> Ao marcar a caixa de aceitação desta
-          Política de Privacidade, você declara que leu, compreendeu e concorda
-          com todos os termos de tratamento de dados pessoais estabelecidos
-          neste documento, nos termos da LGPD.
-        </p>
-      </div>
     </div>
   );
 }

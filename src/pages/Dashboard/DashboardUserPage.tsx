@@ -258,14 +258,7 @@ const DashboardUserPage: React.FC = () => {
       count: dashboardData?.notAnsweredQuestionnaires || 0,
       color: "from-blue-500 to-indigo-600",
     },
-    {
-      title: "Registro de Humor",
-      description: "Como você está se sentindo hoje?",
-      icon: Heart,
-      action: () => navigate("/mood-tracker"),
-      highlight: true,
-      color: "from-pink-500 to-purple-600",
-    },
+
     {
       title: "Ver Histórico",
       description: "Minhas respostas e progresso",

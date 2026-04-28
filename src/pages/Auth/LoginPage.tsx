@@ -13,6 +13,38 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+const partnerLogos = [
+  {
+    src: "/images/Logo da UNISC.png",
+    alt: "UNISC - Universidade de Santa Cruz do Sul",
+    href: "https://www.unisc.br",
+  },
+  {
+    src: "/images/Logo - Mestrado_Profissional_em_Psicologia.png",
+    alt: "Mestrado Profissional em Psicologia",
+  },
+  {
+    src: "/images/Logo - PPGSPI.png",
+    alt: "PPGSPI",
+  },
+  {
+    src: "/images/AMBITRANS_LOGOFINAL.png",
+    alt: "AMBITRANS",
+  },
+  {
+    src: "/images/1.png",
+    alt: "Orgulho-vidade",
+  },
+  {
+    src: "/images/FP_vetor_oficial (1).png",
+    alt: "Fundo Positivo",
+  },
+  {
+    src: "/images/fundo_lgbtqia_logo.png",
+    alt: "Fundo Positivo LGBTQIA+",
+  },
+];
+
 export default function LoginPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { isAuthenticated, user } = useAuth();
@@ -27,25 +59,19 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, searchParams, setSearchParams, user?.role]);
   return (
-    <div className="grid min-h-svh lg:grid-cols-2 dark:from-primary/10 dark:to-muted/20 dark:bg-gradient-to-br">
-      <div className="absolute bottom-4 left-4 hidden lg:block z-20 brightness-60">
-        <span className="text-[0.50rem] text-muted-foreground font-light">
-          Desenvolvido com ❤️ por Iury da Silva
-        </span>
-      </div>
-      <div className="hidden lg:block -z-1">
-        <img
-          src="/images/layered-waves-haikei.svg"
-          alt="Image"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+    <div className="relative min-h-svh flex flex-col bg-gradient-to-br from-rose-50 via-white to-orange-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-950">
+      {/* Decorative blurred circles */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-orange-300/10 blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-rose-200/10 blur-3xl" />
       </div>
 
-      {/* iframe do instatus no canto direito botao floating */}
-      <div className="hidden lg:block absolute bottom-10 left-4 opacity-90 z-50">
+      {/* Status monitor — bottom left */}
+      <div className="hidden lg:block fixed bottom-10 left-4 opacity-90 z-50">
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <MonitorIcon className="h-6 w-6 text-foreground" />
+            <MonitorIcon className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground transition-colors" />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-96 p-0 m-3 rounded-xl shadow-lg border border-border/50 bg-card/80 backdrop-blur-sm">
             <DropdownMenuItem className="p-0 m-0">
@@ -58,40 +84,72 @@ export default function LoginPage() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex flex-col gap-4 p-6 md:p-10">
-        {/* Logo Principal */}
-        <div className="flex justify-center">
-          <div className="flex h-32 items-end justify-center">
-            <img
-              src="/images/logo-mentisV2.png"
-              alt="Mentis Logo"
-              className="h-12"
-            />
-          </div>
+
+      {/* ========== MAIN CONTENT ========== */}
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-4 py-10 sm:px-6">
+        {/* Logo */}
+        <div className="mb-8">
+          <img
+            src="/images/logo-mentisV2.png"
+            alt="Mentis"
+            className="h-12 sm:h-14"
+          />
         </div>
 
-        {/* Formulário de Login */}
-        <div className="flex flex-1 items-center justify-center">
-          <div className="w-full max-w-xs">
-            <LoginForm />
-          </div>
-        </div>
-
-        {/* Logo UNISC */}
-        <div className="mt-auto pt-8 pb-4">
-          <div className="flex items-center justify-center">
-            <div className="h-16 overflow-hidden flex items-center">
-              <a href="https://www.unisc.br" target="_blank" rel="noreferrer">
-                <img
-                  src="/images/Logo da UNISC.png"
-                  alt="UNISC"
-                  className="h-20 object-cover opacity-80 hover:opacity-100 transition-opacity"
-                />
-              </a>
-            </div>
-          </div>
+        {/* Login card */}
+        <div className="w-full max-w-sm rounded-2xl border border-border/40 bg-card/70 backdrop-blur-sm p-8 shadow-xl shadow-black/5 dark:shadow-black/20">
+          <LoginForm />
         </div>
       </div>
+
+      {/* ========== PARTNER LOGOS FOOTER ========== */}
+      <footer className="relative z-10 border-t border-border/30 bg-muted/30 backdrop-blur-sm">
+        <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
+          {/* Title */}
+          <p className="text-center text-[0.65rem] sm:text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground/50 mb-5 sm:mb-6">
+            Realização e Apoio
+          </p>
+
+          {/* Logo row */}
+          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 md:gap-10">
+            {partnerLogos.map((logo) => {
+              const img = (
+                <img
+                  key={logo.alt}
+                  src={logo.src}
+                  alt={logo.alt}
+                  className="h-8 sm:h-10 md:h-12 w-auto max-w-[120px] sm:max-w-[140px] md:max-w-[160px] object-contain opacity-60 hover:opacity-100 transition-all duration-300 hover:scale-105 grayscale hover:grayscale-0"
+                />
+              );
+
+              if (logo.href) {
+                return (
+                  <a
+                    key={logo.alt}
+                    href={logo.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-shrink-0"
+                  >
+                    {img}
+                  </a>
+                );
+              }
+
+              return (
+                <div key={logo.alt} className="flex-shrink-0">
+                  {img}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Credit */}
+          <p className="mt-6 text-center text-[0.55rem] text-muted-foreground/40 font-light">
+            Desenvolvido com ❤️ por Iury da Silva
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

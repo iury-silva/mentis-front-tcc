@@ -28,7 +28,16 @@ import { useState, useEffect } from "react";
 import { formatPhone } from "@/utils/format/phoneFormat";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { ArrowDesign, ArtDesign } from "../../assets/svgs";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TermsModal } from "@/components/Terms/TermsModal";
@@ -42,6 +51,18 @@ const completeProfileSchema = z.object({
     .refine((val) => !val || /^\(\d{2}\)\s\d{4,5}-\d{4}$/.test(val), {
       message: "Telefone inválido",
     }),
+  birthDate: z.string().nonempty("Data de nascimento é obrigatória").refine((val) => {
+    const birthDate = new Date(val);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age >= 40;
+  }, {
+    message: "Você deve ter pelo menos 40 anos para usar a plataforma",
+  }),
   acceptTerms: z.boolean().refine((val) => val === true, {
     message: "Você deve aceitar os Termos de Uso",
   }),
@@ -56,6 +77,7 @@ type CompleteProfileApiData = {
   state: string;
   city: string;
   phone: string;
+  birthDate: string;
 };
 
 export default function CompleteProfile() {
@@ -132,6 +154,7 @@ export default function CompleteProfile() {
       state: "",
       city: "",
       phone: "",
+      birthDate: "",
       acceptTerms: false,
       acceptPrivacy: false,
     },
@@ -143,6 +166,7 @@ export default function CompleteProfile() {
         state: data.state,
         city: data.city,
         phone: data.phone,
+        birthDate: data.birthDate,
       });
     } catch (error) {
       console.error("Erro ao atualizar perfil:", error);
@@ -279,6 +303,53 @@ export default function CompleteProfile() {
                           }}
                         />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="birthDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Data de Nascimento</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(new Date(field.value + "T12:00:00"), "dd/MM/yyyy", { locale: ptBR })
+                              ) : (
+                                <span>Selecione a data</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value ? new Date(field.value + "T12:00:00") : undefined}
+                            onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : "")}
+                            disabled={(date) =>
+                              date > new Date() || date < new Date("1900-01-01")
+                            }
+                            initialFocus
+                            captionLayout="dropdown"
+                            defaultMonth={field.value ? new Date(field.value + "T12:00:00") : undefined}
+                            startMonth={new Date(1900, 0)}
+                            endMonth={new Date()}
+                            locale={ptBR}
+                          />
+                        </PopoverContent>
+                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -1,14 +1,11 @@
 import {
   FileText,
-  Heart,
-  TrendingUp,
   Award,
   Sparkles,
   CheckCircle2,
 } from "lucide-react";
 import type { OnboardingStep } from "./OnboardingModal";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
 export const userOnboardingSteps: OnboardingStep[] = [
   {
@@ -82,79 +79,7 @@ export const userOnboardingSteps: OnboardingStep[] = [
       </div>
     ),
   },
-  {
-    title: "Registro de Humor",
-    description:
-      "Acompanhe suas emoções diariamente e identifique padrões que podem estar afetando seu bem-estar.",
-    icon: <Heart className="w-8 h-8 text-pink-500" />,
-    content: (
-      <div className="space-y-4">
-        <Card className="border-2 border-pink-500/20">
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-2 justify-center">
-              <Badge variant="outline" className="text-xs">
-                😊 Feliz
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                😌 Calmo
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                😔 Triste
-              </Badge>
-              <Badge variant="outline" className="text-xs">
-                😰 Ansioso
-              </Badge>
-            </div>
 
-            <p className="text-sm text-center text-muted-foreground">
-              Registre como você está se sentindo e acompanhe a evolução do seu
-              humor ao longo do tempo
-            </p>
-          </CardContent>
-        </Card>
-
-        <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center">
-          <Heart className="w-4 h-4 text-pink-500" />
-          <span>Leva menos de 1 minuto por dia</span>
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: "Análises e Insights",
-    description:
-      "Receba relatórios personalizados sobre seu bem-estar e sugestões de ações para melhorar sua saúde mental.",
-    icon: <TrendingUp className="w-8 h-8 text-green-500" />,
-    content: (
-      <div className="space-y-4">
-        <Card className="border-2 border-green-500/20">
-          <CardContent>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Bem-estar geral</span>
-                <Badge className="bg-green-500">Bom</Badge>
-              </div>
-              <div className="w-full bg-muted rounded-full h-2">
-                <div className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full w-3/4"></div>
-              </div>
-
-              <div className="flex items-center justify-between mt-4">
-                <span className="text-sm font-medium">Ansiedade</span>
-                <Badge variant="outline">Moderada</Badge>
-              </div>
-              <div className="w-full bg-muted rounded-full h-2">
-                <div className="bg-gradient-to-r from-yellow-500 to-orange-500 h-2 rounded-full w-1/2"></div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <p className="text-sm text-center text-muted-foreground">
-          Visualize seus progressos e identifique áreas que precisam de atenção
-        </p>
-      </div>
-    ),
-  },
   {
     title: "Pronto para Começar!",
     description:

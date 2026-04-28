@@ -3,17 +3,14 @@ import { useAuth } from "@/auth/useAuth";
 import {
   HomeIcon,
   QuestionMarkCircleIcon,
-  HeartIcon,
   UserIcon,
   EllipsisHorizontalIcon,
 } from "@heroicons/react/24/outline";
 import {
   HomeIcon as HomeIconSolid,
   QuestionMarkCircleIcon as QuestionMarkCircleIconSolid,
-  HeartIcon as HeartIconSolid,
   UserIcon as UserIconSolid,
   EllipsisHorizontalIcon as EllipsisHorizontalIconSolid,
-  MapIcon as MapIconSolid,
   SparklesIcon,
 } from "@heroicons/react/24/solid";
 import { cn } from "@/lib/utils";
@@ -53,21 +50,7 @@ export function BottomNavigation() {
       role: "user",
       priority: 2,
     },
-    {
-      title: "Humor",
-      url: "/mood-tracker",
-      icon: HeartIcon,
-      iconSolid: HeartIconSolid,
-      role: "user",
-      priority: 3,
-    },
-    {
-      title: "Mapa",
-      url: "/maps-nearby",
-      icon: MapIconSolid,
-      iconSolid: MapIconSolid,
-      priority: 4,
-    },
+
     {
       title: "Perfil",
       url: "/settings",

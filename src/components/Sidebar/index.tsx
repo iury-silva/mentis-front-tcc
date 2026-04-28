@@ -12,8 +12,6 @@ import {
   HomeIcon,
   QuestionMarkCircleIcon,
   QueueListIcon,
-  HeartIcon,
-  MapIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
 
@@ -44,18 +42,6 @@ export function AppSidebar() {
       title: "Questionário",
       url: "/questionnaire",
       icon: QuestionMarkCircleIcon,
-      role: "user", // só user vê
-    },
-    {
-      title: "Registro de Humor",
-      url: "/mood-tracker",
-      icon: HeartIcon,
-      role: "user", // só user vê
-    },
-    {
-      title: "Mapa de Serviços Próximos",
-      url: "/maps-nearby",
-      icon: MapIcon,
       role: "user", // só user vê
     },
     {

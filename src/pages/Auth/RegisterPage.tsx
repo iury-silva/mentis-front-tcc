@@ -15,7 +15,16 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { Button } from "@/components/ui/button";
 import { api } from "@/api";
 import { useState, useEffect } from "react";
-import { ArrowLeftIcon, CheckCircle } from "lucide-react";
+import { ArrowLeftIcon, CheckCircle, CalendarIcon } from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { cn } from "@/lib/utils";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import toast from "react-hot-toast";
 import { brasilApiService } from "@/services/brasil.api.service";
 import {
@@ -47,6 +56,18 @@ const registerSchema = z
     email: z.email("Email inválido"),
     state: z.string().nonempty("Estado é obrigatório"),
     city: z.string().nonempty("Cidade é obrigatória"),
+    birthDate: z.string().nonempty("Data de nascimento é obrigatória").refine((val) => {
+      const birthDate = new Date(val);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age >= 40;
+    }, {
+      message: "Você deve ter pelo menos 40 anos para se cadastrar",
+    }),
     phone: z
       .string()
       .nonempty("Telefone é obrigatório")
@@ -124,6 +145,7 @@ export function RegisterPage() {
       confirmPassword: "",
       state: "",
       city: "",
+      birthDate: "",
       phone: "",
       acceptTerms: false,
       acceptPrivacy: false,
@@ -137,6 +159,7 @@ export function RegisterPage() {
         name: data.name,
         email: data.email,
         password: data.password,
+        birthDate: data.birthDate,
         phone: data.phone,
         state: data.state,
         city: data.city,
@@ -204,6 +227,52 @@ export function RegisterPage() {
                       <FormControl>
                         <Input placeholder="Seu nome completo" {...field} />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="birthDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Data de Nascimento</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={"outline"}
+                              className={cn(
+                                "w-full pl-3 text-left font-normal",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(new Date(field.value + "T12:00:00"), "dd/MM/yyyy", { locale: ptBR })
+                              ) : (
+                                <span>Selecione a data</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value ? new Date(field.value + "T12:00:00") : undefined}
+                            onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : "")}
+                            disabled={(date) =>
+                              date > new Date() || date < new Date("1900-01-01")
+                            }
+                            captionLayout="dropdown"
+                            defaultMonth={field.value ? new Date(field.value + "T12:00:00") : undefined}
+                            startMonth={new Date(1900, 0)}
+                            endMonth={new Date()}
+                            locale={ptBR}
+                          />
+                        </PopoverContent>
+                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -475,19 +544,11 @@ export function RegisterPage() {
           <ul className="mt-6 space-y-2 text-left">
             <li className="flex items-center gap-3">
               <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span>Análise de voz com IA para insights emocionais</span>
+              <span>Acompanhe a sua qualidade de vida através de questionários validados</span>
             </li>
             <li className="flex items-center gap-3">
               <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span>Registro emocional diário personalizado</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span>Dashboard intuitivo com histórico de bem-estar</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span>Sugestões de autocuidado com IA</span>
+              <span>Dashboard intuitivo com histórico do seu progresso</span>
             </li>
             <li className="flex items-center gap-3">
               <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
